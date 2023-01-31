@@ -3,7 +3,8 @@ import {
 	InsightDatasetKind,
 	InsightError,
 	InsightResult,
-	ResultTooLargeError
+	ResultTooLargeError,
+	NotFoundError
 } from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
 
@@ -50,11 +51,159 @@ describe("InsightFacade", function () {
 			console.info(`AfterTest: ${this.currentTest?.title}`);
 			clearDisk();
 		});
-
 		// This is a unit test. You should create more like this!
+		it("add 1 dataset", async function () {
+			// Setup
+			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
+
+			// Execution
+			const result = await facade.listDatasets();
+
+			// Validation
+			expect(result).to.be.an.instanceof(Array);
+			expect(result).to.have.length(1);
+			expect(result).to.deep.equal([{
+				id: "1course",
+				kind: InsightDatasetKind.Sections,
+				numRows: 64612,
+			}]);
+		});
+		it("adds 3 datasets", async function () {
+			// Setup
+			await facade.addDataset("first-courses", sections, InsightDatasetKind.Sections);
+			await facade.addDataset("second-courses", sections, InsightDatasetKind.Sections);
+			await facade.addDataset("third-courses", sections, InsightDatasetKind.Sections);
+
+			// Execution
+			const result = await facade.listDatasets();
+
+			// Validation
+			expect(result).to.be.an.instanceof(Array);
+			expect(result).to.have.length(3);
+			expect(result).to.have.deep.members([
+				{
+					id: "first-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+				{
+					id: "second-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+				{
+					id: "third-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				}
+			]);
+		});
+		it("error adding a dataset with repeated id", async function () {
+			// Setup
+			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
+
+			// Execution
+			const result = await facade.listDatasets();
+
+			// Validation
+			expect(result).to.be.an.instanceof(Array);
+			expect(result).to.have.length(1);
+			expect(result).to.deep.equal([{
+				id: "1course",
+				kind: InsightDatasetKind.Sections,
+				numRows: 64612,
+			}]);
+
+			expect(facade.addDataset("1course", sections, InsightDatasetKind.Sections))
+				.eventually.to.be.rejectedWith(InsightError);
+		});
 		it ("should reject with  an empty dataset id", function() {
 			const result = facade.addDataset("", sections, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
+		});
+		it("error adding a dataset id containing underscore", async function () {
+			return expect(facade.addDataset("course_smth", sections, InsightDatasetKind.Sections))
+				.eventually.to.be.rejectedWith(InsightError);
+		});
+		it("remove 1 dataset at a time from 2", async function () {
+			// Setup
+			await facade.addDataset("first-courses", sections, InsightDatasetKind.Sections);
+			await facade.addDataset("second-courses", sections, InsightDatasetKind.Sections);
+
+			// Execution
+			const result = await facade.listDatasets();
+
+			// Validation
+			expect(result).to.be.an.instanceof(Array);
+			expect(result).to.have.length(2);
+			expect(result).to.have.deep.members([{
+				id: "first-courses",
+				kind: InsightDatasetKind.Sections,
+				numRows: 64612,
+			},
+			{
+				id: "second-courses",
+				kind: InsightDatasetKind.Sections,
+				numRows: 64612,
+			}]);
+
+			// Setup
+			await facade.removeDataset("first-courses");
+
+			// Execution
+			const result1 = await facade.listDatasets();
+
+			// Validation
+			expect(result1).to.be.an.instanceof(Array);
+			expect(result1).to.length(1);
+			expect(result1).to.deep.equal([{
+				id: "second-courses",
+				kind: InsightDatasetKind.Sections,
+				numRows: 64612,
+			}]
+			);
+			// Setup
+			await facade.removeDataset("second-courses");
+
+			// Execution
+			const result2 = await facade.listDatasets();
+
+			expect(result2).to.be.an.instanceof(Array).that.is.empty;
+			expect(result2).to.length(0);
+		});
+		it("error removing from empty facade", function () {
+			const action = facade.removeDataset("1course");
+			return expect(action).eventually.to.be.rejectedWith(NotFoundError);
+		});
+
+		it("error removing a dataset that has not been added", async function () {
+			// Setup
+			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
+			// Error
+			return expect(facade.removeDataset("2course")).eventually.to.be.rejectedWith(NotFoundError);
+		});
+		it("error removing a dataset with empty id", async function () {
+			// Setup
+			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
+
+			// Error
+			return expect(facade.removeDataset(""))
+				.eventually.to.be.rejectedWith(InsightError);
+		});
+		it("error removing a dataset with underscore", async function () {
+			// Setup
+			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
+			// Error
+			return expect(facade.removeDataset("courses_smth"))
+				.eventually.to.be.rejectedWith(InsightError);
+		});
+		it("should list 0 datasets", async function () {
+			// Setup+Execution
+			const result = await facade.listDatasets();
+			// Validation
+			expect(result).to.be.an.instanceof(Array).that.is.empty;
+			expect(result).to.have.length(0);
+			expect(result).to.deep.equal([]);
 		});
 	});
 
