@@ -1,0 +1,20 @@
+{
+	"title": "LT2KeyExample",
+	"input": {
+		"WHERE": {
+			"LT": {
+				"sections_avg": 50,
+				"sections_id": 400
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_id",
+				"sections_avg"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

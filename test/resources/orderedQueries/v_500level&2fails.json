@@ -1,0 +1,133 @@
+{
+	"title": "V_500level&2fails",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"sections_fail": 2
+					}
+				},
+				{
+					"IS": {
+						"sections_id": "50*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_id",
+				"sections_avg",
+				"sections_fail"
+			],
+			"ORDER": "sections_avg"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_dept": "law",
+			"sections_id": "507",
+			"sections_avg": 65.64,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "law",
+			"sections_id": "507",
+			"sections_avg": 68.25,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "phys",
+			"sections_id": "502",
+			"sections_avg": 73.57,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "phys",
+			"sections_id": "502",
+			"sections_avg": 73.57,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "rhsc",
+			"sections_id": "501",
+			"sections_avg": 76,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "spha",
+			"sections_id": "503",
+			"sections_avg": 76.15,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "spha",
+			"sections_id": "503",
+			"sections_avg": 76.15,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "baac",
+			"sections_id": "500",
+			"sections_avg": 79,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "baac",
+			"sections_id": "500",
+			"sections_avg": 79,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "bafi",
+			"sections_id": "500",
+			"sections_avg": 79.31,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "baac",
+			"sections_id": "500",
+			"sections_avg": 79.63,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "baac",
+			"sections_id": "500",
+			"sections_avg": 80.07,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "bafi",
+			"sections_id": "500",
+			"sections_avg": 80.17,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "appp",
+			"sections_id": "502",
+			"sections_avg": 81.64,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "appp",
+			"sections_id": "502",
+			"sections_avg": 81.64,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "econ",
+			"sections_id": "502",
+			"sections_avg": 83.45,
+			"sections_fail": 2
+		},
+		{
+			"sections_dept": "econ",
+			"sections_id": "502",
+			"sections_avg": 83.45,
+			"sections_fail": 2
+		}
+	]
+}

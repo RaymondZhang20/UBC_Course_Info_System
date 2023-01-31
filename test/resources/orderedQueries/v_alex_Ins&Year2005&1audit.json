@@ -1,0 +1,51 @@
+{
+	"title": "V_alex*ins&year2005&1audit",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"sections_pass": 50
+					}
+				},
+				{
+					"GT": {
+						"sections_year": 2005
+					}
+				},
+				{
+					"IS": {
+						"sections_instructor": "*alex*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_id",
+				"sections_year",
+				"sections_instructor",
+				"sections_pass"
+			],
+			"ORDER": "sections_year"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_dept": "phys",
+			"sections_id": "404",
+			"sections_year": 2007,
+			"sections_instructor": "mackay, alexander",
+			"sections_pass": 50
+		},
+		{
+			"sections_dept": "anth",
+			"sections_id": "312",
+			"sections_year": 2011,
+			"sections_instructor": "bloch, alexia",
+			"sections_pass": 50
+		}
+	]
+}

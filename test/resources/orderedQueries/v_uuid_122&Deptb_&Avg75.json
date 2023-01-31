@@ -1,0 +1,78 @@
+{
+	"title": "V_uuid*122&deptb*&avg75",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"sections_uuid": "*122"
+					}
+				},
+				{
+					"IS": {
+						"sections_dept": "b*"
+					}
+				},
+				{
+					"GT": {
+						"sections_avg": 75
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_id",
+				"sections_avg",
+				"sections_uuid"
+			],
+			"ORDER": "sections_uuid"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_dept": "biol",
+			"sections_id": "325",
+			"sections_avg": 80.57,
+			"sections_uuid": "18122"
+		},
+		{
+			"sections_dept": "bafi",
+			"sections_id": "513",
+			"sections_avg": 83.92,
+			"sections_uuid": "32122"
+		},
+		{
+			"sections_dept": "biol",
+			"sections_id": "331",
+			"sections_avg": 84.65,
+			"sections_uuid": "55122"
+		},
+		{
+			"sections_dept": "bafi",
+			"sections_id": "516",
+			"sections_avg": 85.9,
+			"sections_uuid": "60122"
+		},
+		{
+			"sections_dept": "basc",
+			"sections_id": "550",
+			"sections_avg": 78.84,
+			"sections_uuid": "66122"
+		},
+		{
+			"sections_dept": "biol",
+			"sections_id": "331",
+			"sections_avg": 77.33,
+			"sections_uuid": "72122"
+		},
+		{
+			"sections_dept": "biol",
+			"sections_id": "450",
+			"sections_avg": 84.1,
+			"sections_uuid": "89122"
+		}
+	]
+}
