@@ -235,17 +235,49 @@ describe("InsightFacade", function () {
 		type PQErrorKind = "ResultTooLargeError" | "InsightError";
 
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
-			"Dynamic InsightFacade PerformQuery tests",
+			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
 			"./test/resources/queries",
 			{
-				assertOnResult: (actual, expected) => {
-					// TODO add an assertion!
+				assertOnResult: (actual, expected: any) => {
+					expect(actual).to.have.have.deep.members(expected);
+					expect(actual).to.have.length(expected.length);
 				},
 				errorValidator: (error): error is PQErrorKind =>
 					error === "ResultTooLargeError" || error === "InsightError",
 				assertOnError: (actual, expected) => {
-					// TODO add an assertion!
+					if (expected === "ResultTooLargeError") {
+						expect(actual).to.be.an.instanceOf(ResultTooLargeError);
+					} else if (expected === "InsightError"){
+						expect(actual).to.be.an.instanceOf(InsightError);
+					} else{
+						// It shouldn't come here anyway
+						expect.fail("UNEXPECTED ERROR");
+					}
+				},
+			}
+		);
+
+		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
+			"Dynamic InsightFacade PerformQuery tests (ordered queries involved)",
+			(input) => facade.performQuery(input),
+			"./test/resources/orderedQueries",
+			{
+				assertOnResult: (actual, expected: any) => {
+					expect(actual).to.have.deep.ordered.members(expected);
+					expect(actual).to.deep.equal(expected);
+				},
+				errorValidator: (error): error is PQErrorKind =>
+					error === "ResultTooLargeError" || error === "InsightError",
+				assertOnError: (actual, expected) => {
+					if (expected === "ResultTooLargeError") {
+						expect(actual).to.be.an.instanceOf(ResultTooLargeError);
+					} else if (expected === "InsightError"){
+						expect(actual).to.be.an.instanceOf(InsightError);
+					} else{
+						// It shouldn't come here anyway
+						expect.fail("UNEXPECTED ERROR");
+					}
 				},
 			}
 		);

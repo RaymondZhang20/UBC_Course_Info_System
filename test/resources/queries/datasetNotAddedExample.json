@@ -1,0 +1,17 @@
+{
+	"title": "datasetNotAddedExample",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"ubc_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"ubc_avg"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

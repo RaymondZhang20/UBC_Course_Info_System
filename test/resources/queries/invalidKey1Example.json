@@ -1,0 +1,24 @@
+{
+	"title": "InvalidKey1Example",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"sect_ions_uuid": "*122"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_id",
+				"sections_uuid"
+			],
+			"ORDER": "sections_id"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

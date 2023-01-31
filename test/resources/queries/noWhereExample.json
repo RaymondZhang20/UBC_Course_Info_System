@@ -1,0 +1,17 @@
+{
+	"title": "NoWhereExample",
+	"input": {
+		"WHITE": {
+			"GT": {
+				"sections_avg": 96
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_avg"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}
