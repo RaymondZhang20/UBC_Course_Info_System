@@ -4,7 +4,7 @@ import {
 	InsightError,
 	InsightResult,
 	ResultTooLargeError,
-	NotFoundError
+	NotFoundError,
 } from "../../src/controller/IInsightFacade";
 import InsightFacade from "../../src/controller/InsightFacade";
 
@@ -62,11 +62,13 @@ describe("InsightFacade", function () {
 			// Validation
 			expect(result).to.be.an.instanceof(Array);
 			expect(result).to.have.length(1);
-			expect(result).to.deep.equal([{
-				id: "1course",
-				kind: InsightDatasetKind.Sections,
-				numRows: 64612,
-			}]);
+			expect(result).to.deep.equal([
+				{
+					id: "1course",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+			]);
 		});
 		it("adds 3 datasets", async function () {
 			// Setup
@@ -95,7 +97,7 @@ describe("InsightFacade", function () {
 					id: "third-courses",
 					kind: InsightDatasetKind.Sections,
 					numRows: 64612,
-				}
+				},
 			]);
 		});
 		it("error adding a dataset with repeated id", async function () {
@@ -108,22 +110,26 @@ describe("InsightFacade", function () {
 			// Validation
 			expect(result).to.be.an.instanceof(Array);
 			expect(result).to.have.length(1);
-			expect(result).to.deep.equal([{
-				id: "1course",
-				kind: InsightDatasetKind.Sections,
-				numRows: 64612,
-			}]);
+			expect(result).to.deep.equal([
+				{
+					id: "1course",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+			]);
 
-			expect(facade.addDataset("1course", sections, InsightDatasetKind.Sections))
-				.eventually.to.be.rejectedWith(InsightError);
+			expect(facade.addDataset("1course", sections, InsightDatasetKind.Sections)).eventually.to.be.rejectedWith(
+				InsightError
+			);
 		});
-		it ("should reject with  an empty dataset id", function() {
+		it("should reject with  an empty dataset id", function () {
 			const result = facade.addDataset("", sections, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 		it("error adding a dataset id containing underscore", async function () {
-			return expect(facade.addDataset("course_smth", sections, InsightDatasetKind.Sections))
-				.eventually.to.be.rejectedWith(InsightError);
+			return expect(
+				facade.addDataset("course_smth", sections, InsightDatasetKind.Sections)
+			).eventually.to.be.rejectedWith(InsightError);
 		});
 		it("remove 1 dataset at a time from 2", async function () {
 			// Setup
@@ -136,16 +142,18 @@ describe("InsightFacade", function () {
 			// Validation
 			expect(result).to.be.an.instanceof(Array);
 			expect(result).to.have.length(2);
-			expect(result).to.have.deep.members([{
-				id: "first-courses",
-				kind: InsightDatasetKind.Sections,
-				numRows: 64612,
-			},
-			{
-				id: "second-courses",
-				kind: InsightDatasetKind.Sections,
-				numRows: 64612,
-			}]);
+			expect(result).to.have.deep.members([
+				{
+					id: "first-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+				{
+					id: "second-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+			]);
 
 			// Setup
 			await facade.removeDataset("first-courses");
@@ -156,12 +164,13 @@ describe("InsightFacade", function () {
 			// Validation
 			expect(result1).to.be.an.instanceof(Array);
 			expect(result1).to.length(1);
-			expect(result1).to.deep.equal([{
-				id: "second-courses",
-				kind: InsightDatasetKind.Sections,
-				numRows: 64612,
-			}]
-			);
+			expect(result1).to.deep.equal([
+				{
+					id: "second-courses",
+					kind: InsightDatasetKind.Sections,
+					numRows: 64612,
+				},
+			]);
 			// Setup
 			await facade.removeDataset("second-courses");
 
@@ -187,15 +196,13 @@ describe("InsightFacade", function () {
 			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
 
 			// Error
-			return expect(facade.removeDataset(""))
-				.eventually.to.be.rejectedWith(InsightError);
+			return expect(facade.removeDataset("")).eventually.to.be.rejectedWith(InsightError);
 		});
 		it("error removing a dataset with underscore", async function () {
 			// Setup
 			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
 			// Error
-			return expect(facade.removeDataset("courses_smth"))
-				.eventually.to.be.rejectedWith(InsightError);
+			return expect(facade.removeDataset("courses_smth")).eventually.to.be.rejectedWith(InsightError);
 		});
 		it("should list 0 datasets", async function () {
 			// Setup+Execution
@@ -220,9 +227,7 @@ describe("InsightFacade", function () {
 
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [
-				facade.addDataset("sections", sections, InsightDatasetKind.Sections),
-			];
+			const loadDatasetPromises = [facade.addDataset("sections", sections, InsightDatasetKind.Sections)];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -248,9 +253,9 @@ describe("InsightFacade", function () {
 				assertOnError: (actual, expected) => {
 					if (expected === "ResultTooLargeError") {
 						expect(actual).to.be.an.instanceOf(ResultTooLargeError);
-					} else if (expected === "InsightError"){
+					} else if (expected === "InsightError") {
 						expect(actual).to.be.an.instanceOf(InsightError);
-					} else{
+					} else {
 						// It shouldn't come here anyway
 						expect.fail("UNEXPECTED ERROR");
 					}
@@ -272,9 +277,9 @@ describe("InsightFacade", function () {
 				assertOnError: (actual, expected) => {
 					if (expected === "ResultTooLargeError") {
 						expect(actual).to.be.an.instanceOf(ResultTooLargeError);
-					} else if (expected === "InsightError"){
+					} else if (expected === "InsightError") {
 						expect(actual).to.be.an.instanceOf(InsightError);
-					} else{
+					} else {
 						// It shouldn't come here anyway
 						expect.fail("UNEXPECTED ERROR");
 					}
