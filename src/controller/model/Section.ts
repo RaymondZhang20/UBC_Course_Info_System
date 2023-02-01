@@ -4,11 +4,11 @@ export default class Section {
 	private title: string;
 	private instructor: string;
 	private dept: string;
-	private year: string;
-	private avg: string;
-	private pass: string;
-	private fail: string;
-	private audit: string;
+	private year: number;
+	private avg: number;
+	private pass: number;
+	private fail: number;
+	private audit: number;
 
 	constructor(
 		uuid: string,
@@ -16,11 +16,11 @@ export default class Section {
 		title: string,
 		instructor: string,
 		dept: string,
-		year: string,
-		avg: string,
-		pass: string,
-		fail: string,
-		audit: string
+		year: number,
+		avg: number,
+		pass: number,
+		fail: number,
+		audit: number
 	) {
 		this.uuid = uuid;
 		this.id = id;
