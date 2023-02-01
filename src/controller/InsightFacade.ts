@@ -1,4 +1,11 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
+import {
+	IInsightFacade,
+	InsightDataset,
+	InsightDatasetKind,
+	InsightError,
+	InsightResult,
+	NotFoundError
+} from "./IInsightFacade";
 import DataBase from "./model/DataBase";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
@@ -58,21 +65,30 @@ export default class InsightFacade implements IInsightFacade {
 		}
 	}
 
+	public listDatasets(): Promise<InsightDataset[]> {
+		const res: InsightDataset[] = [];
+		this.dataBases.forEach(function (database) {
+			res.push({
+				id: database.getId(),
+				kind: InsightDatasetKind.Sections,
+				numRows: database.getList().length
+			});
+		});
+		return Promise.resolve(res);
+	}
+
 	public removeDataset(id: string): Promise<string> {
-		return Promise.reject("Not implemented.");
+		for (let i = 0; i < this.dataBases.length; i++) {
+			if (this.dataBases[i].getId() === id) {
+				this.dataBases.splice(i,1);
+				return Promise.resolve(id);
+			}
+		}
+		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		return Promise.reject("Not implemented.");
-	}
-
-	public listDatasets(): Promise<InsightDataset[]> {
-		const l = this.listIDs();
-		const res: InsightDataset[] = [];
-		this.dataBases.forEach(function (database) {
-			// res.push(database.getId());
-		});
-		return Promise.all(res);
 	}
 
 	private listIDs(): string[] {
