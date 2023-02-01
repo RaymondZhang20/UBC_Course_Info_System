@@ -30,20 +30,22 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("id of the database is already existed"));
 		} else {
 			if (kind === InsightDatasetKind.Sections) {
+				const sections: Section[] = [];
 				return this.parse(content)
 					.then((infoArray) => {
 						infoArray.forEach(function (s) {
-							const info: object[] = JSON.parse(s).result;
+							const info: any[] = JSON.parse(s).result;
 							if (info.length > 0) {
 								info.forEach(function (section) {
-									section.toString();
-									// new Section(section.id, section.Course, section.Title, section.Professor
-									// 	, section.Subject, section.Year, section.Avg, section.Pass
-									// 	, section.Fail, section.Audit);
+									sections.push(new Section(section.id, section.Course, section.Title
+										, section.Professor
+										, section.Subject, section.Year, section.Avg, section.Pass
+										, section.Fail, section.Audit));
 								});
 							}
 						});
-						return Promise.reject(new InsightError("not implemented"));
+						this.dataBases.push(new DataBase(id, sections));
+						return this.listIDs();
 					})
 					.catch((err) => {
 						return Promise.reject(new InsightError("error occurred in adding stage"));
@@ -65,7 +67,20 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {
-		return Promise.reject("Not implemented.");
+		const l = this.listIDs();
+		const res: InsightDataset[] = [];
+		this.dataBases.forEach(function (database) {
+			// res.push(database.getId());
+		});
+		return Promise.all(res);
+	}
+
+	private listIDs(): string[] {
+		const res: string[] = [];
+		this.dataBases.forEach(function (da) {
+			res.push(da.getId());
+		});
+		return res;
 	}
 
 	private containUnderscore(id: string) {

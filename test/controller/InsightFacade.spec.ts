@@ -52,6 +52,18 @@ describe("InsightFacade", function () {
 			clearDisk();
 		});
 		// This is a unit test. You should create more like this!
+		it("should add multiple dataset", function () {
+			return facade.addDataset("course1", sections, InsightDatasetKind.Sections)
+				.then(() => {
+					return facade.addDataset("course2", sections, InsightDatasetKind.Sections);
+				})
+				.then((ids) => {
+					expect(ids).to.have.length(2);
+					const expectedIds = ["course2","course1"];
+					// expectedIds.forEach(e => expect(ids).to.include(e));
+					expect(ids).to.have.deep.members(expectedIds);
+				});
+		});
 		it("add 1 dataset", async function () {
 			// Setup
 			await facade.addDataset("1course", sections, InsightDatasetKind.Sections);
