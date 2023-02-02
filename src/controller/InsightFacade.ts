@@ -99,10 +99,6 @@ export default class InsightFacade implements IInsightFacade {
 		return res;
 	}
 
-	private containUnderscore(id: string) {
-		return id.includes("_");
-	}
-
 	private onlySpace(id: string) {
 		for (const char of id) {
 			if (char !== " ") {
@@ -132,28 +128,5 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
 		return Promise.all(coursesArray);
-		// return new JSZip().loadAsync(content, {base64: true}).then((jsZip) => {
-		// 	jsZip.folder("courses/")?.forEach((path, file) => {
-		// 		info.push(file.async("string"));
-		// 	});
-		// 	return Promise.all(info);
-		// }).catch((err) => {
-		// 	return Promise.reject(new InsightError("error occurred in parsing stage"));
-		// });
 	}
-
-	// private parse(content: string): Promise<string[]> {
-	// 	const dataset: any[] = [];
-	// 	return new JSZip().loadAsync(content, {base64: true}).then((jsZip) => {
-	// 		jsZip.folder("courses/")?.forEach((path, file) => {
-	// 			file.async("string").then((s) => {
-	// 				dataset.push(s);
-	// 			});
-	// 		});
-	// 	}).then(() => {
-	// 		return Promise.all(dataset);
-	// 	}).catch((err) => {
-	// 		return Promise.reject(new InsightError("error occurred in parsing stage"));
-	// 	});
-	// }
 }
