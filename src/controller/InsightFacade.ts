@@ -129,19 +129,4 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		return Promise.all(coursesArray);
 	}
-
-	// private parse(content: string): Promise<string[]> {
-	// 	const dataset: any[] = [];
-	// 	return new JSZip().loadAsync(content, {base64: true}).then((jsZip) => {
-	// 		jsZip.folder("courses/")?.forEach((path, file) => {
-	// 			file.async("string").then((s) => {
-	// 				dataset.push(s);
-	// 			});
-	// 		});
-	// 	}).then(() => {
-	// 		return Promise.all(dataset);
-	// 	}).catch((err) => {
-	// 		return Promise.reject(new InsightError("error occurred in parsing stage"));
-	// 	});
-	// }
 }
