@@ -18,6 +18,7 @@ import Section from "./model/Section";
  */
 export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
+
 	constructor() {
 		fs.exists("./DataBases.json", (exist) => {
 			if (exist) {
@@ -80,7 +81,7 @@ export default class InsightFacade implements IInsightFacade {
 	public removeDataset(id: string): Promise<string> {
 		for (let i = 0; i < this.dataBases.length; i++) {
 			if (this.dataBases[i].getId() === id) {
-				this.dataBases.splice(i,1);
+				this.dataBases.splice(i, 1);
 				return Promise.resolve(id);
 			}
 		}
@@ -88,6 +89,14 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
+		if (!query){
+			return Promise.reject(new InsightError("Query is undefined/null/empty"));
+		// }(typeof query === "undefined") {
+		// 	return Promise.reject(new InsightError("Query is undefined"));
+		}else if (fs.existsSync("./DataBases.json")) {
+			return Promise.reject(new InsightError("No loaded datasets"));
+		}
+		this.queryProcessor(query);
 		return Promise.reject("Not implemented.");
 	}
 
@@ -140,6 +149,64 @@ export default class InsightFacade implements IInsightFacade {
 		// }).catch((err) => {
 		// 	return Promise.reject(new InsightError("error occurred in parsing stage"));
 		// });
+	}
+
+	private queryProcessor(query: any){
+		if (query.includes("WHERE") && query.includes("OPTIONS")) {
+			const whereBody = query["WHERE"];
+			const optionsBody =  query["OPTIONS"];
+			if (whereBody) {
+				this.handleWhere(whereBody);
+			} else{
+				return Promise.reject(new InsightError("Null WHERE"));
+			}
+			if (optionsBody){
+				this.handleOptions(optionsBody);
+			}else{
+				return Promise.reject(new InsightError("null OPTIONS"));
+			}
+		}else{
+			return Promise.reject(new InsightError ("Invalid query missing WHERE/OPTIONS"));
+		}
+	}
+
+	private handleWhere(whereBody: any){
+		const comparator = whereBody[0];
+		if (comparator === "IS"){
+			return Promise.reject("Not implemented.");
+		}
+		if (comparator === "NOT"){
+			return Promise.reject("Not implemented.");
+		}
+		if (comparator === "AND"){
+			return Promise.reject("Not implemented.");
+		}
+		if (comparator === "OR"){
+			return Promise.reject("Not implemented.");
+		}
+		if (comparator === "EQ" || comparator ===  "GT" || comparator === "LT"){
+			if (comparator === "EQ") {
+				return this.helperEQ(whereBody);
+			} else if (comparator === "GT") {
+				return this.helperGT(whereBody);
+			}else if (comparator === "LT") {
+				return this.helperLT(whereBody);
+			}
+		}
+
+	}
+
+	private helperEQ(whereBody: any){
+		return Promise.reject("Not implemented.");
+	}
+	private helperGT(whereBody: any){
+		return Promise.reject("Not implemented.");
+	}
+	private helperLT(whereBody: any){
+		return Promise.reject("Not implemented.");
+	}
+	private handleOptions(optionsBody: any){
+		return Promise.reject("Not implemented.");
 	}
 
 	// private parse(content: string): Promise<string[]> {
