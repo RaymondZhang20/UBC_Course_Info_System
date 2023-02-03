@@ -194,13 +194,13 @@ export default class InsightFacade implements IInsightFacade {
 	}
 	private isComparator(comparator: any, whereBody: any) {
 		const isBody = whereBody["IS"];
-		const dataset = this.dataBases[];
+		// const dataset = this.dataBases[];
 		const result = [];
 
 	}
 
 	private notComparator(comparator: any, whereBody: any) {
-		const notBody = whereBody
+		const notBody = whereBody["NOT"];
 		// return Promise.reject("Not implemented.");
 	}
 
