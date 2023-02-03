@@ -79,10 +79,16 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		for (let i = 0; i < this.dataBases.length; i++) {
-			if (this.dataBases[i].getId() === id) {
-				this.dataBases.splice(i, 1);
-				return Promise.resolve(id);
+		if (id.includes("_")) {
+			return Promise.reject(new InsightError("id of the database should not contain underscore"));
+		} else if (this.onlySpace(id)) {
+			return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
+		} else {
+			for (let i = 0; i < this.dataBases.length; i++) {
+				if (this.dataBases[i].getId() === id) {
+					this.dataBases.splice(i, 1);
+					return Promise.resolve(id);
+				}
 			}
 		}
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
@@ -173,41 +179,38 @@ export default class InsightFacade implements IInsightFacade {
 	private handleWhere(whereBody: any){
 		const comparator = whereBody[0];
 		if (comparator === "IS"){
-			return Promise.reject("Not implemented.");
+			return this.isComparator("IS", whereBody);
 		}
 		if (comparator === "NOT"){
-			return Promise.reject("Not implemented.");
+			return this.notComparator("NOT", whereBody);
 		}
-		if (comparator === "AND"){
-			return Promise.reject("Not implemented.");
-		}
-		if (comparator === "OR"){
-			return Promise.reject("Not implemented.");
+		if (comparator === "AND" || comparator === "OR"){
+			return this.logicComparator(comparator, whereBody);
 		}
 		if (comparator === "EQ" || comparator ===  "GT" || comparator === "LT"){
-			if (comparator === "EQ") {
-				return this.helperEQ(whereBody);
-			} else if (comparator === "GT") {
-				return this.helperGT(whereBody);
-			}else if (comparator === "LT") {
-				return this.helperLT(whereBody);
-			}
+			return this.mComparator(comparator,whereBody);
 		}
 
 	}
+	private isComparator(comparator: any, whereBody: any) {
+		const isBody = whereBody["IS"];
+		const dataset = this.dataBases[];
+		const result = [];
 
-	private helperEQ(whereBody: any){
+	}
+
+	private notComparator(comparator: any, whereBody: any) {
+		const notBody = whereBody
+		// return Promise.reject("Not implemented.");
+	}
+
+	private logicComparator(comparator: any, whereBody: any) {
+		return undefined;
+	}
+	private mComparator(comparator: any, whereBody: any){
 		return Promise.reject("Not implemented.");
 	}
-	private helperGT(whereBody: any){
-		return Promise.reject("Not implemented.");
-	}
-	private helperLT(whereBody: any){
-		return Promise.reject("Not implemented.");
-	}
-	private handleOptions(optionsBody: any){
-		return Promise.reject("Not implemented.");
-	}
+
 
 	// private parse(content: string): Promise<string[]> {
 	// 	const dataset: any[] = [];
@@ -223,4 +226,8 @@ export default class InsightFacade implements IInsightFacade {
 	// 		return Promise.reject(new InsightError("error occurred in parsing stage"));
 	// 	});
 	// }
+
+	private handleOptions(optionsBody: any) {
+		return Promise.reject("Not implemented.");
+	}
 }
