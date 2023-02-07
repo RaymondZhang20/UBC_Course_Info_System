@@ -20,10 +20,15 @@ export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
 
 	constructor() {
-		fs.exists("./DataBases.json", (exist) => {
+		fs.exists("./jsonFiles", (exist) => {
 			if (exist) {
-				fs.readFile("./DataBases.json").then((buffer) => {
+				fs.readFile("./jsonFiles/databases.json").then((buffer) => {
 					this.dataBases = JSON.parse(buffer.toString());
+					return;
+				});
+			} else {
+				fs.createFile("./jsonFiles/databases.json").then((res) => {
+					return;
 				});
 			}
 		});
@@ -53,6 +58,7 @@ export default class InsightFacade implements IInsightFacade {
 							}
 						});
 						this.dataBases.push(new DataBase(id, sections));
+						this.writeDataBasesInLocalDisk(this.dataBases);
 						return this.listIDs();
 					})
 					.catch((err) => {
@@ -87,7 +93,8 @@ export default class InsightFacade implements IInsightFacade {
 			for (let i = 0; i < this.dataBases.length; i++) {
 				if (this.dataBases[i].getId() === id) {
 					this.dataBases.splice(i, 1);
-					return Promise.resolve(id);
+
+					this.writeDataBasesInLocalDisk(this.dataBases);
 				}
 			}
 		}
@@ -99,8 +106,8 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		// }(typeof query === "undefined") {
 		// 	return Promise.reject(new InsightError("Query is undefined"));
-		}else if (fs.existsSync("./DataBases.json")) {
-			return Promise.reject(new InsightError("No loaded datasets"));
+		}else if (this.dataBases.length === 0) {
+			return Promise.reject(new InsightError("No datasets in the facade"));
 		}
 		this.queryProcessor(query);
 		return Promise.reject("Not implemented.");
@@ -112,10 +119,6 @@ export default class InsightFacade implements IInsightFacade {
 			res.push(da.getId());
 		});
 		return res;
-	}
-
-	private containUnderscore(id: string) {
-		return id.includes("_");
 	}
 
 	private onlySpace(id: string) {
@@ -147,17 +150,9 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
 		return Promise.all(coursesArray);
-		// return new JSZip().loadAsync(content, {base64: true}).then((jsZip) => {
-		// 	jsZip.folder("courses/")?.forEach((path, file) => {
-		// 		info.push(file.async("string"));
-		// 	});
-		// 	return Promise.all(info);
-		// }).catch((err) => {
-		// 	return Promise.reject(new InsightError("error occurred in parsing stage"));
-		// });
 	}
 
-	private queryProcessor(query: any){
+	private queryProcessor(query: any) {
 		if (query.includes("WHERE") && query.includes("OPTIONS")) {
 			const whereBody = query["WHERE"];
 			const optionsBody =  query["OPTIONS"];
@@ -176,7 +171,7 @@ export default class InsightFacade implements IInsightFacade {
 		}
 	}
 
-	private handleWhere(whereBody: any){
+	private handleWhere(whereBody: any) {
 		const comparator = whereBody[0];
 		if (comparator === "IS"){
 			return this.isComparator("IS", whereBody);
@@ -206,28 +201,18 @@ export default class InsightFacade implements IInsightFacade {
 
 	private logicComparator(comparator: any, whereBody: any) {
 		return undefined;
+
 	}
 	private mComparator(comparator: any, whereBody: any){
 		return Promise.reject("Not implemented.");
 	}
 
-
-	// private parse(content: string): Promise<string[]> {
-	// 	const dataset: any[] = [];
-	// 	return new JSZip().loadAsync(content, {base64: true}).then((jsZip) => {
-	// 		jsZip.folder("courses/")?.forEach((path, file) => {
-	// 			file.async("string").then((s) => {
-	// 				dataset.push(s);
-	// 			});
-	// 		});
-	// 	}).then(() => {
-	// 		return Promise.all(dataset);
-	// 	}).catch((err) => {
-	// 		return Promise.reject(new InsightError("error occurred in parsing stage"));
-	// 	});
-	// }
-
 	private handleOptions(optionsBody: any) {
 		return Promise.reject("Not implemented.");
+	}
+
+	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
+		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
+
 	}
 }
