@@ -18,11 +18,17 @@ import Section from "./model/Section";
  */
 export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
+
 	constructor() {
-		fs.exists("./DataBases.json", (exist) => {
+		fs.exists("./jsonFiles", (exist) => {
 			if (exist) {
-				fs.readFile("./DataBases.json").then((buffer) => {
+				fs.readFile("./jsonFiles/databases.json").then((buffer) => {
 					this.dataBases = JSON.parse(buffer.toString());
+					return;
+				});
+			} else {
+				fs.createFile("./jsonFiles/databases.json").then((res) => {
+					return;
 				});
 			}
 		});
@@ -52,6 +58,7 @@ export default class InsightFacade implements IInsightFacade {
 							}
 						});
 						this.dataBases.push(new DataBase(id, sections));
+						this.writeDataBasesInLocalDisk(this.dataBases);
 						return this.listIDs();
 					})
 					.catch((err) => {
@@ -78,16 +85,31 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		for (let i = 0; i < this.dataBases.length; i++) {
-			if (this.dataBases[i].getId() === id) {
-				this.dataBases.splice(i,1);
-				return Promise.resolve(id);
+		if (id.includes("_")) {
+			return Promise.reject(new InsightError("id of the database should not contain underscore"));
+		} else if (this.onlySpace(id)) {
+			return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
+		} else {
+			for (let i = 0; i < this.dataBases.length; i++) {
+				if (this.dataBases[i].getId() === id) {
+					this.dataBases.splice(i, 1);
+					this.writeDataBasesInLocalDisk(this.dataBases);
+					return Promise.resolve(id);
+				}
 			}
 		}
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
+		if (!query){
+			return Promise.reject(new InsightError("Query is undefined/null/empty"));
+		// }(typeof query === "undefined") {
+		// 	return Promise.reject(new InsightError("Query is undefined"));
+		}else if (this.dataBases.length === 0) {
+			return Promise.reject(new InsightError("No datasets in the facade"));
+		}
+		this.queryProcessor(query);
 		return Promise.reject("Not implemented.");
 	}
 
@@ -128,5 +150,67 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
 		return Promise.all(coursesArray);
+	}
+
+	private queryProcessor(query: any) {
+		if (query.includes("WHERE") && query.includes("OPTIONS")) {
+			const whereBody = query["WHERE"];
+			const optionsBody =  query["OPTIONS"];
+			if (whereBody) {
+				this.handleWhere(whereBody);
+			} else{
+				return Promise.reject(new InsightError("Null WHERE"));
+			}
+			if (optionsBody){
+				this.handleOptions(optionsBody);
+			}else{
+				return Promise.reject(new InsightError("null OPTIONS"));
+			}
+		}else{
+			return Promise.reject(new InsightError ("Invalid query missing WHERE/OPTIONS"));
+		}
+	}
+
+	private handleWhere(whereBody: any) {
+		const comparator = whereBody[0];
+		if (comparator === "IS"){
+			return this.isComparator("IS", whereBody);
+		}
+		if (comparator === "NOT"){
+			return this.notComparator("NOT", whereBody);
+		}
+		if (comparator === "AND" || comparator === "OR"){
+			return this.logicComparator(comparator, whereBody);
+		}
+		if (comparator === "EQ" || comparator ===  "GT" || comparator === "LT"){
+			return this.mComparator(comparator,whereBody);
+		}
+
+	}
+	private isComparator(comparator: any, whereBody: any) {
+		const isBody = whereBody["IS"];
+		// const dataset = this.dataBases[];
+		const result = [];
+
+	}
+
+	private notComparator(comparator: any, whereBody: any) {
+		const notBody = whereBody["NOT"];
+		// return Promise.reject("Not implemented.");
+	}
+
+	private logicComparator(comparator: any, whereBody: any) {
+		return undefined;
+	}
+	private mComparator(comparator: any, whereBody: any){
+		return Promise.reject("Not implemented.");
+	}
+
+	private handleOptions(optionsBody: any) {
+		return Promise.reject("Not implemented.");
+	}
+
+	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
+		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
 	}
 }

@@ -16,6 +16,7 @@ import {clearDisk, getContentFromArchives} from "../TestUtil";
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
+	this.timeout(5000);
 	let facade: IInsightFacade;
 
 	// Declare datasets used in tests. You should add more datasets like this!
