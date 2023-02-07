@@ -93,8 +93,8 @@ export default class InsightFacade implements IInsightFacade {
 			for (let i = 0; i < this.dataBases.length; i++) {
 				if (this.dataBases[i].getId() === id) {
 					this.dataBases.splice(i, 1);
+
 					this.writeDataBasesInLocalDisk(this.dataBases);
-					return Promise.resolve(id);
 				}
 			}
 		}
@@ -201,6 +201,7 @@ export default class InsightFacade implements IInsightFacade {
 
 	private logicComparator(comparator: any, whereBody: any) {
 		return undefined;
+
 	}
 	private mComparator(comparator: any, whereBody: any){
 		return Promise.reject("Not implemented.");
@@ -212,5 +213,6 @@ export default class InsightFacade implements IInsightFacade {
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
 		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
+
 	}
 }
