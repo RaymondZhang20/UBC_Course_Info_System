@@ -104,12 +104,25 @@ export default class InsightFacade implements IInsightFacade {
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		if (!query){
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
-		// }(typeof query === "undefined") {
-		// 	return Promise.reject(new InsightError("Query is undefined"));
 		}else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
 		}
-		this.queryProcessor(query);
+		try {
+			const databaseID: string = this.findDatabaseID(query);
+			let database: any[] = [];
+			for (const data of this.dataBases) {
+				if (data.getId() === databaseID) {
+					database = data.getList();
+					break;
+				}
+			}
+			if (database.length === 0) {
+				throw new InsightError("Cannot find the dataset");
+			}
+			database = this.queryProcessor(query, databaseID, database);
+		} catch (e) {
+			return Promise.reject(e);
+		}
 		return Promise.reject("Not implemented.");
 	}
 
@@ -152,42 +165,45 @@ export default class InsightFacade implements IInsightFacade {
 		return Promise.all(coursesArray);
 	}
 
-	private queryProcessor(query: any) {
-		if (query.includes("WHERE") && query.includes("OPTIONS")) {
-			const whereBody = query["WHERE"];
-			const optionsBody =  query["OPTIONS"];
-			if (whereBody) {
-				this.handleWhere(whereBody);
-			} else{
-				return Promise.reject(new InsightError("Null WHERE"));
-			}
-			if (optionsBody){
-				this.handleOptions(optionsBody);
-			}else{
-				return Promise.reject(new InsightError("null OPTIONS"));
-			}
-		}else{
-			return Promise.reject(new InsightError ("Invalid query missing WHERE/OPTIONS"));
+	private queryProcessor(query: any, id: string, res: any[]) {
+		if (Object.keys(query).length !== 2) {
+			throw new InsightError("Invalid query");
 		}
+		for (const [key, value] of Object.entries(query)) {
+			if (key === "WHERE") {
+				res = this.handleWhere(value, id, res);
+			} else if (key === "OPTIONS") {
+				res = this.handleOptions(value, res);
+			} else {
+				throw new InsightError("Invalid query");
+			}
+		}
+		return res;
 	}
 
-	private handleWhere(whereBody: any) {
-		const comparator = whereBody[0];
-		if (comparator === "IS"){
-			return this.isComparator("IS", whereBody);
+	private handleWhere(whereBody: any, id: string, res: any[]) {
+		if (Object.keys(whereBody).length !== 1) {
+			throw new InsightError("Wrong keys in WHERE clause");
 		}
-		if (comparator === "NOT"){
-			return this.notComparator("NOT", whereBody);
+		for (const [key, value] of Object.entries(whereBody)) {
+			if (key === "IS") {
+				this.handleIS("IS", value);
+			}
+			if (key === "NOT") {
+				this.notComparator("NOT", value);
+			}
+			if (key === "AND" || key === "OR") {
+				this.logicComparator(key, value);
+			}
+			if (key === "EQ" || key === "GT" || key === "LT") {
+				this.handleMComparator(key, value, id, res);
+			} else {
+				throw new InsightError("Wrong keys in WHERE clause");
+			}
 		}
-		if (comparator === "AND" || comparator === "OR"){
-			return this.logicComparator(comparator, whereBody);
-		}
-		if (comparator === "EQ" || comparator ===  "GT" || comparator === "LT"){
-			return this.mComparator(comparator,whereBody);
-		}
-
+		return res;
 	}
-	private isComparator(comparator: any, whereBody: any) {
+	private handleIS(comparator: any, whereBody: any) {
 		const isBody = whereBody["IS"];
 		// const dataset = this.dataBases[];
 		const result = [];
@@ -202,15 +218,42 @@ export default class InsightFacade implements IInsightFacade {
 	private logicComparator(comparator: any, whereBody: any) {
 		return undefined;
 	}
-	private mComparator(comparator: any, whereBody: any){
-		return Promise.reject("Not implemented.");
+	private handleMComparator(comparator: string, content: any, id: string, res: any[]) {
+		const validFields: string[] = ["avg", "pass", "fail", "audit", "year"];
+		if (Object.keys(content).length !== 1) {
+			throw new InsightError("Wrong keys in math operator");
+		}
+		for (const [key, value] of Object.entries(content)) {
+			const keyContents: string[] = key.split("_", 2);
+			if (keyContents[0] !== id) {
+				throw new InsightError("Cannot query more than one dataset");
+			}
+			if (!validFields.includes(keyContents[1])) {
+				throw new InsightError("Invalid field");
+			}
+		}
 	}
 
-	private handleOptions(optionsBody: any) {
-		return Promise.reject("Not implemented.");
+	private handleOptions(optionsBody: any, res: any[]) {
+		return [];
 	}
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
 		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
+	}
+
+	private findDatabaseID(query: any) {
+		const columns: string[] = query["OPTIONS"]["COLUMNS"];
+		if (columns === undefined) {
+			throw new InsightError("Invalid query");
+		} else {
+			const id: string = columns[0].split("_", 1)[0];
+			for (const s of columns) {
+				if (id !== s.split("_", 1)[0]) {
+					throw new InsightError("Cannot query more than one dataset");
+				}
+			}
+			return id;
+		}
 	}
 }
