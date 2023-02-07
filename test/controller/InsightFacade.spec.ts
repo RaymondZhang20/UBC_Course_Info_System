@@ -12,6 +12,8 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
+import exp from "constants";
+import Section from "../../src/controller/model/Section";
 
 use(chaiAsPromised);
 
@@ -28,6 +30,35 @@ describe("InsightFacade", function () {
 
 		// Just in case there is anything hanging around from a previous run of the test suite
 		clearDisk();
+	});
+
+	describe("helper test", function () {
+
+		it("1", function () {
+			const query: any = {
+				WHERE:{
+					GT:{
+						sections_avg:97
+					}
+				},
+				OPTIONS:{
+					COLUMNS:[
+						"sections_dept",
+						"sections_avg"
+					],
+					ORDER:"sections_avg"
+				}
+			};
+			const w: string[] = query["WHERE"]["GT"];
+			const q: string[] = query["OPTIONS"]["COLUMNS"];
+			expect(q === undefined).to.be.false;
+			for (const s of q) {
+				expect(s.split("_", 1)[0]).to.deep.equal("sections");
+			}
+			expect(Object.keys(query).length).to.deep.equal(2);
+			// let iw: Section[];
+			// expect(typeof iw === "undefined").to.be.true;
+		});
 	});
 
 	describe("Add/Remove/List Dataset", function () {
