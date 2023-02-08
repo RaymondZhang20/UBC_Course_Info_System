@@ -6,10 +6,10 @@ import {
 	InsightResult,
 	NotFoundError
 } from "./IInsightFacade";
-import DataBase from "./model/DataBase";
+import DataBase from "../controller/model/DataBase";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
-import Section from "./model/Section";
+import Section from "../controller/model/Section";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -20,18 +20,11 @@ export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
 
 	constructor() {
-		fs.exists("./jsonFiles", (exist) => {
-			if (exist) {
-				fs.readFile("./jsonFiles/databases.json").then((buffer) => {
-					this.dataBases = JSON.parse(buffer.toString());
-					return;
-				});
-			} else {
-				fs.createFile("./jsonFiles/databases.json").then((res) => {
-					return;
-				});
-			}
-		});
+		if (fs.existsSync("./jsonFiles/databases.json")) {
+			this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
+		} else {
+			fs.createFile("./jsonFiles/databases.json");
+		}
 	}
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
@@ -85,23 +78,23 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		if (id.includes("_")) {
-			return Promise.reject(new InsightError("id of the database should not contain underscore"));
-		} else if (this.onlySpace(id)) {
-			return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
-		} else {
-			for (let i = 0; i < this.dataBases.length; i++) {
-				if (this.dataBases[i].getId() === id) {
-					this.dataBases.splice(i, 1);
-
-					this.writeDataBasesInLocalDisk(this.dataBases);
-				}
+		// if (id.includes("_")) {
+		// 	return Promise.reject(new InsightError("id of the database should not contain underscore"));
+		// } else if (this.onlySpace(id)) {
+		// 	return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
+		// } else {
+		for (let i = 0; i < this.dataBases.length; i++) {
+			if (this.dataBases[i].getId() === id) {
+				this.dataBases.splice(i, 1);
+				this.writeDataBasesInLocalDisk(this.dataBases);
 			}
 		}
+		// }
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
+		let database: any[] = [];
 		if (!query){
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		}else if (this.dataBases.length === 0) {
@@ -109,10 +102,14 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
-			let database: any[] = [];
+			// this.dataBases.forEach((data) => {
+			// 	if (data.getId() === databaseID) {
+			// 		database = data.getList();
+			// 	}
+			// });
 			for (const data of this.dataBases) {
-				if (data.getId() === databaseID) {
-					database = data.getList();
+				if (data._id === databaseID) {
+					database = data._list;
 					break;
 				}
 			}
@@ -123,7 +120,7 @@ export default class InsightFacade implements IInsightFacade {
 		} catch (e) {
 			return Promise.reject(e);
 		}
-		return Promise.reject("Not implemented.");
+		return Promise.resolve(database);
 	}
 
 	private listIDs(): string[] {
@@ -145,7 +142,7 @@ export default class InsightFacade implements IInsightFacade {
 
 	private idDuplicate(id: string) {
 		for (const dataBase of this.dataBases) {
-			if (dataBase.getId() === id) {
+			if (dataBase._id === id) {
 				return true;
 			}
 		}
@@ -196,7 +193,7 @@ export default class InsightFacade implements IInsightFacade {
 				this.logicComparator(key, value);
 			}
 			if (key === "EQ" || key === "GT" || key === "LT") {
-				this.handleMComparator(key, value, id, res);
+				res = this.handleMComparator(key, value, id, res);
 			} else {
 				throw new InsightError("Wrong keys in WHERE clause");
 			}
@@ -232,11 +229,23 @@ export default class InsightFacade implements IInsightFacade {
 			if (!validFields.includes(keyContents[1])) {
 				throw new InsightError("Invalid field");
 			}
+			switch (comparator) {
+				case "EQ":
+					return res.filter((data) => data[keyContents[1]] === Number(value));
+					break;
+				case "GT":
+					return res.filter((data) => data[keyContents[1]] > Number(value));
+					break;
+				case "LT":
+					return res.filter((data) => data[keyContents[1]] < Number(value));
+					break;
+			}
 		}
+		throw new InsightError("Should not reject");
 	}
 
 	private handleOptions(optionsBody: any, res: any[]) {
-		return [];
+		return res;
 	}
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {

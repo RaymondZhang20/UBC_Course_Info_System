@@ -59,6 +59,28 @@ describe("InsightFacade", function () {
 			// let iw: Section[];
 			// expect(typeof iw === "undefined").to.be.true;
 		});
+
+		it("2", function () {
+			const query: any = {
+				WHERE:{
+					EQ:{
+						sections_avg:97
+					}
+				},
+				OPTIONS:{
+					COLUMNS:[
+						"sections_dept",
+						"sections_avg"
+					],
+					ORDER:"sections_avg"
+				}
+			};
+			facade = new InsightFacade();
+			return facade.performQuery(query).then((dataset) => {
+				expect(dataset).to.have.length(3);
+				console.log(dataset);
+			});
+		});
 	});
 
 	describe("Add/Remove/List Dataset", function () {
@@ -286,7 +308,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/queries",
+			"./test/resources/new",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);
