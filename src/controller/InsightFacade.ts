@@ -99,6 +99,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		}else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
+
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
@@ -120,6 +121,7 @@ export default class InsightFacade implements IInsightFacade {
 		} catch (e) {
 			return Promise.reject(e);
 		}
+
 		return Promise.resolve(database);
 	}
 
@@ -160,6 +162,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
 		return Promise.all(coursesArray);
+
 	}
 
 	private queryProcessor(query: any, id: string, res: any[]) {
@@ -169,6 +172,7 @@ export default class InsightFacade implements IInsightFacade {
 		for (const [key, value] of Object.entries(query)) {
 			if (key === "WHERE") {
 				res = this.handleWhere(value, id, res);
+				this.renameKeys(id, res);
 			} else if (key === "OPTIONS") {
 				res = this.handleOptions(value, res);
 			} else {
@@ -184,27 +188,37 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		for (const [key, value] of Object.entries(whereBody)) {
 			if (key === "IS") {
-				this.handleIS("IS", value);
-			}
-			if (key === "NOT") {
+				res = this.handleIS(id, value, res);
+			} else if (key === "NOT") {
 				this.notComparator("NOT", value);
-			}
-			if (key === "AND" || key === "OR") {
+			}else if (key === "AND" || key === "OR") {
 				this.logicComparator(key, value);
-			}
-			if (key === "EQ" || key === "GT" || key === "LT") {
+			} else if (key === "EQ" || key === "GT" || key === "LT") {
 				res = this.handleMComparator(key, value, id, res);
 			} else {
 				throw new InsightError("Wrong keys in WHERE clause");
+
 			}
 		}
 		return res;
 	}
-	private handleIS(comparator: any, whereBody: any) {
-		const isBody = whereBody["IS"];
-		// const dataset = this.dataBases[];
-		const result = [];
 
+	private handleIS(id: string, isBody: any, res: any[]) {
+		const validFields: string[] = ["dept","id","instructor","title","uuid"];
+		if (Object.keys(isBody).length !== 1) {
+			throw new InsightError("Wrong keys in math operator");
+		}
+		for (const [key, value] of Object.entries(isBody)) {
+			const keyContents: string[] = key.split("_", 2);
+			if (keyContents[0] !== id) {
+				throw new InsightError("Cannot query more than one dataset");
+			}
+			if (!validFields.includes(keyContents[1])) {
+				throw new InsightError("Invalid field");
+			}
+			return res.filter((data) => data[keyContents[1]] === String(value));
+		}
+		throw new InsightError("Should not reject");
 	}
 
 	private notComparator(comparator: any, whereBody: any) {
@@ -242,16 +256,45 @@ export default class InsightFacade implements IInsightFacade {
 			}
 		}
 		throw new InsightError("Should not reject");
+
 	}
 
 	private handleOptions(optionsBody: any, res: any[]) {
+		if (Object.keys(optionsBody).length !== 1 && Object.keys(optionsBody).length !== 2) {
+			throw new InsightError("Wrong keys in WHERE clause");
+		}
+		if (Object.keys(optionsBody).length === 1 ){
+			return this.handleColumns("COLUMNS", optionsBody["COLUMNS"], res);
+		}else if (Object.keys(optionsBody).length === 2){
+			this.handleColumns("COLUMNS", optionsBody["COLUMNS"], res);
+			this.handleOrder("ORDER", optionsBody["ORDER"], res);
+		}
 		return res;
+	}
+
+	private handleColumns(columns: string, columnsBody: any, res: any[]): InsightDataset[] {
+		res.map((data) => {
+			for (const [key, value] of Object.entries(data)) {
+				if (!columnsBody.includes(key)) {
+					delete data[key];
+				}
+			}
+		});
+		return res;
+	}
+
+	private handleOrder(order: string, orderBody: any, res: any[]) {
+		for (let entry of orderBody){
+			return;
+		}
+
 	}
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
 		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
 
 	}
+
 
 	private findDatabaseID(query: any) {
 		const columns: string[] = query["OPTIONS"]["COLUMNS"];
@@ -266,5 +309,15 @@ export default class InsightFacade implements IInsightFacade {
 			}
 			return id;
 		}
+	}
+
+
+	private renameKeys(id: string, res: any[]) {
+		res.map((data) => {
+			for (const [key, value] of Object.entries(data)) {
+				Object.assign(data, {[id + "_" + key]: data[key]});
+				delete data[key];
+			}
+		});
 	}
 }
