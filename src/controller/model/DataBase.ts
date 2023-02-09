@@ -1,8 +1,8 @@
 import Section from "./Section";
 
 export default class DataBase {
-	private _id: string = "";
-	private _list: Section[] = [];
+	_id: string = "";
+	_list: Section[] = [];
 
 	constructor(id: string, list: Section[]) {
 		this._id = id;
