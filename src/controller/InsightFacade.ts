@@ -99,6 +99,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		}else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
+
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
@@ -120,6 +121,7 @@ export default class InsightFacade implements IInsightFacade {
 		} catch (e) {
 			return Promise.reject(e);
 		}
+
 		return Promise.resolve(database);
 	}
 
@@ -160,6 +162,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
 		return Promise.all(coursesArray);
+
 	}
 
 	private queryProcessor(query: any, id: string, res: any[]) {
@@ -194,10 +197,12 @@ export default class InsightFacade implements IInsightFacade {
 				res = this.handleMComparator(key, value, id, res);
 			} else {
 				throw new InsightError("Wrong keys in WHERE clause");
+
 			}
 		}
 		return res;
 	}
+
 	private handleIS(id: string, isBody: any, res: any[]) {
 		const validFields: string[] = ["dept","id","instructor","title","uuid"];
 		if (Object.keys(isBody).length !== 1) {
@@ -251,6 +256,7 @@ export default class InsightFacade implements IInsightFacade {
 			}
 		}
 		throw new InsightError("Should not reject");
+
 	}
 
 	private handleOptions(optionsBody: any, res: any[]) {
@@ -288,6 +294,7 @@ export default class InsightFacade implements IInsightFacade {
 		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
 
 	}
+
 
 	private findDatabaseID(query: any) {
 		const columns: string[] = query["OPTIONS"]["COLUMNS"];

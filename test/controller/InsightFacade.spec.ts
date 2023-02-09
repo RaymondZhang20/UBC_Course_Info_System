@@ -12,10 +12,13 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
+import exp from "constants";
+import Section from "../../src/controller/model/Section";
 
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
+	this.timeout(5000);
 	let facade: IInsightFacade;
 
 	// Declare datasets used in tests. You should add more datasets like this!
@@ -27,6 +30,57 @@ describe("InsightFacade", function () {
 
 		// Just in case there is anything hanging around from a previous run of the test suite
 		clearDisk();
+	});
+
+	describe("helper test", function () {
+
+		it("1", function () {
+			const query: any = {
+				WHERE:{
+					GT:{
+						sections_avg:97
+					}
+				},
+				OPTIONS:{
+					COLUMNS:[
+						"sections_dept",
+						"sections_avg"
+					],
+					ORDER:"sections_avg"
+				}
+			};
+			const w: string[] = query["WHERE"]["GT"];
+			const q: string[] = query["OPTIONS"]["COLUMNS"];
+			expect(q === undefined).to.be.false;
+			for (const s of q) {
+				expect(s.split("_", 1)[0]).to.deep.equal("sections");
+			}
+			expect(Object.keys(query).length).to.deep.equal(2);
+			// let iw: Section[];
+			// expect(typeof iw === "undefined").to.be.true;
+		});
+
+		it("2", function () {
+			const query: any = {
+				WHERE:{
+					EQ:{
+						sections_avg:97
+					}
+				},
+				OPTIONS:{
+					COLUMNS:[
+						"sections_dept",
+						"sections_avg"
+					],
+					ORDER:"sections_avg"
+				}
+			};
+			facade = new InsightFacade();
+			return facade.performQuery(query).then((dataset) => {
+				expect(dataset).to.have.length(3);
+				console.log(dataset);
+			});
+		});
 	});
 
 	describe("Add/Remove/List Dataset", function () {
@@ -254,7 +308,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/queries",
+			"./test/resources/new",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);
