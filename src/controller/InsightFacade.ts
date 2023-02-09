@@ -19,7 +19,6 @@ export default class InsightFacade implements IInsightFacade {
 		// 	fs.createFileSync("./jsonFiles/databases.json");
 		// }
 	}
-
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
 		if (id.includes("_")) {
 			return Promise.reject(new InsightError("id of the database should not contain underscore"));
@@ -57,7 +56,6 @@ export default class InsightFacade implements IInsightFacade {
 			}
 		}
 	}
-
 	public listDatasets(): Promise<InsightDataset[]> {
 		const res: InsightDataset[] = [];
 		this.dataBases.forEach(function (database) {
@@ -69,7 +67,6 @@ export default class InsightFacade implements IInsightFacade {
 		});
 		return Promise.resolve(res);
 	}
-
 	public removeDataset(id: string): Promise<string> {
 		if (id.includes("_")) {
 			return Promise.reject(new InsightError("id of the database should not contain underscore"));
@@ -86,14 +83,12 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
-
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		let database: any[] = [];
 		if (!query){
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		}else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
-
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
@@ -110,10 +105,8 @@ export default class InsightFacade implements IInsightFacade {
 		} catch (e) {
 			return Promise.reject(e);
 		}
-
 		return Promise.resolve(database);
 	}
-
 	private listIDs(): string[] {
 		const res: string[] = [];
 		this.dataBases.forEach(function (da) {
