@@ -1,10 +1,4 @@
-import {
-	IInsightFacade,
-	InsightDataset,
-	InsightDatasetKind,
-	InsightError,
-	InsightResult,
-	NotFoundError
+import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, InsightResult, NotFoundError
 } from "./IInsightFacade";
 import DataBase from "../controller/model/DataBase";
 import * as fs from "fs-extra";
@@ -18,7 +12,6 @@ import Section from "../controller/model/Section";
  */
 export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
-
 	constructor() {
 		if (fs.existsSync("./jsonFiles/databases.json")) {
 			this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
@@ -78,18 +71,12 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		// if (id.includes("_")) {
-		// 	return Promise.reject(new InsightError("id of the database should not contain underscore"));
-		// } else if (this.onlySpace(id)) {
-		// 	return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
-		// } else {
 		for (let i = 0; i < this.dataBases.length; i++) {
 			if (this.dataBases[i].getId() === id) {
 				this.dataBases.splice(i, 1);
 				this.writeDataBasesInLocalDisk(this.dataBases);
 			}
 		}
-		// }
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
 
@@ -103,11 +90,6 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
-			// this.dataBases.forEach((data) => {
-			// 	if (data.getId() === databaseID) {
-			// 		database = data.getList();
-			// 	}
-			// });
 			for (const data of this.dataBases) {
 				if (data._id === databaseID) {
 					database = data._list;
@@ -222,13 +204,11 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	private notComparator(comparator: any, whereBody: any) {
-		const notBody = whereBody["NOT"];
-		// return Promise.reject("Not implemented.");
+		return undefined;
 	}
 
 	private logicComparator(comparator: any, whereBody: any) {
 		return undefined;
-
 	}
 	private handleMComparator(comparator: string, content: any, id: string, res: any[]) {
 		const validFields: string[] = ["avg", "pass", "fail", "audit", "year"];
@@ -284,17 +264,12 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	private handleOrder(order: string, orderBody: any, res: any[]) {
-		for (let entry of orderBody){
-			return;
-		}
-
+		return res;
 	}
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
 		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
-
 	}
-
 
 	private findDatabaseID(query: any) {
 		const columns: string[] = query["OPTIONS"]["COLUMNS"];
@@ -310,7 +285,6 @@ export default class InsightFacade implements IInsightFacade {
 			return id;
 		}
 	}
-
 
 	private renameKeys(id: string, res: any[]) {
 		res.map((data) => {
