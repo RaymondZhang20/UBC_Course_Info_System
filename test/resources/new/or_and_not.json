@@ -1,0 +1,230 @@
+{
+	"title": "or_and_not",
+	"input": {
+		"WHERE": {
+			"OR": [
+				{
+					"AND": [
+						{
+							"NOT": {
+								"LT": {
+									"sections_fail": 100
+								}
+							}
+						},
+						{
+							"IS": {
+								"sections_dept": "math"
+							}
+						}
+					]
+				},
+				{
+					"EQ": {
+						"sections_avg": 97
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_dept",
+				"sections_fail"
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_id": "599",
+			"sections_dept": "crwr",
+			"sections_fail": 0
+		},
+		{
+			"sections_id": "534",
+			"sections_dept": "epse",
+			"sections_fail": 0
+		},
+		{
+			"sections_id": "100",
+			"sections_dept": "math",
+			"sections_fail": 108
+		},
+		{
+			"sections_id": "100",
+			"sections_dept": "math",
+			"sections_fail": 106
+		},
+		{
+			"sections_id": "100",
+			"sections_dept": "math",
+			"sections_fail": 120
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 180
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 222
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 203
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 145
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 193
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 190
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 205
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 186
+		},
+		{
+			"sections_id": "101",
+			"sections_dept": "math",
+			"sections_fail": 190
+		},
+		{
+			"sections_id": "103",
+			"sections_dept": "math",
+			"sections_fail": 100
+		},
+		{
+			"sections_id": "104",
+			"sections_dept": "math",
+			"sections_fail": 122
+		},
+		{
+			"sections_id": "105",
+			"sections_dept": "math",
+			"sections_fail": 113
+		},
+		{
+			"sections_id": "105",
+			"sections_dept": "math",
+			"sections_fail": 147
+		},
+		{
+			"sections_id": "105",
+			"sections_dept": "math",
+			"sections_fail": 147
+		},
+		{
+			"sections_id": "105",
+			"sections_dept": "math",
+			"sections_fail": 170
+		},
+		{
+			"sections_id": "105",
+			"sections_dept": "math",
+			"sections_fail": 107
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 107
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 112
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 108
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 102
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 100
+		},
+		{
+			"sections_id": "152",
+			"sections_dept": "math",
+			"sections_fail": 107
+		},
+		{
+			"sections_id": "184",
+			"sections_dept": "math",
+			"sections_fail": 114
+		},
+		{
+			"sections_id": "184",
+			"sections_dept": "math",
+			"sections_fail": 114
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 101
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 115
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 107
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 110
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 100
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 107
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 100
+		},
+		{
+			"sections_id": "200",
+			"sections_dept": "math",
+			"sections_fail": 111
+		},
+		{
+			"sections_id": "549",
+			"sections_dept": "psyc",
+			"sections_fail": 0
+		}
+	]
+}

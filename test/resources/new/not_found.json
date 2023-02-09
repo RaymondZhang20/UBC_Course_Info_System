@@ -1,0 +1,22 @@
+{
+	"title": "not_found",
+	"input": {
+		"WHERE": {
+			"IS": {
+				"sections_id": "1100"
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_pass",
+				"sections_uuid",
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			],
+			"ORDER": "sections_pass"
+		}
+	},
+	"errorExpected": false,
+	"expected": []
+}

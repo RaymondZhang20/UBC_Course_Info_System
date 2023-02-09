@@ -1,0 +1,559 @@
+{
+	"title": "ONE_IN_AND",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"sections_pass": 100
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_id": "412",
+			"sections_title": "adul educ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "355",
+			"sections_title": "chinese cinema",
+			"sections_instructor": "wang, rui"
+		},
+		{
+			"sections_id": "355",
+			"sections_title": "chinese cinema",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "202",
+			"sections_title": "can,japn&pc poli",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "540",
+			"sections_title": "data anly&utiliz",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "500",
+			"sections_title": "anlyz bus procss",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "304",
+			"sections_title": "contmp bioc rsrc",
+			"sections_instructor": "foster, leonard;gsponer, joerg;mayor, thibault;yip, calvin"
+		},
+		{
+			"sections_id": "304",
+			"sections_title": "contmp bioc rsrc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "402",
+			"sections_title": "proteins",
+			"sections_instructor": "brayer, gary;mauk, grant"
+		},
+		{
+			"sections_id": "402",
+			"sections_title": "proteins",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "204",
+			"sections_title": "vert struct&func",
+			"sections_instructor": "fung, charissa;moussavi, maryam;norman, lynn"
+		},
+		{
+			"sections_id": "204",
+			"sections_title": "vert struct&func",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "210",
+			"sections_title": "vascular plants",
+			"sections_instructor": "ellis, shona margaret;graham, sean"
+		},
+		{
+			"sections_id": "210",
+			"sections_title": "vascular plants",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "intgrt'd bio lab",
+			"sections_instructor": "pollock, carol"
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "intgrt'd bio lab",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "363",
+			"sections_title": "lab animal physi",
+			"sections_instructor": "lacombe, agnes"
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "cptl mrkts&rl es",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "cptl mrkts&rl es",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "330",
+			"sections_title": "found re apprai",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "330",
+			"sections_title": "found re apprai",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "335",
+			"sections_title": "info systems",
+			"sections_instructor": "cheung, yau man"
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "intr busnss law",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "455",
+			"sections_title": "prin audit",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "344",
+			"sections_title": "unit oper i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "344",
+			"sections_title": "unit oper i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "356",
+			"sections_title": "proc dyn&control",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "356",
+			"sections_title": "proc dyn&control",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "235",
+			"sections_title": "org chem lab",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "instrl anly chem",
+			"sections_instructor": "chen, david"
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "instrl anly chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "adv org life sc",
+			"sections_instructor": "sherman, john"
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "adv org life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "215",
+			"sections_title": "fluid mech i",
+			"sections_instructor": "laval, bernard"
+		},
+		{
+			"sections_id": "436",
+			"sections_title": "matrx struc anly",
+			"sections_instructor": "foschi, ricardo"
+		},
+		{
+			"sections_id": "231",
+			"sections_title": "ancient greece",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "busn fundamental",
+			"sections_instructor": "cubbon, paul;kroeker, jeff"
+		},
+		{
+			"sections_id": "298",
+			"sections_title": "intro to finance",
+			"sections_instructor": "kullmann, cornelia"
+		},
+		{
+			"sections_id": "298",
+			"sections_title": "intro to finance",
+			"sections_instructor": "freedman, ruth"
+		},
+		{
+			"sections_id": "298",
+			"sections_title": "intro to finance",
+			"sections_instructor": "graham, brian"
+		},
+		{
+			"sections_id": "298",
+			"sections_title": "intro to finance",
+			"sections_instructor": "zeng, lulu"
+		},
+		{
+			"sections_id": "298",
+			"sections_title": "intro to finance",
+			"sections_instructor": "zeng, lulu"
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "commercial law",
+			"sections_instructor": "mcintosh, ellen jane"
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "commercial law",
+			"sections_instructor": "mcintosh, ellen jane"
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "comptn, progrmng",
+			"sections_instructor": "little, james joseph"
+		},
+		{
+			"sections_id": "213",
+			"sections_title": "intro comp sys",
+			"sections_instructor": "feeley, michael"
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "comp hard&os",
+			"sections_instructor": "belleville, patrice"
+		},
+		{
+			"sections_id": "317",
+			"sections_title": "internet comp",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "203",
+			"sections_title": "child & yng adlt",
+			"sections_instructor": "de vries, margaret"
+		},
+		{
+			"sections_id": "203",
+			"sections_title": "child & yng adlt",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": "kong, wai-ching alfred"
+		},
+		{
+			"sections_id": "301",
+			"sections_title": "intrm micro anly",
+			"sections_instructor": "gottlieb, joshua"
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": "vaney, michael"
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "374",
+			"sections_title": "land economics",
+			"sections_instructor": "gulati, sumeet"
+		},
+		{
+			"sections_id": "374",
+			"sections_title": "land economics",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": "hodgson, elizabeth"
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": "cavell, richard anthony"
+		},
+		{
+			"sections_id": "358",
+			"sections_title": "18th cent genre",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "500",
+			"sections_title": "res meth educ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "332",
+			"sections_title": "stdy genre/perio",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "332",
+			"sections_title": "stdy genre/perio",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "210",
+			"sections_title": "fmly human dvlpm",
+			"sections_instructor": "weatherby, maria"
+		},
+		{
+			"sections_id": "238",
+			"sections_title": "fam resrc mngmt",
+			"sections_instructor": "johnson, phyllis"
+		},
+		{
+			"sections_id": "238",
+			"sections_title": "fam resrc mngmt",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "explor our food",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "250",
+			"sections_title": "nutr conc & cont",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "471",
+			"sections_title": "hum nut lif span",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "471",
+			"sections_title": "hum nut lif span",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "372",
+			"sections_title": "cartography",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "210",
+			"sections_title": "inter germ ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "369",
+			"sections_title": "europe 1900-50",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "ling thry&anl i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "ling thry&anl i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "intro acad writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "intro acad writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": "courtiel, julien"
+		},
+		{
+			"sections_id": "103",
+			"sections_title": "int calc ap lf s",
+			"sections_instructor": "borowski, peter"
+		},
+		{
+			"sections_id": "103",
+			"sections_title": "int calc ap lf s",
+			"sections_instructor": "hauert, christoph"
+		},
+		{
+			"sections_id": "104",
+			"sections_title": "dff calc ap c&ss",
+			"sections_instructor": "maclean, mark thomson"
+		},
+		{
+			"sections_id": "105",
+			"sections_title": "int calc ap c&ss",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "152",
+			"sections_title": "linear systems",
+			"sections_instructor": "friedman, joel"
+		},
+		{
+			"sections_id": "152",
+			"sections_title": "linear systems",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "calculus 3",
+			"sections_instructor": "seymour, brian"
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "calculus 3",
+			"sections_instructor": "marcus, brian harry"
+		},
+		{
+			"sections_id": "220",
+			"sections_title": "math proof",
+			"sections_instructor": "rechnitzer, andrew"
+		},
+		{
+			"sections_id": "253",
+			"sections_title": "multivrbl calc",
+			"sections_instructor": "peterson, dale"
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "alg coding crypt",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "260",
+			"sections_title": "mech of material",
+			"sections_instructor": "sassani, farrokh"
+		},
+		{
+			"sections_id": "375",
+			"sections_title": "heat transfer i",
+			"sections_instructor": "atabaki, nima"
+		},
+		{
+			"sections_id": "120",
+			"sections_title": "hist music i",
+			"sections_instructor": "fisher, alexander john"
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "intro philosophy",
+			"sections_instructor": "margolis, eric"
+		},
+		{
+			"sections_id": "203",
+			"sections_title": "thermal phys i",
+			"sections_instructor": "karczmarek, joanna"
+		},
+		{
+			"sections_id": "203",
+			"sections_title": "thermal phys i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "psychlgy sport",
+			"sections_instructor": "perrino, andrea"
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "psychlgy sport",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "361",
+			"sections_title": "motivation",
+			"sections_instructor": "winstanley, catharine"
+		},
+		{
+			"sections_id": "361",
+			"sections_title": "motivation",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "soci of family",
+			"sections_instructor": "white, james"
+		},
+		{
+			"sections_id": "200",
+			"sections_title": "soci of family",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "301",
+			"sections_title": "advanced span i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "302",
+			"sections_title": "intr probability",
+			"sections_instructor": "yu, hoi yin eugenia"
+		},
+		{
+			"sections_id": "120",
+			"sections_title": "intro to theatre",
+			"sections_instructor": "gardiner, robert;scholte, tom;wasserman, jerry"
+		},
+		{
+			"sections_id": "120",
+			"sections_title": "intro to theatre",
+			"sections_instructor": ""
+		}
+	]
+}
