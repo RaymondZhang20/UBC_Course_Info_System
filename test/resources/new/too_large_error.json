@@ -1,0 +1,21 @@
+{
+	"title": "too_large_error",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_pass": 100
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_pass",
+				"sections_uuid",
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "ResultTooLargeError"
+}

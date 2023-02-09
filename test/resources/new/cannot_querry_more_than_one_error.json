@@ -1,0 +1,21 @@
+{
+	"title": "cannot_querry_more_than_one_error",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"ubc_pass": 1000
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_pass",
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			],
+			"ORDER": "sections_uuid"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

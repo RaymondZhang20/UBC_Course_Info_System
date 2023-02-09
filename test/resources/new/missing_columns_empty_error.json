@@ -1,0 +1,16 @@
+{
+	"title": "missing_columns_empty_error",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_pass": 1000
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [],
+			"ORDER": "sections_uuid"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

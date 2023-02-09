@@ -1,0 +1,20 @@
+{
+	"title": "gt_no_key_error",
+	"input": {
+		"WHERE": {
+			"GT": {}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_pass",
+				"sections_uuid",
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			],
+			"ORDER": "sections_uuid"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

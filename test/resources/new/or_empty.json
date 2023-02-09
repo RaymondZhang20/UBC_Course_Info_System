@@ -1,0 +1,23 @@
+{
+	"title": "or_empty",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"OR": {
+						"pass": 100
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

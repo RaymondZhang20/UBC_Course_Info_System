@@ -1,0 +1,674 @@
+{
+	"title": "two_star_inorder",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_pass": 1000
+					}
+				},
+				{
+					"IS": {
+						"sections_id": "*1*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_id": "112",
+			"sections_title": "biol bact cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "unicellular life",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "biology of cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "biology of cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "unicellular life",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "biology of cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "unicellular life",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "biology of cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "biology of cell",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "unicellular life",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "eco gen evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "gentcs ecol&evol",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "140",
+			"sections_title": "lab inv life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "strctr bond chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "structural chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "121",
+			"sections_title": "strctr bond chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "phys & org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "phys & org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "phys & org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "phys & org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "thm kin org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "phys & org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "123",
+			"sections_title": "thm kin org chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "291",
+			"sections_title": "appl stat in bus",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "prncpls micrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "princpl macrecon",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "110",
+			"sections_title": "intro literature",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "univrsty writing",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "univrsty writing",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "strat univ writ",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "112",
+			"sections_title": "univrsty writing",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "114",
+			"sections_title": "catastroph earth",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "118",
+			"sections_title": "gold & gems",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "100",
+			"sections_title": "df calc ap ph sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "int calc ap ph s",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "105",
+			"sections_title": "int calc ap c&ss",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "120",
+			"sections_title": "log & crit think",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "energy & waves",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "101",
+			"sections_title": "bio cog psych",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "102",
+			"sections_title": "dev soc cli psy",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "150",
+			"sections_title": "rsrch&writ human",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "150",
+			"sections_title": "rsrch&writ human",
+			"sections_instructor": ""
+		}
+	]
+}

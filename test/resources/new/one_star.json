@@ -1,0 +1,249 @@
+{
+	"title": "one_star",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"sections_pass": 100
+					}
+				},
+				{
+					"IS": {
+						"sections_id": "3*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_id": "355",
+			"sections_title": "chinese cinema",
+			"sections_instructor": "wang, rui"
+		},
+		{
+			"sections_id": "355",
+			"sections_title": "chinese cinema",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "304",
+			"sections_title": "contmp bioc rsrc",
+			"sections_instructor": "foster, leonard;gsponer, joerg;mayor, thibault;yip, calvin"
+		},
+		{
+			"sections_id": "304",
+			"sections_title": "contmp bioc rsrc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "intgrt'd bio lab",
+			"sections_instructor": "pollock, carol"
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "intgrt'd bio lab",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "363",
+			"sections_title": "lab animal physi",
+			"sections_instructor": "lacombe, agnes"
+		},
+		{
+			"sections_id": "330",
+			"sections_title": "found re apprai",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "330",
+			"sections_title": "found re apprai",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "335",
+			"sections_title": "info systems",
+			"sections_instructor": "cheung, yau man"
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "intr busnss law",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "344",
+			"sections_title": "unit oper i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "344",
+			"sections_title": "unit oper i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "356",
+			"sections_title": "proc dyn&control",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "356",
+			"sections_title": "proc dyn&control",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "instrl anly chem",
+			"sections_instructor": "chen, david"
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "instrl anly chem",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "adv org life sc",
+			"sections_instructor": "sherman, john"
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "adv org life sc",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "commercial law",
+			"sections_instructor": "mcintosh, ellen jane"
+		},
+		{
+			"sections_id": "393",
+			"sections_title": "commercial law",
+			"sections_instructor": "mcintosh, ellen jane"
+		},
+		{
+			"sections_id": "313",
+			"sections_title": "comp hard&os",
+			"sections_instructor": "belleville, patrice"
+		},
+		{
+			"sections_id": "317",
+			"sections_title": "internet comp",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "301",
+			"sections_title": "intrm micro anly",
+			"sections_instructor": "gottlieb, joshua"
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": "vaney, michael"
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "303",
+			"sections_title": "int microecon ii",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "374",
+			"sections_title": "land economics",
+			"sections_instructor": "gulati, sumeet"
+		},
+		{
+			"sections_id": "374",
+			"sections_title": "land economics",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "358",
+			"sections_title": "18th cent genre",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "332",
+			"sections_title": "stdy genre/perio",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "332",
+			"sections_title": "stdy genre/perio",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "372",
+			"sections_title": "cartography",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "369",
+			"sections_title": "europe 1900-50",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "342",
+			"sections_title": "alg coding crypt",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "375",
+			"sections_title": "heat transfer i",
+			"sections_instructor": "atabaki, nima"
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "psychlgy sport",
+			"sections_instructor": "perrino, andrea"
+		},
+		{
+			"sections_id": "311",
+			"sections_title": "psychlgy sport",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "361",
+			"sections_title": "motivation",
+			"sections_instructor": "winstanley, catharine"
+		},
+		{
+			"sections_id": "361",
+			"sections_title": "motivation",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "301",
+			"sections_title": "advanced span i",
+			"sections_instructor": ""
+		},
+		{
+			"sections_id": "302",
+			"sections_title": "intr probability",
+			"sections_instructor": "yu, hoi yin eugenia"
+		}
+	]
+}

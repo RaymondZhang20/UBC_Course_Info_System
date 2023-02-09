@@ -1,0 +1,22 @@
+{
+	"title": "missing_where_error",
+	"input": {
+		"WHER": {
+			"GT": {
+				"sections_pass": 1000
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_pass",
+				"sections_uuid",
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			],
+			"ORDER": "sections_uuid"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

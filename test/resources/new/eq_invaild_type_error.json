@@ -1,0 +1,28 @@
+{
+	"title": "eq_invaild_type_error",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"sections_pass": "1"
+					}
+				},
+				{
+					"IS": {
+						"sections_id": "3*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

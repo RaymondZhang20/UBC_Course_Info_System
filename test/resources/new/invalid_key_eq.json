@@ -1,0 +1,23 @@
+{
+	"title": "invalid_key_eq",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"EQ": {
+						"pass": 100
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_id",
+				"sections_title",
+				"sections_instructor"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}
