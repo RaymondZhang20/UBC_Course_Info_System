@@ -13,11 +13,11 @@ import Section from "../controller/model/Section";
 export default class InsightFacade implements IInsightFacade {
 	private dataBases: DataBase[] = [];
 	constructor() {
-		if (fs.existsSync("./jsonFiles/databases.json")) {
-			this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
-		} else {
-			fs.createFile("./jsonFiles/databases.json");
-		}
+		// if (fs.existsSync("./jsonFiles/databases.json")) {
+		// 	this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
+		// } else {
+		// 	fs.createFileSync("./jsonFiles/databases.json");
+		// }
 	}
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
@@ -44,7 +44,7 @@ export default class InsightFacade implements IInsightFacade {
 							}
 						});
 						this.dataBases.push(new DataBase(id, sections));
-						this.writeDataBasesInLocalDisk(this.dataBases);
+						// this.writeDataBasesInLocalDisk(this.dataBases);
 						return this.listIDs();
 					})
 					.catch((err) => {
@@ -71,10 +71,17 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		for (let i = 0; i < this.dataBases.length; i++) {
-			if (this.dataBases[i].getId() === id) {
-				this.dataBases.splice(i, 1);
-				this.writeDataBasesInLocalDisk(this.dataBases);
+		if (id.includes("_")) {
+			return Promise.reject(new InsightError("id of the database should not contain underscore"));
+		} else if (this.onlySpace(id)) {
+			return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
+		} else {
+			for (let i = 0; i < this.dataBases.length; i++) {
+				if (this.dataBases[i].getId() === id) {
+					this.dataBases.splice(i, 1);
+					// this.writeDataBasesInLocalDisk(this.dataBases);
+					return Promise.resolve(id);
+				}
 			}
 		}
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
