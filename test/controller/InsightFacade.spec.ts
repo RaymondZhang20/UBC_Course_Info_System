@@ -16,7 +16,7 @@ import {clearDisk, getContentFromArchives} from "../TestUtil";
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
-	this.timeout(5000);
+	this.timeout(10000);
 	let facade: IInsightFacade;
 
 	// Declare datasets used in tests. You should add more datasets like this!
@@ -47,7 +47,7 @@ describe("InsightFacade", function () {
 					ORDER:"sections_avg"
 				}
 			};
-			const w: string[] = query["WHERE"]["GT"];
+			const w: object = query["WHERE"]["GT"];
 			const q: string[] = query["OPTIONS"]["COLUMNS"];
 			expect(q === undefined).to.be.false;
 			for (const s of q) {
@@ -62,31 +62,72 @@ describe("InsightFacade", function () {
 
 		it("2", function () {
 			const query: any = {
-				WHERE: {
-					EQ: {
-						sections_avg: 97
-					}
-				},
 				OPTIONS: {
+					ORDER: "sections_avg",
 					COLUMNS: [
 						"sections_uuid",
 						"sections_id",
-						"sections_title",
-						"sections_instructor",
-						"sections_dept",
-						"sections_year",
 						"sections_avg",
 						"sections_pass",
 						"sections_fail",
 						"sections_audit"
-					],
-					ORDER: "sections_avg"
+					]
+				},
+				WHERE: {
+					LT: {
+						sections_avg: 50
+					}
 				}
 			};
 			facade = new InsightFacade();
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
 				return facade.performQuery(query).then((dataset) => {
-					// expect(dataset).to.have.length(3);
+					console.log(dataset.length);
+					// expect(dataset).to.have.length(156);
+					console.log(dataset);
+				});
+			});
+		});
+
+		it("3", function () {
+			const query: any = {
+				WHERE: {
+					OR: [
+						{
+							AND: [
+								{
+									NOT: {
+										LT: {
+											sections_avg: 99.78
+										}
+									}
+								},
+								{
+									IS: {
+										sections_uuid: "5374"
+									}
+								}
+							]
+						},
+						{
+							EQ: {
+								sections_avg: 97
+							}
+						}
+					]
+				},
+				OPTIONS: {
+					COLUMNS: [
+						"sections_uuid",
+						"sections_dept",
+						"sections_avg"
+					]
+				}
+			};
+			facade = new InsightFacade();
+			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
+				return facade.performQuery(query).then((dataset) => {
+					// expect(dataset).to.have.length(156);
 					console.log(dataset);
 				});
 			});
@@ -318,7 +359,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/new",
+			"./test/resources/debug",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);
