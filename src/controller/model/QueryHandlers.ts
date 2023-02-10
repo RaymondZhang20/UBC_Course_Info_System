@@ -1,5 +1,6 @@
 import {InsightDataset, InsightError} from "../IInsightFacade";
 
+
 export class InsightFacadeHelpers {
 
 	protected handleWhere(whereBody: any, id: string, res: any[]) {
@@ -89,15 +90,24 @@ export class InsightFacadeHelpers {
 			throw new InsightError("Wrong keys in WHERE clause");
 		}
 		if (Object.keys(optionsBody).length === 1) {
-			return this.handleColumns("COLUMNS", optionsBody["COLUMNS"], res);
+			return this.handleColumns(optionsBody["COLUMNS"], res);
 		} else if (Object.keys(optionsBody).length === 2) {
-			this.handleColumns("COLUMNS", optionsBody["COLUMNS"], res);
-			this.handleOrder("ORDER", optionsBody["ORDER"], res);
+			this.handleColumns(optionsBody["COLUMNS"], res);
+			this.handleOrder(optionsBody["ORDER"], res);
 		}
 		return res;
 	}
 
-	private handleColumns(columns: string, columnsBody: any, res: any[]): InsightDataset[] {
+	private handleColumns(columnsBody: any, res: any[]): InsightDataset[] {
+		if (res.length === 0){
+			return res;
+		}
+		const keys: string [] = Object.keys(res[0]);
+		columnsBody.map((col: string)=>{
+			if (!keys.includes(col)){
+				throw new InsightError("Invalid columns");
+			}
+		});
 		res.map((data) => {
 			for (const [key, value] of Object.entries(data)) {
 				if (!columnsBody.includes(key)) {
@@ -108,7 +118,7 @@ export class InsightFacadeHelpers {
 		return res;
 	}
 
-	private handleOrder(order: string, orderBody: any, res: any[]) {
+	private handleOrder(orderBody: any, res: any[]) {
 		return res;
 	}
 }
