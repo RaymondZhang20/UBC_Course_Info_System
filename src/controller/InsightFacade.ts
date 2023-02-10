@@ -159,19 +159,17 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	private queryProcessor(query: any, id: string, res: any[]) {
 		if (Object.keys(query).length !== 2) {
 			throw new InsightError("Invalid query");
-		}
-		for (const [key, value] of Object.entries(query)) {
-			if (key === "WHERE") {
-				res = this.handleWhere(value, id, res);
-				if (res.length > 5000) {
-					throw new ResultTooLargeError("Result larger then 5000");
-				}
-				this.renameKeys(id, res);
-			} else if (key === "OPTIONS") {
-				res = this.handleOptions(value, res);
+		} else if (Object.keys(query).includes("WHERE")) {
+			res = this.handleWhere(id,query["WHERE"], res);
+			if (res.length > 5000) {
+				throw new ResultTooLargeError("Result larger then 5000");
+			} else if (Object.keys(query).includes("OPTIONS")) {
+				res = this.handleOptions(id, query["OPTIONS"], res);
 			} else {
-				throw new InsightError("Invalid query");
+				throw new InsightError("Cannot find OPTIONS clause");
 			}
+		} else {
+			throw new InsightError("Cannot find WHERE clause");
 		}
 		return res;
 	}
@@ -193,14 +191,5 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			}
 			return id;
 		}
-	}
-
-	private renameKeys(id: string, res: any[]) {
-		res.map((data) => {
-			for (const [key, value] of Object.entries(data)) {
-				Object.assign(data, {[id + "_" + key]: data[key]});
-				delete data[key];
-			}
-		});
 	}
 }

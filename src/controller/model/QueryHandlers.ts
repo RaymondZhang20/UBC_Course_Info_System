@@ -3,7 +3,7 @@ import {InsightDataset, InsightError} from "../IInsightFacade";
 
 export class InsightFacadeHelpers {
 
-	protected handleWhere(whereBody: any, id: string, res: any[]) {
+	protected handleWhere(id: string, whereBody: any, res: any[]) {
 		if (Object.keys(whereBody).length !== 1) {
 			throw new InsightError("Wrong keys in WHERE clause");
 		}
@@ -11,11 +11,11 @@ export class InsightFacadeHelpers {
 			if (key === "IS") {
 				res = this.handleIS(id, value, res);
 			} else if (key === "NOT") {
-				// this.notComparator("NOT", value);
-				throw new InsightError("Not implemented");
-			} else if (key === "AND" || key === "OR") {
-				// this.logicComparator(key, value);
-				throw new InsightError("Not implemented");
+				res = this.handleNOT(id, value, res);
+			} else if (key === "AND") {
+				res = this.handleAND(id, value, res);
+			} else if (key === "OR") {
+				res = this.handleOR(id, value, res);
 			} else if (key === "EQ" || key === "GT" || key === "LT") {
 				res = this.handleMComparator(key, value, id, res);
 			} else {
@@ -46,12 +46,30 @@ export class InsightFacadeHelpers {
 		throw new InsightError("Invalid filter type");
 	}
 
-	private notComparator(comparator: any, whereBody: any) {
-		return undefined;
+	private handleNOT(id: string, body: any, res: any[]) {
+		const all: any[] = res;
+		const not: any[] = this.handleWhere(id, body, res);
+		return all.filter((data) => !not.includes(data));
 	}
 
-	private logicComparator(comparator: any, whereBody: any) {
-		return undefined;
+	private handleAND(id: string, body: any, res: any[]) {
+		let res1: any[] = this.handleWhere(id, body[0], res);
+		let res2: any[] = res1;
+		for (let i = 1; i < body.length; i++) {
+			res1 = this.handleWhere(id, body[i], res);
+			res2 = res1.filter((data) => res2.includes(data));
+		}
+		return res2;
+	}
+
+	private handleOR(id: string, body: any, res: any[]) {
+		let res1: any[] = this.handleWhere(id, body[0], res);
+		let res2: any[] = res1;
+		for (let i = 1; i < body.length; i++) {
+			res1 = this.handleWhere(id, body[i], res);
+			res2 = [...res1, ...res2];
+		}
+		return res2;
 	}
 
 	private handleMComparator(comparator: string, content: any, id: string, res: any[]) {
@@ -71,13 +89,10 @@ export class InsightFacadeHelpers {
 				switch (comparator) {
 					case "EQ":
 						return res.filter((data) => data[keyContents[1]] === Number(value));
-						break;
 					case "GT":
 						return res.filter((data) => data[keyContents[1]] > Number(value));
-						break;
 					case "LT":
 						return res.filter((data) => data[keyContents[1]] < Number(value));
-						break;
 				}
 			}
 		}
@@ -85,32 +100,35 @@ export class InsightFacadeHelpers {
 
 	}
 
-	protected handleOptions(optionsBody: any, res: any[]) {
-		if (Object.keys(optionsBody).length !== 1 && Object.keys(optionsBody).length !== 2) {
+	protected handleOptions(id: string, optionsBody: any, res: any[]) {
+		if (Object.keys(optionsBody).length === 1 && (Object.keys(optionsBody).includes("COLUMNS"))) {
+			return this.handleColumns(id, optionsBody["COLUMNS"], res);
+		} else if (Object.keys(optionsBody).length === 2 && (Object.keys(optionsBody).includes("COLUMNS")) &&
+			(Object.keys(optionsBody).includes("ORDER"))) {
+			res = this.handleColumns(id, optionsBody["COLUMNS"], res);
+			return this.handleOrder(optionsBody["ORDER"], res);
+		} else {
 			throw new InsightError("Wrong keys in WHERE clause");
 		}
-		if (Object.keys(optionsBody).length === 1) {
-			return this.handleColumns(optionsBody["COLUMNS"], res);
-		} else if (Object.keys(optionsBody).length === 2) {
-			this.handleColumns(optionsBody["COLUMNS"], res);
-			this.handleOrder(optionsBody["ORDER"], res);
-		}
-		return res;
 	}
 
-	private handleColumns(columnsBody: any, res: any[]): InsightDataset[] {
+	private handleColumns(id: string, columnsBody: any, res: any[]): InsightDataset[] {
 		if (res.length === 0){
 			return res;
 		}
-		const keys: string [] = Object.keys(res[0]);
-		columnsBody.map((col: string)=>{
-			if (!keys.includes(col)){
-				throw new InsightError("Invalid columns");
-			}
-		});
 		res.map((data) => {
+			for (const column of columnsBody) {
+				const splitColumn: string[] = column.split("_", 2);
+				if (splitColumn[0] !== id) {
+					throw new InsightError("Cannot query more than one database");
+				} else if (Object.keys(data).includes(splitColumn[1])) {
+					Object.assign(data, {[column]: data[splitColumn[1]]});
+				} else {
+					throw new InsightError("Invalid columns");
+				}
+			}
 			for (const [key, value] of Object.entries(data)) {
-				if (!columnsBody.includes(key)) {
+				if (!key.includes("_")) {
 					delete data[key];
 				}
 			}
@@ -119,6 +137,6 @@ export class InsightFacadeHelpers {
 	}
 
 	private handleOrder(orderBody: any, res: any[]) {
-		return res;
+		return res.sort((a, b) => (a[orderBody] > b[orderBody]) ? 1 : -1);
 	}
 }
