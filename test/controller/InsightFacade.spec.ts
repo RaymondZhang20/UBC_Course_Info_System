@@ -62,21 +62,20 @@ describe("InsightFacade", function () {
 
 		it("2", function () {
 			const query: any = {
+				WHERE: {
+					IS: {
+						sections_uuid: "134"
+					}
+				},
 				OPTIONS: {
-					ORDER: "sections_avg",
 					COLUMNS: [
 						"sections_uuid",
-						"sections_id",
+						"sections_year",
 						"sections_avg",
 						"sections_pass",
 						"sections_fail",
 						"sections_audit"
 					]
-				},
-				WHERE: {
-					LT: {
-						sections_avg: 50
-					}
 				}
 			};
 			facade = new InsightFacade();
@@ -92,26 +91,15 @@ describe("InsightFacade", function () {
 		it("3", function () {
 			const query: any = {
 				WHERE: {
-					OR: [
-						{
-							AND: [
-								{
-									NOT: {
-										LT: {
-											sections_avg: 99.78
-										}
-									}
-								},
-								{
-									IS: {
-										sections_uuid: "5374"
-									}
-								}
-							]
-						},
+					AND: [
 						{
 							EQ: {
-								sections_avg: 97
+								sections_year: 2014
+							}
+						},
+						{
+							IS: {
+								sections_dept: "musc"
 							}
 						}
 					]
@@ -119,14 +107,18 @@ describe("InsightFacade", function () {
 				OPTIONS: {
 					COLUMNS: [
 						"sections_uuid",
-						"sections_dept",
-						"sections_avg"
+						"sections_year",
+						"sections_avg",
+						"sections_pass",
+						"sections_fail",
+						"sections_audit"
 					]
 				}
 			};
 			facade = new InsightFacade();
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
 				return facade.performQuery(query).then((dataset) => {
+					console.log(dataset.length);
 					// expect(dataset).to.have.length(156);
 					console.log(dataset);
 				});
