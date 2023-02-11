@@ -44,16 +44,23 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 							const info: any[] = JSON.parse(s).result;
 							if (info.length > 0) {
 								info.forEach(function (section) {
-									sections.push(new Section(String(section.id), section.Course, section.Title
-										, section.Professor
-										, section.Subject, Number(section.Year), section.Avg, section.Pass
-										, section.Fail, section.Audit));
+									if (section.Section === "overall") {
+										sections.push(new Section(String(section.id), section.Course, section.Title
+											, section.Professor
+											, section.Subject, 1900, section.Avg, section.Pass
+											, section.Fail, section.Audit));
+									} else {
+										sections.push(new Section(String(section.id), section.Course, section.Title
+											, section.Professor
+											, section.Subject, Number(section.Year), section.Avg, section.Pass
+											, section.Fail, section.Audit));
+									}
 								});
 							}
 						});
 						this.dataBases.push(new DataBase(id, sections));
 						// this.writeDataBasesInLocalDisk(this.dataBases);
-						return this.listIDs();
+						return Promise.all(this.listIDs());
 					})
 					.catch((err) => {
 						return Promise.reject(new InsightError("error occurred in adding stage"));
