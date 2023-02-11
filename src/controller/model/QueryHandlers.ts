@@ -4,7 +4,7 @@ import {InsightDataset, InsightError} from "../IInsightFacade";
 export class InsightFacadeHelpers {
 
 	protected handleWhere(id: string, whereBody: any, res: any[]) {
-		if (Object.keys(whereBody).length !== 1) {
+		if (Array.isArray(whereBody) || Object.keys(whereBody).length !== 1) {
 			throw new InsightError("Wrong keys in WHERE clause");
 		}
 		for (const [key, value] of Object.entries(whereBody)) {
@@ -53,6 +53,9 @@ export class InsightFacadeHelpers {
 	}
 
 	private handleAND(id: string, body: any, res: any[]) {
+		if (!Array.isArray(body) || body.length < 1) {
+			throw new InsightError("Should be an non-empty array inside AND");
+		}
 		let res1: any[] = this.handleWhere(id, body[0], res);
 		let res2: any[] = res1;
 		for (let i = 1; i < body.length; i++) {
@@ -63,6 +66,9 @@ export class InsightFacadeHelpers {
 	}
 
 	private handleOR(id: string, body: any, res: any[]) {
+		if (!Array.isArray(body) || body.length < 1) {
+			throw new InsightError("Should be an non-empty array inside OR");
+		}
 		let res1: any[] = this.handleWhere(id, body[0], res);
 		let res2: any[] = res1;
 		for (let i = 1; i < body.length; i++) {
@@ -116,24 +122,25 @@ export class InsightFacadeHelpers {
 		if (res.length === 0){
 			return res;
 		}
-		res.map((data) => {
+		return res.map((data) => {
+			let newData: any = {};
 			for (const column of columnsBody) {
 				const splitColumn: string[] = column.split("_", 2);
 				if (splitColumn[0] !== id) {
 					throw new InsightError("Cannot query more than one database");
 				} else if (Object.keys(data).includes(splitColumn[1])) {
-					Object.assign(data, {[column]: data[splitColumn[1]]});
+					Object.assign(newData, {[column]: data[splitColumn[1]]});
 				} else {
 					throw new InsightError("Invalid columns");
 				}
 			}
-			for (const [key, value] of Object.entries(data)) {
-				if (!key.includes("_")) {
-					delete data[key];
-				}
-			}
+			return newData;
+			// for (const [key, value] of Object.entries(data)) {
+			// 	if (!key.includes("_")) {
+			// 		delete data[key];
+			// 	}
+			// }
 		});
-		return res;
 	}
 
 	private handleOrder(orderBody: any, res: any[]) {

@@ -61,29 +61,45 @@ describe("InsightFacade", function () {
 		});
 
 		it("2", function () {
-			const query: any = {
+			const query1: any = {
 				WHERE: {
-					IS: {
-						sections_uuid: "134"
+					AND: [
+						{
+							OR: {
+								pass: 100
+							}
+						}
+					]
+				},
+				OPTIONS: {
+					COLUMNS: [
+						"sections_id",
+						"sections_title",
+						"sections_instructor"
+					]
+				}
+			};
+			const query2: any = {
+				WHERE: {
+					LT: {
+						sections_avg: 60
 					}
 				},
 				OPTIONS: {
 					COLUMNS: [
-						"sections_uuid",
-						"sections_year",
-						"sections_avg",
-						"sections_pass",
-						"sections_fail",
-						"sections_audit"
+						"sections_dept",
+						"sections_avg"
 					]
 				}
 			};
 			facade = new InsightFacade();
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
-				return facade.performQuery(query).then((dataset) => {
+				return facade.performQuery(query1).then((dataset) => {
 					console.log(dataset.length);
-					// expect(dataset).to.have.length(156);
-					console.log(dataset);
+					return facade.performQuery(query2).then((dataset2) => {
+						console.log(dataset2.length);
+						console.log(dataset2);
+					});
 				});
 			});
 		});
@@ -351,7 +367,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/debug",
+			"./test/resources/new",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);

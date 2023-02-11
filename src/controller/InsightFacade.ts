@@ -22,6 +22,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	private dataBases: DataBase[] = [];
 	constructor() {
 		super();
+		"./data";
 		// if (fs.existsSync("./jsonFiles/databases.json")) {
 		// 	this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
 		// } else {
