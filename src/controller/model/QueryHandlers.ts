@@ -1,9 +1,14 @@
-import {InsightDataset, InsightError} from "../IInsightFacade";
+import {InsightDataset, InsightError, ResultTooLargeError} from "../IInsightFacade";
 
 
 export class InsightFacadeHelpers {
 
 	protected handleWhere(id: string, whereBody: any, res: any[]) {
+		if (Object.keys(whereBody).length === 0){
+			if (res.length > 5000) {
+				throw new ResultTooLargeError("Result larger then 5000");
+			}
+		}
 		if (Array.isArray(whereBody) || Object.keys(whereBody).length !== 1) {
 			throw new InsightError("Wrong keys in WHERE clause");
 		}
@@ -40,7 +45,16 @@ export class InsightFacadeHelpers {
 				throw new InsightError("Invalid field");
 			}
 			if ((typeof value) === "string") {
-				return res.filter((data) => data[keyContents[1]] === String(value));
+				const val = String(value);
+				if (!val.includes("*")) {
+					return res.filter((data) => data[keyContents[1]] === val);
+				}else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*"){
+					return res.filter((data) => data[keyContents[1]].endsWith(val.replace(/\*/gi,"")));
+				}else if(val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*"){
+					return res.filter((data) => data[keyContents[1]].startsWith(val.replace(/\*/gi,"")));
+				}else if(val.charAt(0) === "*" && val.charAt(val.length - 1) === "*"){
+					return res.filter((data) => data[keyContents[1]].includes(val.replace(/\*/gi,"")));
+				}
 			}
 		}
 		throw new InsightError("Invalid filter type");
@@ -112,13 +126,16 @@ export class InsightFacadeHelpers {
 		} else if (Object.keys(optionsBody).length === 2 && (Object.keys(optionsBody).includes("COLUMNS")) &&
 			(Object.keys(optionsBody).includes("ORDER"))) {
 			res = this.handleColumns(id, optionsBody["COLUMNS"], res);
-			return this.handleOrder(optionsBody["ORDER"], res);
+			return this.handleOrder(optionsBody["ORDER"], optionsBody["COLUMNS"], res);
 		} else {
-			throw new InsightError("Wrong keys in WHERE clause");
+			throw new InsightError("Wrong keys in Options clause");
 		}
 	}
 
 	private handleColumns(id: string, columnsBody: any, res: any[]): InsightDataset[] {
+		if (!Array.isArray(columnsBody) || columnsBody.length < 1) {
+			throw new InsightError("COLUMNS must be a non-empty array");
+		}
 		if (res.length === 0){
 			return res;
 		}
@@ -143,7 +160,16 @@ export class InsightFacadeHelpers {
 		});
 	}
 
-	private handleOrder(orderBody: any, res: any[]) {
-		return res.sort((a, b) => (a[orderBody] > b[orderBody]) ? 1 : -1);
+	private handleOrder(orderBody: any, optionsBody: any, res: any[]) {
+		if (!optionsBody.includes(orderBody)){
+			throw new InsightError("ORDER key must be in COLUMNS");
+		}
+		return res.sort((a, b) => {
+			if (a[orderBody] > b[orderBody]) {
+				return 1;
+			}else {
+				return -1;
+			}
+		});
 	}
 }
