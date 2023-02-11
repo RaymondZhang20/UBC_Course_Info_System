@@ -87,7 +87,7 @@ export class InsightFacadeHelpers {
 		let res2: any[] = res1;
 		for (let i = 1; i < body.length; i++) {
 			res1 = this.handleWhere(id, body[i], res);
-			res2 = [...res1, ...res2];
+			res2 = [...new Set([...res2, ...res1])];
 		}
 		return res2;
 	}
@@ -152,11 +152,6 @@ export class InsightFacadeHelpers {
 				}
 			}
 			return newData;
-			// for (const [key, value] of Object.entries(data)) {
-			// 	if (!key.includes("_")) {
-			// 		delete data[key];
-			// 	}
-			// }
 		});
 	}
 

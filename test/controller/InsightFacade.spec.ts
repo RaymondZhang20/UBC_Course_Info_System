@@ -56,17 +56,20 @@ describe("InsightFacade", function () {
 			expect(Object.keys(query).length).to.deep.equal(2);
 			const s: unknown = 1;
 			console.log((typeof s) === "number");
-			// let iw: Section[];
-			// expect(typeof iw === "undefined").to.be.true;
 		});
 
 		it("2", function () {
 			const query1: any = {
 				WHERE: {
-					AND: [
+					OR: [
 						{
-							OR: {
-								pass: 100
+							EQ: {
+								sections_pass: 100
+							}
+						},
+						{
+							IS: {
+								sections_id: "335"
 							}
 						}
 					]
@@ -96,10 +99,12 @@ describe("InsightFacade", function () {
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
 				return facade.performQuery(query1).then((dataset) => {
 					console.log(dataset.length);
-					return facade.performQuery(query2).then((dataset2) => {
-						console.log(dataset2.length);
-						console.log(dataset2);
-					});
+					console.log(dataset);
+					clearDisk();
+					// return facade.performQuery(query2).then((dataset2) => {
+					// 	console.log(dataset2.length);
+					// 	console.log(dataset2);
+					// });
 				});
 			});
 		});
@@ -137,6 +142,7 @@ describe("InsightFacade", function () {
 					console.log(dataset.length);
 					// expect(dataset).to.have.length(156);
 					console.log(dataset);
+					clearDisk();
 				});
 			});
 		});
