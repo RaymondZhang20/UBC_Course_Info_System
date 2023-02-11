@@ -22,7 +22,6 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	private dataBases: DataBase[] = [];
 	constructor() {
 		super();
-		"./data";
 		// if (fs.existsSync("./jsonFiles/databases.json")) {
 		// 	this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
 		// } else {
@@ -106,6 +105,8 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		}else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
+		}else if (!Object.keys(query).includes("WHERE") || !Object.keys(query).includes("OPTIONS")) {
+			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		}
 		try {
 			const databaseID: string = this.findDatabaseID(query);
@@ -188,7 +189,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 
 	private findDatabaseID(query: any) {
 		const columns: string[] = query["OPTIONS"]["COLUMNS"];
-		if (columns === undefined) {
+		if (columns === undefined || columns.length < 1) {
 			throw new InsightError("Invalid query");
 		} else {
 			const id: string = columns[0].split("_", 1)[0];
