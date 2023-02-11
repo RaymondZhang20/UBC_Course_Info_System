@@ -22,11 +22,11 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	private dataBases: DataBase[] = [];
 	constructor() {
 		super();
-		// if (fs.existsSync("./jsonFiles/databases.json")) {
-		// 	this.dataBases = JSON.parse(fs.readFileSync("./jsonFiles/databases.json").toString());
-		// } else {
-		// 	fs.createFileSync("./jsonFiles/databases.json");
-		// }
+		if (fs.existsSync("./data/databases.json")) {
+			this.dataBases = JSON.parse(fs.readFileSync("./data/databases.json").toString());
+		} else {
+			fs.createFileSync("./data/databases.json");
+		}
 	}
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
 		if (id.includes("_")) {
@@ -59,7 +59,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 							}
 						});
 						this.dataBases.push(new DataBase(id, sections));
-						// this.writeDataBasesInLocalDisk(this.dataBases);
+						this.writeDataBasesInLocalDisk(this.dataBases);
 						return Promise.all(this.listIDs());
 					})
 					.catch((err) => {
@@ -92,7 +92,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			for (let i = 0; i < this.dataBases.length; i++) {
 				if (this.dataBases[i].getId() === id) {
 					this.dataBases.splice(i, 1);
-					// this.writeDataBasesInLocalDisk(this.dataBases);
+					this.writeDataBasesInLocalDisk(this.dataBases);
 					return Promise.resolve(id);
 				}
 			}
@@ -184,7 +184,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	}
 
 	private writeDataBasesInLocalDisk(dataBases: DataBase[]) {
-		fs.writeFileSync("./jsonFiles/databases.json", JSON.stringify(dataBases));
+		fs.writeFileSync("./data/databases.json", JSON.stringify(dataBases));
 	}
 
 	private findDatabaseID(query: any) {
