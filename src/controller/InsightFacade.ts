@@ -41,29 +41,34 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 				return this.parse(content)
 					.then((infoArray) => {
 						infoArray.forEach(function (s) {
-							const info: any[] = JSON.parse(s).result;
-							if (info.length > 0) {
-								info.forEach(function (section) {
-									if (section.Section === "overall") {
-										sections.push(new Section(String(section.id), section.Course, section.Title
-											, section.Professor
-											, section.Subject, 1900, section.Avg, section.Pass
-											, section.Fail, section.Audit));
-									} else {
-										sections.push(new Section(String(section.id), section.Course, section.Title
-											, section.Professor
-											, section.Subject, Number(section.Year), section.Avg, section.Pass
-											, section.Fail, section.Audit));
-									}
-								});
+							if (s !== "") {
+								const info: any[] = JSON.parse(s).result;
+								if (info.length > 0) {
+									info.forEach(function (section) {
+										if (section.Section === "overall") {
+											sections.push(new Section(String(section.id), section.Course, section.Title
+												, section.Professor
+												, section.Subject, 1900, section.Avg, section.Pass
+												, section.Fail, section.Audit));
+										} else {
+											sections.push(new Section(String(section.id), section.Course, section.Title
+												, section.Professor
+												, section.Subject, Number(section.Year), section.Avg, section.Pass
+												, section.Fail, section.Audit));
+										}
+									});
+								}
 							}
 						});
+						if (sections.length === 0) {
+							throw new InsightError("empty or invalid zip file");
+						}
 						this.dataBases.push(new DataBase(id, sections));
 						this.writeDataBasesInLocalDisk(this.dataBases);
 						return Promise.all(this.listIDs());
 					})
 					.catch((err) => {
-						return Promise.reject(new InsightError("error occurred in adding stage"));
+						return Promise.reject(new InsightError("error occurred in adding stage" + err.message));
 					});
 			} else if (kind === InsightDatasetKind.Rooms) {
 				return Promise.reject(new InsightError("not implemented yet"));
@@ -76,9 +81,9 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		const res: InsightDataset[] = [];
 		this.dataBases.forEach(function (database) {
 			res.push({
-				id: database.getId(),
+				id: database._id,
 				kind: InsightDatasetKind.Sections,
-				numRows: database.getList().length
+				numRows: database._list.length
 			});
 		});
 		return Promise.resolve(res);
@@ -120,8 +125,11 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 				throw new InsightError("Cannot find the dataset");
 			}
 			database = this.queryProcessor(query, databaseID, database);
-		} catch (e) {
-			return Promise.reject(e);
+		} catch (err: any) {
+			if (err instanceof ResultTooLargeError) {
+				return Promise.reject(err);
+			}
+			return Promise.reject(new InsightError(err.message));
 		}
 		return Promise.resolve(database);
 	}
