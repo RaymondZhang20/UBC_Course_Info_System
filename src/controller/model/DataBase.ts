@@ -1,14 +1,16 @@
-import Section from "./Section";
+import {InsightDatasetKind} from "../IInsightFacade";
 
 export default class DataBase {
 
 	public _id: string = "";
-	public _list: Section[] = [];
+	public _list: any[] = [];
+	public _kind: InsightDatasetKind;
 
 
-	constructor(id: string, list: Section[]) {
+	constructor(id: string, list: any[], kind: InsightDatasetKind) {
 		this._id = id;
 		this._list = list;
+		this._kind = kind;
 	}
 
 	public getId(): string {
