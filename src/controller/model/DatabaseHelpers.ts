@@ -91,15 +91,7 @@ export class DatabaseHelpers {
 				try {
 					http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team106/"
 						+ buildingInfo["address"].replaceAll(" ", "%20"), (result) => {
-						let data: any[] = [];
-						result.on("data", (chunk) => {
-							data.push(chunk);
-						}).on("end", () => {
-							const GEOlocation = JSON.parse(Buffer.concat(data).toString());
-							buildingInfo["lat"] = GEOlocation["lat"];
-							buildingInfo["lon"] = GEOlocation["lon"];
-							return res(true);
-						});
+						this.handleData(result, buildingInfo, res);
 					});
 				} catch (err) {
 					rej(err);
@@ -107,6 +99,18 @@ export class DatabaseHelpers {
 			}));
 		});
 		return Promise.all(flag);
+	}
+
+	private handleData(result: any, buildingInfo: any, res: (value: (PromiseLike<unknown> | unknown)) => void) {
+		let data: any[] = [];
+		result.on("data", (chunk: any) => {
+			data.push(chunk);
+		}).on("end", () => {
+			const GEOlocation = JSON.parse(Buffer.concat(data).toString());
+			buildingInfo["lat"] = GEOlocation["lat"];
+			buildingInfo["lon"] = GEOlocation["lon"];
+			return res(true);
+		});
 	}
 
 	protected addRoomInfo(buildingInfoArray: any[], zipLoaded: JSZip, roomInfoArray: any[]) {
