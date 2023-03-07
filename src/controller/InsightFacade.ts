@@ -110,6 +110,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		});
 		return Promise.resolve(res);
 	}
+
 	public removeDataset(id: string): Promise<string> {
 		if (id.includes("_")) {
 			return Promise.reject(new InsightError("id of the database should not contain underscore"));
@@ -126,13 +127,14 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		}
 		return Promise.reject(new NotFoundError("Cannot find the dataBase"));
 	}
+
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		let database: any[] = [];
-		if (!query){
+		if (!query) {
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
-		}else if (this.dataBases.length === 0) {
+		} else if (this.dataBases.length === 0) {
 			return Promise.reject(new InsightError("No datasets in the facade"));
-		}else if (!Object.keys(query).includes("WHERE") || !Object.keys(query).includes("OPTIONS")) {
+		} else if (!Object.keys(query).includes("WHERE") || !Object.keys(query).includes("OPTIONS")) {
 			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		}
 		try {
@@ -155,6 +157,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		}
 		return Promise.resolve(database);
 	}
+
 	private listIDs(): string[] {
 		const res: string[] = [];
 		this.dataBases.forEach(function (da) {
