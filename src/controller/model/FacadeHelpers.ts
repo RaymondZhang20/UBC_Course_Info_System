@@ -1,7 +1,8 @@
 import {InsightDataset, InsightError, ResultTooLargeError} from "../IInsightFacade";
+import {DatabaseHelpers} from "./DatabaseHelpers";
 
 
-export class InsightFacadeHelpers {
+export class InsightFacadeHelpers extends DatabaseHelpers {
 
 	protected handleWhere(id: string, whereBody: any, res: any[]) {
 		if (Object.keys(whereBody).length === 0){

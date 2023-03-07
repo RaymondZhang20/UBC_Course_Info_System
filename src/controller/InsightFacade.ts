@@ -11,7 +11,10 @@ import DataBase from "../controller/model/DataBase";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
 import Section from "../controller/model/Section";
-import {InsightFacadeHelpers} from "./model/QueryHandlers";
+import {InsightFacadeHelpers} from "./model/FacadeHelpers";
+import Room from "./model/Room";
+import {parse} from "parse5";
+import * as http from "http";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -28,6 +31,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			fs.createFileSync("./data/databases.json");
 		}
 	}
+
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
 		if (id.includes("_")) {
 			return Promise.reject(new InsightError("id of the database should not contain underscore"));
@@ -38,32 +42,13 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		} else {
 			if (kind === InsightDatasetKind.Sections) {
 				const sections: Section[] = [];
-				return this.parse(content)
+				return this.parseSection(content)
 					.then((infoArray) => {
-						infoArray.forEach(function (s) {
-							if (s !== "") {
-								const info: any[] = JSON.parse(s).result;
-								if (info.length > 0) {
-									info.forEach(function (section) {
-										if (section.Section === "overall") {
-											sections.push(new Section(String(section.id), section.Course, section.Title
-												, section.Professor
-												, section.Subject, 1900, section.Avg, section.Pass
-												, section.Fail, section.Audit));
-										} else {
-											sections.push(new Section(String(section.id), section.Course, section.Title
-												, section.Professor
-												, section.Subject, Number(section.Year), section.Avg, section.Pass
-												, section.Fail, section.Audit));
-										}
-									});
-								}
-							}
-						});
+						this.loadSections(infoArray, sections);
 						if (sections.length === 0) {
 							throw new InsightError("empty or invalid zip file");
 						}
-						this.dataBases.push(new DataBase(id, sections));
+						this.dataBases.push(new DataBase(id, sections, InsightDatasetKind.Sections));
 						this.writeDataBasesInLocalDisk(this.dataBases);
 						return Promise.all(this.listIDs());
 					})
@@ -71,18 +56,55 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 						return Promise.reject(new InsightError("error occurred in adding stage" + err.message));
 					});
 			} else if (kind === InsightDatasetKind.Rooms) {
-				return Promise.reject(new InsightError("not implemented yet"));
+				const rooms: Room[] = [];
+				return this.parseRoom(content)
+					.then((infoArray) => {
+						this.loadRooms(infoArray, rooms);
+						if (rooms.length === 0) {
+							throw new InsightError("empty or invalid campus file");
+						}
+						this.dataBases.push(new DataBase(id, rooms, InsightDatasetKind.Rooms));
+						this.writeDataBasesInLocalDisk(this.dataBases);
+						return Promise.all(this.listIDs());
+					})
+					.catch((err) => {
+						return Promise.reject(new InsightError("error occurred in adding stage" + err.message));
+					});
 			} else {
 				return Promise.reject(new InsightError("kind of the database is not valid"));
 			}
 		}
 	}
+
+	private loadSections(infoArray: string[], sections: Section[]) {
+		infoArray.forEach(function (s) {
+			if (s !== "") {
+				const info: any[] = JSON.parse(s).result;
+				if (info.length > 0) {
+					info.forEach(function (section) {
+						if (section.Section === "overall") {
+							sections.push(new Section(String(section.id), section.Course, section.Title
+								, section.Professor
+								, section.Subject, 1900, section.Avg, section.Pass
+								, section.Fail, section.Audit));
+						} else {
+							sections.push(new Section(String(section.id), section.Course, section.Title
+								, section.Professor
+								, section.Subject, Number(section.Year), section.Avg, section.Pass
+								, section.Fail, section.Audit));
+						}
+					});
+				}
+			}
+		});
+	}
+
 	public listDatasets(): Promise<InsightDataset[]> {
 		const res: InsightDataset[] = [];
 		this.dataBases.forEach(function (database) {
 			res.push({
 				id: database._id,
-				kind: InsightDatasetKind.Sections,
+				kind: database._kind,
 				numRows: database._list.length
 			});
 		});
@@ -95,7 +117,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			return Promise.reject(new InsightError("id of the database should not be only whitespace characters"));
 		} else {
 			for (let i = 0; i < this.dataBases.length; i++) {
-				if (this.dataBases[i].getId() === id) {
+				if (this.dataBases[i]._id === id) {
 					this.dataBases.splice(i, 1);
 					this.writeDataBasesInLocalDisk(this.dataBases);
 					return Promise.resolve(id);
@@ -136,7 +158,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	private listIDs(): string[] {
 		const res: string[] = [];
 		this.dataBases.forEach(function (da) {
-			res.push(da.getId());
+			res.push(da._id);
 		});
 		return res;
 	}
@@ -157,20 +179,6 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			}
 		}
 		return false;
-	}
-
-	private async parse(content: string): Promise<string[]> {
-		const coursesArray: any[] = [];
-		try {
-			const zip = await new JSZip().loadAsync(content, {base64: true});
-			zip.folder("courses/")?.forEach((path, file) => {
-				coursesArray.push(file.async("string"));
-			});
-		} catch (e: any) {
-			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
-		}
-		return Promise.all(coursesArray);
-
 	}
 
 	private queryProcessor(query: any, id: string, res: any[]) {
