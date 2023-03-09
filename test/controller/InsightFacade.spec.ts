@@ -21,10 +21,12 @@ describe("InsightFacade", function () {
 
 	// Declare datasets used in tests. You should add more datasets like this!
 	let sections: string;
+	let rooms: string;
 
 	before(function () {
 		// This block runs once and loads the datasets.
 		sections = getContentFromArchives("pair.zip");
+		rooms = getContentFromArchives("campus.zip");
 
 		// Just in case there is anything hanging around from a previous run of the test suite
 		clearDisk();
@@ -96,15 +98,11 @@ describe("InsightFacade", function () {
 				}
 			};
 			facade = new InsightFacade();
-			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
+			return facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms).then(() => {
 				return facade.performQuery(query1).then((dataset) => {
 					console.log(dataset.length);
 					console.log(dataset);
 					clearDisk();
-					// return facade.performQuery(query2).then((dataset2) => {
-					// 	console.log(dataset2.length);
-					// 	console.log(dataset2);
-					// });
 				});
 			});
 		});
