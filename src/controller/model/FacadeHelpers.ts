@@ -1,10 +1,10 @@
-import {InsightDataset, InsightError, ResultTooLargeError} from "../IInsightFacade";
+import {InsightDataset, InsightDatasetKind, InsightError, ResultTooLargeError} from "../IInsightFacade";
 import {DatabaseHelpers} from "./DatabaseHelpers";
 
 
 export class InsightFacadeHelpers extends DatabaseHelpers {
 
-	protected handleWhere(id: string, whereBody: any, res: any[]) {
+	protected handleWhere(id: string, whereBody: any, res: any[], kind: InsightDatasetKind) {
 		if (Object.keys(whereBody).length === 0){
 			if (res.length > 5000) {
 				throw new ResultTooLargeError("Result larger then 5000");
@@ -15,15 +15,15 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		}
 		for (const [key, value] of Object.entries(whereBody)) {
 			if (key === "IS") {
-				res = this.handleIS(id, value, res);
+				res = this.handleIS(id, value, res, kind);
 			} else if (key === "NOT") {
-				res = this.handleNOT(id, value, res);
+				res = this.handleNOT(id, value, res, kind);
 			} else if (key === "AND") {
-				res = this.handleAND(id, value, res);
+				res = this.handleAND(id, value, res, kind);
 			} else if (key === "OR") {
-				res = this.handleOR(id, value, res);
+				res = this.handleOR(id, value, res, kind);
 			} else if (key === "EQ" || key === "GT" || key === "LT") {
-				res = this.handleMComparator(key, value, id, res);
+				res = this.handleMComparator(key, value, id, res, kind);
 			} else {
 				throw new InsightError("Wrong keys in WHERE clause");
 
@@ -32,10 +32,15 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		return res;
 	}
 
-	private handleIS(id: string, isBody: any, res: any[]) {
-		const validFields: string[] = ["dept", "id", "instructor", "title", "uuid"];
+	private handleIS(id: string, isBody: any, res: any[], kind: InsightDatasetKind) {
 		if (Object.keys(isBody).length !== 1) {
 			throw new InsightError("Wrong keys in math operator");
+		}
+		let validFields: string[] = [];
+		if (kind === InsightDatasetKind.Sections){
+			validFields = ["dept", "id", "instructor", "title", "uuid"];
+		}else if (kind === InsightDatasetKind.Rooms){
+			validFields = ["fullname", "shortname", "number", "name", "address", "type", "furniture", "href"];
 		}
 		for (const [key, value] of Object.entries(isBody)) {
 			const keyContents: string[] = key.split("_", 2);
@@ -61,40 +66,45 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		throw new InsightError("Invalid filter type");
 	}
 
-	private handleNOT(id: string, body: any, res: any[]) {
+	private handleNOT(id: string, body: any, res: any[], kind: InsightDatasetKind) {
 		const all: any[] = res;
-		const not: any[] = this.handleWhere(id, body, res);
+		const not: any[] = this.handleWhere(id, body, res, kind);
 		return all.filter((data) => !not.includes(data));
 	}
 
-	private handleAND(id: string, body: any, res: any[]) {
+	private handleAND(id: string, body: any, res: any[], kind: InsightDatasetKind) {
 		if (!Array.isArray(body) || body.length < 1) {
 			throw new InsightError("Should be an non-empty array inside AND");
 		}
-		let res1: any[] = this.handleWhere(id, body[0], res);
+		let res1: any[] = this.handleWhere(id, body[0], res, kind);
 		let res2: any[] = res1;
 		for (let i = 1; i < body.length; i++) {
-			res1 = this.handleWhere(id, body[i], res);
+			res1 = this.handleWhere(id, body[i], res, kind);
 			res2 = res1.filter((data) => res2.includes(data));
 		}
 		return res2;
 	}
 
-	private handleOR(id: string, body: any, res: any[]) {
+	private handleOR(id: string, body: any, res: any[], kind: InsightDatasetKind) {
 		if (!Array.isArray(body) || body.length < 1) {
 			throw new InsightError("Should be an non-empty array inside OR");
 		}
-		let res1: any[] = this.handleWhere(id, body[0], res);
+		let res1: any[] = this.handleWhere(id, body[0], res, kind);
 		let res2: any[] = res1;
 		for (let i = 1; i < body.length; i++) {
-			res1 = this.handleWhere(id, body[i], res);
+			res1 = this.handleWhere(id, body[i], res, kind);
 			res2 = [...new Set([...res2, ...res1])];
 		}
 		return res2;
 	}
 
-	private handleMComparator(comparator: string, content: any, id: string, res: any[]) {
-		const validFields: string[] = ["avg", "pass", "fail", "audit", "year"];
+	private handleMComparator(comparator: string, content: any, id: string, res: any[], kind: InsightDatasetKind) {
+		let validFields: string[] = [];
+		if (kind === InsightDatasetKind.Sections){
+			validFields = ["avg", "pass", "fail", "audit", "year"];
+		} else if (kind === InsightDatasetKind.Rooms){
+			validFields = ["lat", "lon", "seats"];
+		}
 		if (Object.keys(content).length !== 1) {
 			throw new InsightError("Wrong keys in math operator");
 		}
@@ -167,5 +177,27 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 				return -1;
 			}
 		});
+	}
+
+	protected handleTrans(id: string, transBody: any, res: any[]) {
+		if (Object.keys(transBody).length !== 2){
+			throw new InsightError("Invalid number of arguments in TRANSFORMATIONS");
+		}
+		if (!Object.keys(transBody).includes("GROUP") || !Object.keys(transBody).includes("APPLY")) {
+			throw new InsightError("Missing GROUP or APPLY in TRANSFORMATIONS");
+		}
+		if (Object.keys(transBody).length === 2 && Object.keys(transBody).includes("GROUP")
+			&& Object.keys(transBody).includes("APPLY")){
+			res = this.handleGroup(id, transBody["GROUP"], res);
+			return this.handleApply(id, transBody["APPLY"], res);
+		}
+	}
+
+	private handleGroup(id: string, groupBody: any, res: any[]) {
+		return res;
+	}
+
+	private handleApply(id: string, applyBody: any, res: any[]) {
+		return res;
 	}
 }
