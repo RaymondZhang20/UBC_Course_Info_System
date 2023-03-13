@@ -1,0 +1,19 @@
+{
+	"title": "Error_InvalidKeyB",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"rooms_seats": 300
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_seats",
+				"sections_avg"
+			],
+			"ORDER": "sections_avg"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

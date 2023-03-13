@@ -1,0 +1,1045 @@
+{
+	"title": "sort_up",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_avg": 70
+					}
+				},
+				{
+					"IS": {
+						"sections_dept": "cpsc"
+					}
+				},
+				{
+					"LT": {
+						"sections_avg": 72
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_fail",
+				"sections_avg",
+				"sections_title",
+				"sections_id",
+				"sections_year"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"sections_fail",
+					"sections_avg",
+					"sections_year"
+				]
+			}
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 0,
+			"sections_avg": 71,
+			"sections_title": "comptng life sci",
+			"sections_id": "301",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 0,
+			"sections_avg": 71,
+			"sections_title": "comptng life sci",
+			"sections_id": "301",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 0,
+			"sections_avg": 71.8,
+			"sections_title": "computer vision",
+			"sections_id": "425",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 0,
+			"sections_avg": 71.8,
+			"sections_title": "computer vision",
+			"sections_id": "425",
+			"sections_year": 2008
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 70.98,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 70.98,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 2008
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 71.67,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 71.67,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 71.75,
+			"sections_title": "distrbt'd systms",
+			"sections_id": "416",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 1,
+			"sections_avg": 71.75,
+			"sections_title": "distrbt'd systms",
+			"sections_id": "416",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 2,
+			"sections_avg": 70.29,
+			"sections_title": "internet comp",
+			"sections_id": "317",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 2,
+			"sections_avg": 71.04,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 2,
+			"sections_avg": 71.04,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 2,
+			"sections_avg": 71.81,
+			"sections_title": "internet comp",
+			"sections_id": "317",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 70.03,
+			"sections_title": "theory comptg",
+			"sections_id": "421",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 70.03,
+			"sections_title": "theory comptg",
+			"sections_id": "421",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 70.87,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 70.87,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.27,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2008
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.52,
+			"sections_title": "intel systems",
+			"sections_id": "422",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.52,
+			"sections_title": "intel systems",
+			"sections_id": "422",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.71,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.89,
+			"sections_title": "intel systems",
+			"sections_id": "422",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.89,
+			"sections_title": "intr rel databse",
+			"sections_id": "304",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 3,
+			"sections_avg": 71.89,
+			"sections_title": "intel systems",
+			"sections_id": "422",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 70.54,
+			"sections_title": "adv rel databse",
+			"sections_id": "404",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 70.92,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 70.92,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 70.96,
+			"sections_title": "adv rel databse",
+			"sections_id": "404",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.02,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.02,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.05,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.16,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.41,
+			"sections_title": "adv rel databse",
+			"sections_id": "404",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.77,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 4,
+			"sections_avg": 71.77,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 70.16,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 70.16,
+			"sections_title": "num approx/discr",
+			"sections_id": "303",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 70.75,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 2008
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 70.93,
+			"sections_title": "adv alg dsgn&anl",
+			"sections_id": "420",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 70.93,
+			"sections_title": "adv alg dsgn&anl",
+			"sections_id": "420",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.05,
+			"sections_title": "internet comp",
+			"sections_id": "317",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.33,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.33,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.6,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.99,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 5,
+			"sections_avg": 71.99,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 70.83,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 70.92,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 70.96,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 70.98,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 71.39,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 71.4,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 71.66,
+			"sections_title": "internet comp",
+			"sections_id": "317",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 6,
+			"sections_avg": 71.97,
+			"sections_title": "adv rel databse",
+			"sections_id": "404",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 70.42,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 70.51,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 70.66,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 70.7,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 70.7,
+			"sections_title": "adv opertng sysm",
+			"sections_id": "415",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 71.52,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 71.55,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 71.59,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 71.82,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 7,
+			"sections_avg": 71.94,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 8,
+			"sections_avg": 70.38,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 8,
+			"sections_avg": 70.94,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 8,
+			"sections_avg": 70.95,
+			"sections_title": "model comptn",
+			"sections_id": "121",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 8,
+			"sections_avg": 71.22,
+			"sections_title": "adv rel databse",
+			"sections_id": "404",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 9,
+			"sections_avg": 70.46,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 9,
+			"sections_avg": 70.5,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 9,
+			"sections_avg": 71.64,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2008
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 9,
+			"sections_avg": 71.72,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 9,
+			"sections_avg": 71.92,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 10,
+			"sections_avg": 71.03,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 10,
+			"sections_avg": 71.44,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 10,
+			"sections_avg": 71.62,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 10,
+			"sections_avg": 71.79,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 10,
+			"sections_avg": 71.92,
+			"sections_title": "model comptn",
+			"sections_id": "121",
+			"sections_year": 2007
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 11,
+			"sections_avg": 70.05,
+			"sections_title": "artificial intel",
+			"sections_id": "322",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 70.48,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 70.91,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 71.28,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 71.45,
+			"sections_title": "basics comp syst",
+			"sections_id": "261",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 71.45,
+			"sections_title": "basics comp syst",
+			"sections_id": "261",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 71.87,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2011
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 12,
+			"sections_avg": 71.97,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 13,
+			"sections_avg": 71.24,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 13,
+			"sections_avg": 71.66,
+			"sections_title": "model comptn",
+			"sections_id": "121",
+			"sections_year": 2009
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 13,
+			"sections_avg": 71.89,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 70.27,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 70.66,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 70.7,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 70.76,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 70.9,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 15,
+			"sections_avg": 71.92,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 16,
+			"sections_avg": 71.24,
+			"sections_title": "comp hard&os",
+			"sections_id": "313",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 16,
+			"sections_avg": 71.61,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 17,
+			"sections_avg": 70.24,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 17,
+			"sections_avg": 70.68,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 17,
+			"sections_avg": 70.88,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 17,
+			"sections_avg": 71.18,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 18,
+			"sections_avg": 71.3,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 18,
+			"sections_avg": 71.44,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2012
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 19,
+			"sections_avg": 70.53,
+			"sections_title": "intro comp sys",
+			"sections_id": "213",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 20,
+			"sections_avg": 71.27,
+			"sections_title": "internet comp",
+			"sections_id": "317",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 21,
+			"sections_avg": 71.13,
+			"sections_title": "basic alg&data",
+			"sections_id": "221",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 23,
+			"sections_avg": 70.4,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 24,
+			"sections_avg": 71.46,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 25,
+			"sections_avg": 70.75,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2010
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 25,
+			"sections_avg": 71.14,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 25,
+			"sections_avg": 71.73,
+			"sections_title": "model comptn",
+			"sections_id": "121",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 26,
+			"sections_avg": 71.09,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 27,
+			"sections_avg": 70.46,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 29,
+			"sections_avg": 70.59,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 29,
+			"sections_avg": 70.62,
+			"sections_title": "model comptn",
+			"sections_id": "121",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 31,
+			"sections_avg": 70.93,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 33,
+			"sections_avg": 70.83,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 37,
+			"sections_avg": 71.09,
+			"sections_title": "intr alg dsgn&an",
+			"sections_id": "320",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 38,
+			"sections_avg": 71.07,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2014
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 42,
+			"sections_avg": 70.47,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 46,
+			"sections_avg": 70.78,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2015
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 48,
+			"sections_avg": 71.05,
+			"sections_title": "sftwr constructn",
+			"sections_id": "210",
+			"sections_year": 1900
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 59,
+			"sections_avg": 70.11,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 2013
+		},
+		{
+			"sections_dept": "cpsc",
+			"sections_fail": 150,
+			"sections_avg": 71.22,
+			"sections_title": "comptn, progrmng",
+			"sections_id": "110",
+			"sections_year": 1900
+		}
+	]
+}

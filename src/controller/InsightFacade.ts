@@ -9,12 +9,9 @@ import {
 } from "./IInsightFacade";
 import DataBase from "../controller/model/DataBase";
 import * as fs from "fs-extra";
-import JSZip from "jszip";
 import Section from "../controller/model/Section";
 import {InsightFacadeHelpers} from "./model/FacadeHelpers";
 import Room from "./model/Room";
-import {parse} from "parse5";
-import * as http from "http";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -130,6 +127,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		let database: any[] = [];
+		let kind: InsightDatasetKind = InsightDatasetKind.Sections;
 		if (!query) {
 			return Promise.reject(new InsightError("Query is undefined/null/empty"));
 		} else if (this.dataBases.length === 0) {
@@ -142,13 +140,14 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			for (const data of this.dataBases) {
 				if (data._id === databaseID) {
 					database = data._list;
+					kind = data._kind;
 					break;
 				}
 			}
 			if (database.length === 0) {
 				throw new InsightError("Cannot find the dataset");
 			}
-			database = this.queryProcessor(query, databaseID, database);
+			database = this.queryProcessor(query, databaseID, database, kind);
 		} catch (err: any) {
 			if (err instanceof ResultTooLargeError) {
 				return Promise.reject(err);
@@ -184,15 +183,24 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		return false;
 	}
 
-	private queryProcessor(query: any, id: string, res: any[]) {
-		if (Object.keys(query).length !== 2) {
+	private queryProcessor(query: any, id: string, res: any[], kind: InsightDatasetKind) {
+		if (Object.keys(query).length !== 2 && Object.keys(query).length !== 3 ) {
 			throw new InsightError("Invalid query");
-		} else if (Object.keys(query).includes("WHERE")) {
-			res = this.handleWhere(id,query["WHERE"], res);
+		}
+		if (Object.keys(query).includes("WHERE")) {
+			res = this.handleWhere(id,query["WHERE"], res, kind);
 			if (res.length > 5000) {
 				throw new ResultTooLargeError("Result larger then 5000");
-			} else if (Object.keys(query).includes("OPTIONS")) {
+			}
+			if (Object.keys(query).includes("OPTIONS")) {
 				res = this.handleOptions(id, query["OPTIONS"], res);
+				if (Object.keys(query).length === 3){
+					if (Object.keys(query).includes("TRANSFORMATIONS")){
+						// res = this.handleTrans(id, query["TRANSFORMATIONS"], res);
+					}else{
+						throw new InsightError("Cannot find TRANSFORMATIONS clause");
+					}
+				}
 			} else {
 				throw new InsightError("Cannot find OPTIONS clause");
 			}

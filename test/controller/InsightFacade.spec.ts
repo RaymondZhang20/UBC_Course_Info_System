@@ -81,7 +81,10 @@ describe("InsightFacade", function () {
 						"sections_id",
 						"sections_title",
 						"sections_instructor"
-					]
+					],
+					ORDER: {dir: "UP",
+						keys: ["sections_id",
+							"sections_title"]}
 				}
 			};
 			const query2: any = {
@@ -98,11 +101,15 @@ describe("InsightFacade", function () {
 				}
 			};
 			facade = new InsightFacade();
-			return facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms).then(() => {
+			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
 				return facade.performQuery(query1).then((dataset) => {
-					console.log(dataset.length);
-					console.log(dataset);
+					// console.log(dataset.length);
+					// console.log(dataset);
 					clearDisk();
+					// return facade.performQuery(query2).then((dataset2) => {
+					// 	console.log(dataset2.length);
+					// 	console.log(dataset2);
+					// });
 				});
 			});
 		});
@@ -356,7 +363,8 @@ describe("InsightFacade", function () {
 
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [facade.addDataset("sections", sections, InsightDatasetKind.Sections)];
+			const loadDatasetPromises = [facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms),
+				facade.addDataset("sections", sections, InsightDatasetKind.Sections)];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -371,7 +379,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/new",
+			"./test/resources/rooms",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);
@@ -392,28 +400,28 @@ describe("InsightFacade", function () {
 			}
 		);
 
-		// folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
-		// 	"Dynamic InsightFacade PerformQuery tests (ordered queries involved)",
-		// 	(input) => facade.performQuery(input),
-		// 	"./test/resources/orderedQueries",
-		// 	{
-		// 		assertOnResult: (actual, expected: any) => {
-		// 			expect(actual).to.have.deep.ordered.members(expected);
-		// 			expect(actual).to.deep.equal(expected);
-		// 		},
-		// 		errorValidator: (error): error is PQErrorKind =>
-		// 			error === "ResultTooLargeError" || error === "InsightError",
-		// 		assertOnError: (actual, expected) => {
-		// 			if (expected === "ResultTooLargeError") {
-		// 				expect(actual).to.be.an.instanceOf(ResultTooLargeError);
-		// 			} else if (expected === "InsightError") {
-		// 				expect(actual).to.be.an.instanceOf(InsightError);
-		// 			} else {
-		// 				// It shouldn't come here anyway
-		// 				expect.fail("UNEXPECTED ERROR");
-		// 			}
-		// 		},
-		// 	}
-		// );
+		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
+			"Dynamic InsightFacade PerformQuery tests (ordered queries involved)",
+			(input) => facade.performQuery(input),
+			"./test/resources/order",
+			{
+				assertOnResult: (actual, expected: any) => {
+					expect(actual).to.have.deep.ordered.members(expected);
+					expect(actual).to.deep.equal(expected);
+				},
+				errorValidator: (error): error is PQErrorKind =>
+					error === "ResultTooLargeError" || error === "InsightError",
+				assertOnError: (actual, expected) => {
+					if (expected === "ResultTooLargeError") {
+						expect(actual).to.be.an.instanceOf(ResultTooLargeError);
+					} else if (expected === "InsightError") {
+						expect(actual).to.be.an.instanceOf(InsightError);
+					} else {
+						// It shouldn't come here anyway
+						expect.fail("UNEXPECTED ERROR");
+					}
+				},
+			}
+		);
 	});
 });
