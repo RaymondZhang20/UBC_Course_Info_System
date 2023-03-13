@@ -167,16 +167,49 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 	}
 
 	private handleOrder(orderBody: any, optionsBody: any, res: any[]) {
-		if (!optionsBody.includes(orderBody)){
-			throw new InsightError("ORDER key must be in COLUMNS");
-		}
-		return res.sort((a, b) => {
-			if (a[orderBody] > b[orderBody]) {
-				return 1;
-			}else {
-				return -1;
+		if (typeof orderBody === "string") {
+			if (!optionsBody.includes(orderBody)){
+				throw new InsightError("ORDER key must be in COLUMNS");
 			}
-		});
+			return res.sort((a, b) => {
+				if (a[orderBody] > b[orderBody]) {
+					return 1;
+				}else {
+					return -1;
+				}
+			});
+		} else if (typeof orderBody === "object" && Object.keys(orderBody).length === 2 &&
+			(Object.keys(orderBody).includes("dir")) && (Object.keys(orderBody).includes("keys"))) {
+			let dir: number = 0;
+			if (orderBody["dir"] === "UP") {
+				dir = 1;
+			} else if (orderBody["dir"] === "DOWN") {
+				dir = -1;
+			} else {
+				throw new InsightError("dir must be UP or DOWN");
+			}
+			if (!Array.isArray(orderBody["keys"])) {
+				throw new InsightError("keys must be an array");
+			}
+			return res.sort((a, b) => {
+				if (this.compare(a,b,orderBody["keys"])) {
+					return dir;
+				} else {
+					return -dir;
+				}
+			});
+		} else {
+			throw new InsightError("SORT is not in the right format");
+		}
+	}
+
+	private compare(a: any, b: any, keys: any[]): boolean {
+		for (let key of keys) {
+			if (a[key] !== b[key]) {
+				return a[key] > b[key];
+			}
+		}
+		return false;
 	}
 
 	protected handleTrans(id: string, transBody: any, res: any[]) {
