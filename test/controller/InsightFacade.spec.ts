@@ -86,7 +86,7 @@ describe("InsightFacade", function () {
 						"sections_dept",
 						"sections_id",
 						"overallAvg",
-						"AvgFail"
+						"countUUid"
 					]
 				},
 				TRANSFORMATIONS: {
@@ -100,8 +100,8 @@ describe("InsightFacade", function () {
 							}
 						},
 						{
-							AvgFail: {
-								COUNT: "sections_audit"
+							countUUid: {
+								COUNT: "sections_uuid"
 							}
 						}
 					]

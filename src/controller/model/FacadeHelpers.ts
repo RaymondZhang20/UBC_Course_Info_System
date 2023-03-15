@@ -152,11 +152,8 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		return res.map((data) => {
 			let newData: any = {};
 			for (const column of columnsBody) {
-				const splitColumn: string[] = column.split("_", 2);
-				if (splitColumn[0] !== id) {
-					throw new InsightError("Cannot query more than one database");
-				} else if (Object.keys(data).includes(splitColumn[1])) {
-					Object.assign(newData, {[column]: data[splitColumn[1]]});
+				if (Object.keys(data).includes(column)) {
+					Object.assign(newData, {[column]: data[column]});
 				} else {
 					throw new InsightError("Invalid columns");
 				}
@@ -219,7 +216,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			throw new InsightError("Missing GROUP or APPLY in TRANSFORMATIONS");
 		}
 		res = this.handleGroup(id, transBody["GROUP"], res);
-		res = this.handleApply(id, transBody["APPLY"], res);
+		res = this.handleApply(id, transBody["APPLY"], res, transBody["GROUP"]);
 		return res;
 	}
 
@@ -227,17 +224,63 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		if (res.length === 0) {
 			return res;
 		}
-		console.log(groupBody);
-		const newRes: any[][] = [[]];
+		if (!Array.isArray(groupBody) || groupBody.length === 0) {
+			throw new InsightError("GROUP must be an non-empty array");
+		}
+		const newRes: any[][] = [];
 		for (const data of res) {
-			for (const group of groupBody) {
-				console.log("not done yet");
+			if (newRes.length === 0) {
+				newRes.push([data]);
+			} else {
+				let count: number = 0;
+				let added: boolean = false;
+				for (const group of newRes) {
+					for (const groupCol of groupBody) {
+						if (data[groupCol] === undefined) {
+							throw new InsightError("Catch you !!!");
+						}
+						if (group[0][groupCol] === data[groupCol]) {
+							count++;
+						}
+					}
+					if (count === groupBody.length) {
+						group.push(data);
+						added = true;
+						break;
+					}
+					count = 0;
+				}
+				if (!added) {
+					newRes.push([data]);
+				}
 			}
 		}
-		return res;
+		return newRes;
 	}
 
-	private handleApply(id: string, applyBody: any, res: any[]) {
-		return res;
+	private handleApply(id: string, applyBody: any, res: any[], groupColumns: any[]) {
+		if (!Array.isArray(applyBody)) {
+			throw new InsightError("Apply must be an array");
+		}
+		const newRes: any[] = [];
+		for (const group of res) {
+			const data: any = {};
+			for (const groupCol of groupColumns) {
+				data[groupCol] = group[0][groupCol];
+			}
+			if (applyBody.length > 0) {
+				for (const apply of applyBody) {
+					if (Object.keys(apply).length !== 1) {
+						throw new InsightError("Apply rule can only have one key");
+					}
+					if (Object.keys(apply)[0].includes("_")) {
+						throw new InsightError("Apply name cannot contain underscore");
+					}
+					data[Object.keys(apply)[0]] = this.getAggregation(group, apply[Object.keys(apply)[0]]);
+				}
+			}
+			newRes.push(data);
+		}
+		return newRes;
 	}
 }

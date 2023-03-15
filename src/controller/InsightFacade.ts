@@ -197,7 +197,6 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 				if (Object.keys(query).length === 3) {
 					if (Object.keys(query).includes("TRANSFORMATIONS")) {
 						res = this.handleTrans(id, query["TRANSFORMATIONS"], res);
-						return res;
 					} else {
 						throw new InsightError("Cannot find TRANSFORMATIONS clause");
 					}
@@ -209,6 +208,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		} else {
 			throw new InsightError("Cannot find WHERE clause");
 		}
+		console.log(res);
 		return res;
 	}
 
