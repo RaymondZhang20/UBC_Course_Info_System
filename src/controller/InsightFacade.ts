@@ -192,15 +192,17 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			if (res.length > 5000) {
 				throw new ResultTooLargeError("Result larger then 5000");
 			}
+			res = this.renameData(res, id);
 			if (Object.keys(query).includes("OPTIONS")) {
-				res = this.handleOptions(id, query["OPTIONS"], res);
-				if (Object.keys(query).length === 3){
-					if (Object.keys(query).includes("TRANSFORMATIONS")){
-						// res = this.handleTrans(id, query["TRANSFORMATIONS"], res);
-					}else{
+				if (Object.keys(query).length === 3) {
+					if (Object.keys(query).includes("TRANSFORMATIONS")) {
+						res = this.handleTrans(id, query["TRANSFORMATIONS"], res);
+						return res;
+					} else {
 						throw new InsightError("Cannot find TRANSFORMATIONS clause");
 					}
 				}
+				res = this.handleOptions(id, query["OPTIONS"], res);
 			} else {
 				throw new InsightError("Cannot find OPTIONS clause");
 			}
@@ -215,7 +217,12 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	}
 
 	private findDatabaseID(query: any) {
-		const columns: string[] = query["OPTIONS"]["COLUMNS"];
+		let columns: string[] = [];
+		if ((Object.keys(query).length === 2)) {
+			columns = query["OPTIONS"]["COLUMNS"];
+		} else if ((Object.keys(query).length === 3)) {
+			columns = query["TRANSFORMATIONS"]["GROUP"];
+		}
 		if (columns === undefined || columns.length < 1) {
 			throw new InsightError("Invalid query");
 		} else {
@@ -227,5 +234,15 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 			}
 			return id;
 		}
+	}
+
+	private renameData(res: any[], id: string) {
+		return res.map((data) => {
+			let newData: any = {};
+			for (const key in data) {
+				Object.assign(newData, {[id + "_" + key]: data[key]});
+			}
+			return newData;
+		});
 	}
 }

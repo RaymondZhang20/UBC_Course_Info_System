@@ -63,40 +63,47 @@ describe("InsightFacade", function () {
 		it("2", function () {
 			const query1: any = {
 				WHERE: {
-					OR: [
+					AND: [
 						{
-							EQ: {
-								sections_pass: 100
+							GT: {
+								sections_avg: 70
 							}
 						},
 						{
 							IS: {
-								sections_id: "335"
+								sections_dept: "cp*"
+							}
+						},
+						{
+							LT: {
+								sections_avg: 72
 							}
 						}
 					]
 				},
 				OPTIONS: {
 					COLUMNS: [
-						"sections_id",
-						"sections_title",
-						"sections_instructor"
-					],
-					ORDER: {dir: "UP",
-						keys: ["sections_id",
-							"sections_title"]}
-				}
-			};
-			const query2: any = {
-				WHERE: {
-					LT: {
-						sections_avg: 60
-					}
-				},
-				OPTIONS: {
-					COLUMNS: [
 						"sections_dept",
-						"sections_avg"
+						"sections_id",
+						"overallAvg",
+						"AvgFail"
+					]
+				},
+				TRANSFORMATIONS: {
+					GROUP: [
+						"sections_id", "sections_dept"
+					],
+					APPLY: [
+						{
+							overallAvg: {
+								AVG: "sections_avg"
+							}
+						},
+						{
+							AvgFail: {
+								COUNT: "sections_audit"
+							}
+						}
 					]
 				}
 			};
