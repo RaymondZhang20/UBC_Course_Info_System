@@ -26,7 +26,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 				res = this.handleMComparator(key, value, id, res, kind);
 			} else {
 				throw new InsightError("Wrong keys in WHERE clause");
-
 			}
 		}
 		return res;
@@ -37,9 +36,9 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			throw new InsightError("Wrong keys in math operator");
 		}
 		let validFields: string[] = [];
-		if (kind === InsightDatasetKind.Sections){
+		if (kind === InsightDatasetKind.Sections) {
 			validFields = ["dept", "id", "instructor", "title", "uuid"];
-		}else if (kind === InsightDatasetKind.Rooms){
+		} else if (kind === InsightDatasetKind.Rooms) {
 			validFields = ["fullname", "shortname", "number", "name", "address", "type", "furniture", "href"];
 		}
 		for (const [key, value] of Object.entries(isBody)) {
@@ -54,11 +53,11 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 				const val = String(value);
 				if (!val.includes("*")) {
 					return res.filter((data) => data[keyContents[1]] === val);
-				}else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*"){
+				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*") {
 					return res.filter((data) => data[keyContents[1]].endsWith(val.replace(/\*/gi,"")));
-				}else if(val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*"){
+				} else if (val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*") {
 					return res.filter((data) => data[keyContents[1]].startsWith(val.replace(/\*/gi,"")));
-				}else if(val.charAt(0) === "*" && val.charAt(val.length - 1) === "*"){
+				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) === "*") {
 					return res.filter((data) => data[keyContents[1]].includes(val.replace(/\*/gi,"")));
 				}
 			}
@@ -213,20 +212,28 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 	}
 
 	protected handleTrans(id: string, transBody: any, res: any[]) {
-		if (Object.keys(transBody).length !== 2){
+		if (Object.keys(transBody).length !== 2) {
 			throw new InsightError("Invalid number of arguments in TRANSFORMATIONS");
 		}
 		if (!Object.keys(transBody).includes("GROUP") || !Object.keys(transBody).includes("APPLY")) {
 			throw new InsightError("Missing GROUP or APPLY in TRANSFORMATIONS");
 		}
-		if (Object.keys(transBody).length === 2 && Object.keys(transBody).includes("GROUP")
-			&& Object.keys(transBody).includes("APPLY")){
-			res = this.handleGroup(id, transBody["GROUP"], res);
-			return this.handleApply(id, transBody["APPLY"], res);
-		}
+		res = this.handleGroup(id, transBody["GROUP"], res);
+		res = this.handleApply(id, transBody["APPLY"], res);
+		return res;
 	}
 
 	private handleGroup(id: string, groupBody: any, res: any[]) {
+		if (res.length === 0) {
+			return res;
+		}
+		console.log(groupBody);
+		const newRes: any[][] = [[]];
+		for (const data of res) {
+			for (const group of groupBody) {
+				console.log("not done yet");
+			}
+		}
 		return res;
 	}
 
