@@ -174,4 +174,53 @@ export class DatabaseHelpers {
 			});
 		}
 	}
+
+	protected getAggregation(group: any[], apply: any) {
+		if (Object.keys(apply).length !== 1) {
+			throw new InsightError("Apply body can only have one key");
+		};
+		const key: string = apply[Object.keys(apply)[0]];
+		let count: number = 0;
+		let sum: number = 0;
+		let max: number = Number.MIN_VALUE;
+		let min: number = Number.MAX_VALUE;
+		let isNumeric: boolean = typeof group[0][key] === "number";
+		for (const data of group) {
+			if (data[key] === undefined) {
+				throw new InsightError("Apply column not is invalid");
+			} else if (typeof data[key] === "string") {
+				count++;
+			} else if (typeof data[key] === "number") {
+				const val: number = data[key];
+				count++;
+				sum += val;
+				max = Math.max(max, val);
+				min = Math.min(min, val);
+			} else {
+				throw new InsightError("should not be rejected");
+			}
+		}
+		if (isNumeric) {
+			switch (Object.keys(apply)[0]) {
+				case "COUNT":
+					return count;
+				case "SUM":
+					return sum;
+				case "MAX":
+					return max;
+				case "MIN":
+					return min;
+				case "AVG":
+					return sum / count;
+				default:
+					throw new InsightError("Invalid apply token (must be one of: MAX MIN AVG COUNT SUM)");
+			}
+		} else {
+			if (Object.keys(apply)[0] === "COUNT") {
+				return count;
+			} else {
+				throw new InsightError("Invalid apply token (must be COUNT for string)");
+			}
+		}
+	}
 }
