@@ -1,0 +1,71 @@
+{
+	"title": "v_butDuplicateKeysInOrder",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"LT": {
+						"rooms_seats": 15
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"cntFurn"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"cntFurn",
+					"cntFurn"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"cntFurn": {
+						"COUNT": "rooms_furniture"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "IBLC",
+			"cntFurn": 2
+		},
+		{
+			"rooms_shortname": "MCML",
+			"cntFurn": 2
+		},
+		{
+			"rooms_shortname": "SOWK",
+			"cntFurn": 1
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"cntFurn": 1
+		},
+		{
+			"rooms_shortname": "SPPH",
+			"cntFurn": 1
+		},
+		{
+			"rooms_shortname": "WOOD",
+			"cntFurn": 1
+		}
+	]
+}

@@ -1,0 +1,46 @@
+{
+	"title": "error_KeyInColumnsNotInGroupOrApply",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"LT": {
+						"rooms_seats": 15
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"rooms_lon",
+				"sumFurn"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"sumFurn"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"sumFurn": {
+						"SUM": "rooms_furniture"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

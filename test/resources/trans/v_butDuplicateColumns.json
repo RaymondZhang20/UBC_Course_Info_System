@@ -1,0 +1,107 @@
+{
+	"title": "v_butDuplicateColumns",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"LT": {
+						"rooms_seats": 20
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"sumlat",
+				"sum*lat"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"sum*lat": {
+						"SUM": "rooms_lat"
+					}
+				},
+				{
+					"sumlat": {
+						"SUM": "rooms_lat"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "WOOD",
+			"sumlat": 344.85,
+			"sum*lat": 344.85
+		},
+		{
+			"rooms_shortname": "SPPH",
+			"sumlat": 147.79,
+			"sum*lat": 147.79
+		},
+		{
+			"rooms_shortname": "SOWK",
+			"sumlat": 147.79,
+			"sum*lat": 147.79
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"sumlat": 394.1,
+			"sum*lat": 394.1
+		},
+		{
+			"rooms_shortname": "ORCH",
+			"sumlat": 49.26,
+			"sum*lat": 49.26
+		},
+		{
+			"rooms_shortname": "MCML",
+			"sumlat": 591.13,
+			"sum*lat": 591.13
+		},
+		{
+			"rooms_shortname": "IBLC",
+			"sumlat": 443.41,
+			"sum*lat": 443.41
+		},
+		{
+			"rooms_shortname": "FSC",
+			"sumlat": 49.26,
+			"sum*lat": 49.26
+		},
+		{
+			"rooms_shortname": "BUCH",
+			"sumlat": 49.27,
+			"sum*lat": 49.27
+		},
+		{
+			"rooms_shortname": "BIOL",
+			"sumlat": 98.53,
+			"sum*lat": 98.53
+		},
+		{
+			"rooms_shortname": "ANGU",
+			"sumlat": 147.79,
+			"sum*lat": 147.79
+		}
+	]
+}

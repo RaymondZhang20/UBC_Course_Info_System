@@ -1,0 +1,82 @@
+{
+	"title": "v_Transformations_emptyApply",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 200
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"rooms_number"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"rooms_shortname",
+					"rooms_number"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname",
+				"rooms_number"
+			],
+			"APPLY": []
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "ANGU",
+			"rooms_number": "098"
+		},
+		{
+			"rooms_shortname": "HEBB",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_shortname": "LSC",
+			"rooms_number": "1001"
+		},
+		{
+			"rooms_shortname": "LSC",
+			"rooms_number": "1002"
+		},
+		{
+			"rooms_shortname": "LSK",
+			"rooms_number": "200"
+		},
+		{
+			"rooms_shortname": "OSBO",
+			"rooms_number": "A"
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"rooms_number": "1101"
+		},
+		{
+			"rooms_shortname": "SRC",
+			"rooms_number": "220A"
+		},
+		{
+			"rooms_shortname": "SRC",
+			"rooms_number": "220B"
+		},
+		{
+			"rooms_shortname": "SRC",
+			"rooms_number": "220C"
+		}
+	]
+}

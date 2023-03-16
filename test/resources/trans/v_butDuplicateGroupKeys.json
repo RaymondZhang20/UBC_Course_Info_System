@@ -1,0 +1,113 @@
+{
+	"title": "v_butDuplicateGroupKeys",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 150
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"minSeats",
+				"avgSeats"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname",
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"minSeats": {
+						"MIN": "rooms_seats"
+					}
+				},
+				{
+					"avgSeats": {
+						"AVG": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "ANGU",
+			"minSeats": 260,
+			"avgSeats": 260
+		},
+		{
+			"rooms_shortname": "CHBE",
+			"minSeats": 200,
+			"avgSeats": 200
+		},
+		{
+			"rooms_shortname": "DMP",
+			"minSeats": 160,
+			"avgSeats": 160
+		},
+		{
+			"rooms_shortname": "FRDM",
+			"minSeats": 160,
+			"avgSeats": 160
+		},
+		{
+			"rooms_shortname": "HEBB",
+			"minSeats": 375,
+			"avgSeats": 375
+		},
+		{
+			"rooms_shortname": "IBLC",
+			"minSeats": 154,
+			"avgSeats": 154
+		},
+		{
+			"rooms_shortname": "LSC",
+			"minSeats": 350,
+			"avgSeats": 350
+		},
+		{
+			"rooms_shortname": "LSK",
+			"minSeats": 183,
+			"avgSeats": 194
+		},
+		{
+			"rooms_shortname": "OSBO",
+			"minSeats": 442,
+			"avgSeats": 442
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"minSeats": 167,
+			"avgSeats": 201.5
+		},
+		{
+			"rooms_shortname": "SRC",
+			"minSeats": 299,
+			"avgSeats": 299
+		},
+		{
+			"rooms_shortname": "SWNG",
+			"minSeats": 187,
+			"avgSeats": 188.75
+		}
+	]
+}

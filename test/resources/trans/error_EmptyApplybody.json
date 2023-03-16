@@ -1,0 +1,49 @@
+{
+	"title": "error_EmptyApplybody",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"LT": {
+						"rooms_seats": 15
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"lonlon",
+				"sumFurn"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"sumFurn"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"sumFurn": {
+						"SUM": "rooms_furniture"
+					}
+				},
+				{
+					"lonlon": {}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

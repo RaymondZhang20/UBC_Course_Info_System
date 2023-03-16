@@ -189,9 +189,6 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		}
 		if (Object.keys(query).includes("WHERE")) {
 			res = this.handleWhere(id,query["WHERE"], res, kind);
-			if (res.length > 5000) {
-				throw new ResultTooLargeError("Result larger then 5000");
-			}
 			res = this.renameData(res, id);
 			if (Object.keys(query).includes("OPTIONS")) {
 				if (Object.keys(query).length === 3) {
@@ -201,6 +198,9 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 						throw new InsightError("Cannot find TRANSFORMATIONS clause");
 					}
 				}
+				if (res.length > 5000) {
+					throw new ResultTooLargeError("Result larger then 5000");
+				}
 				res = this.handleOptions(id, query["OPTIONS"], res);
 			} else {
 				throw new InsightError("Cannot find OPTIONS clause");
@@ -208,7 +208,6 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 		} else {
 			throw new InsightError("Cannot find WHERE clause");
 		}
-		console.log(res);
 		return res;
 	}
 

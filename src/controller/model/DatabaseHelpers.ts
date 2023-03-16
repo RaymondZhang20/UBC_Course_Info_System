@@ -176,48 +176,49 @@ export class DatabaseHelpers {
 	}
 
 	protected getAggregation(group: any[], apply: any) {
-		if (Object.keys(apply).length !== 1) {
-			throw new InsightError("Apply body can only have one key");
-		};
 		const key: string = apply[Object.keys(apply)[0]];
-		let count: number = 0;
+		let acc: any[] = [];
 		let sum: number = 0;
 		let max: number = Number.MIN_VALUE;
 		let min: number = Number.MAX_VALUE;
-		let isNumeric: boolean = typeof group[0][key] === "number";
+		let type: string = typeof group[0][key];
 		for (const data of group) {
-			if (data[key] === undefined) {
-				throw new InsightError("Apply column not is invalid");
-			} else if (typeof data[key] === "string") {
-				count++;
-			} else if (typeof data[key] === "number") {
-				const val: number = data[key];
-				count++;
-				sum += val;
-				max = Math.max(max, val);
-				min = Math.min(min, val);
-			} else {
-				throw new InsightError("should not be rejected");
+			switch (type) {
+				case "number":
+					if (!acc.includes(data[key])) {
+						acc.push(data[key]);
+					}
+					sum += data[key];
+					max = Math.max(max, data[key]);
+					min = Math.min(min, data[key]);
+					break;
+				case "string":
+					if (!acc.includes(data[key])) {
+						acc.push(data[key]);
+					}
+					break;
+				default:
+					throw new InsightError("Apply column is invalid");
 			}
 		}
-		if (isNumeric) {
+		if (type === "number") {
 			switch (Object.keys(apply)[0]) {
 				case "COUNT":
-					return count;
+					return acc.length;
 				case "SUM":
-					return sum;
+					return +sum.toFixed(2);
 				case "MAX":
 					return max;
 				case "MIN":
 					return min;
 				case "AVG":
-					return sum / count;
+					return +(sum / group.length).toFixed(2);
 				default:
 					throw new InsightError("Invalid apply token (must be one of: MAX MIN AVG COUNT SUM)");
 			}
 		} else {
 			if (Object.keys(apply)[0] === "COUNT") {
-				return count;
+				return acc.length;
 			} else {
 				throw new InsightError("Invalid apply token (must be COUNT for string)");
 			}
