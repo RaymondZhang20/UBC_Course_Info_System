@@ -3,7 +3,6 @@ import {DatabaseHelpers} from "./DatabaseHelpers";
 
 
 export class InsightFacadeHelpers extends DatabaseHelpers {
-
 	protected handleWhere(id: string, whereBody: any, res: any[], kind: InsightDatasetKind) {
 		if (Object.keys(whereBody).length === 0){
 			if (res.length > 5000) {
@@ -41,10 +40,8 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			validFields = ["fullname", "shortname", "number", "name", "address", "type", "furniture", "href"];
 		}
-		function inputStringHelper(inputString: string, keyContents: string[], fn: (searchString: string) => boolean) {
-			if (!inputString.includes("*")) {
-				return res.filter((data) => data[keyContents[1]].fn);
-			} else {
+		function inputStringValid(inputString: string) {
+			if (inputString.includes("*")) {
 				throw new InsightError("Asterisks (*) cannot be in the middle of input strings");
 			}
 		}
@@ -63,13 +60,16 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 					return res.filter((data) => data[keyContents[1]] === val);
 				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*") {
 					inputString = val.substring(1);
-					return inputStringHelper(inputString, keyContents, (s) => s.endsWith(inputString));
+					inputStringValid(inputString);
+					return res.filter((data) => data[keyContents[1]].endsWith(inputString));
 				} else if (val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*") {
 					inputString = val.substring(0, val.length - 1);
-					return inputStringHelper(inputString, keyContents, (s) => s.startsWith(inputString));
+					inputStringValid(inputString);
+					return res.filter((data) => data[keyContents[1]].startsWith(inputString));
 				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) === "*") {
 					inputString = val.substring(1, val.length - 1);
-					return inputStringHelper(inputString, keyContents, (s) => s.includes(inputString));
+					inputStringValid(inputString);
+					return res.filter((data) => data[keyContents[1]].includes(inputString));
 				}
 			}
 		}
@@ -213,15 +213,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		} else {
 			throw new InsightError("SORT is not in the right format");
 		}
-	}
-
-	private compare(a: any, b: any, keys: any[]): boolean {
-		for (let key of keys) {
-			if (a[key] !== b[key]) {
-				return a[key] > b[key];
-			}
-		}
-		return false;
 	}
 
 	protected handleTrans(id: string, transBody: any, res: any[]) {

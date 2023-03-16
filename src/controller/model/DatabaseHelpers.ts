@@ -224,4 +224,13 @@ export class DatabaseHelpers {
 			}
 		}
 	}
+
+	protected compare(a: any, b: any, keys: any[]): boolean {
+		for (let key of keys) {
+			if (a[key] !== b[key]) {
+				return a[key] > b[key];
+			}
+		}
+		return false;
+	}
 }
