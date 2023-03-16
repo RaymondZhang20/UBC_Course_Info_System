@@ -40,11 +40,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			validFields = ["fullname", "shortname", "number", "name", "address", "type", "furniture", "href"];
 		}
-		function inputStringValid(inputString: string) {
-			if (inputString.includes("*")) {
-				throw new InsightError("Asterisks (*) cannot be in the middle of input strings");
-			}
-		}
 		for (const [key, value] of Object.entries(isBody)) {
 			const keyContents: string[] = key.split("_", 2);
 			if (keyContents[0] !== id) {
@@ -55,21 +50,25 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			}
 			if ((typeof value) === "string") {
 				const val = String(value);
-				let inputString = "";
 				if (!val.includes("*")) {
 					return res.filter((data) => data[keyContents[1]] === val);
-				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*") {
-					inputString = val.substring(1);
-					inputStringValid(inputString);
-					return res.filter((data) => data[keyContents[1]].endsWith(inputString));
-				} else if (val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*") {
-					inputString = val.substring(0, val.length - 1);
-					inputStringValid(inputString);
-					return res.filter((data) => data[keyContents[1]].startsWith(inputString));
-				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) === "*") {
-					inputString = val.substring(1, val.length - 1);
-					inputStringValid(inputString);
-					return res.filter((data) => data[keyContents[1]].includes(inputString));
+				} else {
+					const stringValidate: string[] = val.split("*").filter(String);
+					if (stringValidate.length !== 1){
+						if (stringValidate.length === 0 && (val.length === 1 || val.length === 2)){
+							return res;
+						}else{
+							throw new InsightError("Asterisks (*) cannot be in the middle of input strings");
+						}
+					}
+					let inputString = stringValidate[0];
+					if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*") {
+						return res.filter((data) => data[keyContents[1]].endsWith(inputString));
+					} else if (val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*") {
+						return res.filter((data) => data[keyContents[1]].startsWith(inputString));
+					} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) === "*") {
+						return res.filter((data) => data[keyContents[1]].includes(inputString));
+					}
 				}
 			}
 		}
