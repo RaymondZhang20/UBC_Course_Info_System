@@ -87,30 +87,18 @@ export class DatabaseHelpers {
 	protected getLocation(buildingInfoArray: any[]) {
 		const flag: any[] = [];
 		buildingInfoArray.forEach((buildingInfo: any) => {
-			flag.push(new Promise((res, rej)=>{
+			flag.push(new Promise((res, rej) => {
 				try {
-					http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team106/"
-						+ buildingInfo["address"].replaceAll(" ", "%20"), (result) => {
+					http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team106/" +
+						buildingInfo["address"].replaceAll(" ", "%20"), (result) => {
 						this.handleData(result, buildingInfo, res);
 					});
 				} catch (err) {
 					rej(err);
-				};
+				}
 			}));
 		});
 		return Promise.all(flag);
-	}
-
-	private handleData(result: any, buildingInfo: any, res: (value: (PromiseLike<unknown> | unknown)) => void) {
-		let data: any[] = [];
-		result.on("data", (chunk: any) => {
-			data.push(chunk);
-		}).on("end", () => {
-			const GEOlocation = JSON.parse(Buffer.concat(data).toString());
-			buildingInfo["lat"] = GEOlocation["lat"];
-			buildingInfo["lon"] = GEOlocation["lon"];
-			return res(true);
-		});
 	}
 
 	protected addRoomInfo(buildingInfoArray: any[], zipLoaded: JSZip, roomInfoArray: any[]) {
@@ -119,7 +107,7 @@ export class DatabaseHelpers {
 			if (zipLoaded.file(buildingInfo["link"])?.name === undefined) {
 				throw new InsightError("no building file");
 			}
-			flag.push(new Promise((res, rej) => {
+			flag.push(new Promise((res) => {
 				zipLoaded.file(buildingInfo["link"])?.async("string").then((buildingHtm: any) => {
 					const roomTBody: any = this.findTBody(parse(buildingHtm));
 					if (roomTBody === undefined) {
@@ -167,10 +155,9 @@ export class DatabaseHelpers {
 	protected loadRooms(infoArray: any[], rooms: Room[]) {
 		if (infoArray !== undefined) {
 			infoArray.forEach(function (info: any) {
-				rooms.push(new Room(info["fullname"], info["shortname"], info["number"]
-					, info["shortname"] + "_" + info["number"]
-					, info["address"], Number(info["lat"]), Number(info["lon"]), Number(info["seats"]), info["type"]
-					, info["furniture"], info["href"]));
+				rooms.push(new Room(info["fullname"], info["shortname"], info["number"], info["shortname"] +
+					"_" + info["number"], info["address"], Number(info["lat"]), Number(info["lon"])
+				, Number(info["seats"]), info["type"], info["furniture"], info["href"]));
 			});
 		}
 	}
@@ -232,5 +219,17 @@ export class DatabaseHelpers {
 			}
 		}
 		return false;
+	}
+
+	private handleData(result: any, buildingInfo: any, res: (value: (PromiseLike<unknown> | unknown)) => void) {
+		let data: any[] = [];
+		result.on("data", (chunk: any) => {
+			data.push(chunk);
+		}).on("end", () => {
+			const GEOlocation = JSON.parse(Buffer.concat(data).toString());
+			buildingInfo["lat"] = GEOlocation["lat"];
+			buildingInfo["lon"] = GEOlocation["lon"];
+			return res(true);
+		});
 	}
 }

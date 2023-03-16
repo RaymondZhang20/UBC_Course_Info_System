@@ -1,0 +1,259 @@
+{
+	"title": "v_fn,avglat&avglon",
+	"input": {
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_fullname",
+				"avgLat",
+				"avgLon"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_fullname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_fullname"
+			],
+			"APPLY": [
+				{
+					"avgLat": {
+						"AVG": "rooms_lat"
+					}
+				},
+				{
+					"avgLon": {
+						"AVG": "rooms_lon"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Wesbrook",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "War Memorial Gymnasium",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Student Recreation Centre",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Robert F. Osborne Centre",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"avgLat": 49.26,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Mathematics Annex",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "MacLeod",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Life Sciences Centre",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_fullname": "Leonard S. Klinck (also known as CSCI)",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"avgLat": 49.26,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Iona Building",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Hugh Dempster Pavilion",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Hennings",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Hebb",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Geography",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Friedman Building",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Frank Forward",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Earth and Ocean Sciences - Main",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Earth Sciences Building",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Chemistry",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Chemical and Biological Engineering Building",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Centre for Interactive  Research on Sustainability",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Brock Hall Annex",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Biological Sciences",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Auditorium Annex",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Aquatic Ecosystems Research Laboratory",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_fullname": "Anthropology and Sociology",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		}
+	]
+}
