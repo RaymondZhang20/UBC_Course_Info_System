@@ -1,0 +1,259 @@
+{
+	"title": "v_avglat&avglon",
+	"input": {
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"avgLat",
+				"avgLon"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"avgLat": {
+						"AVG": "rooms_lat"
+					}
+				},
+				{
+					"avgLon": {
+						"AVG": "rooms_lon"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "WOOD",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "WESB",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "UCLL",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "SWNG",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "SRC",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "SPPH",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "SOWK",
+			"avgLat": 49.26,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "SCRF",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_shortname": "PCOH",
+			"avgLat": 49.26,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "OSBO",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_shortname": "ORCH",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "MGYM",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "MCML",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "MCLD",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "MATX",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "MATH",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "LSK",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "LSC",
+			"avgLat": 49.26,
+			"avgLon": -123.24
+		},
+		{
+			"rooms_shortname": "LASR",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "IONA",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "IBLC",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "HENN",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "HEBB",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "GEOG",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "FSC",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "FRDM",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "FORW",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "FNH",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "ESB",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "EOSM",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "DMP",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "CIRS",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "CHEM",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "CHBE",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "CEME",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "BUCH",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "BRKX",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "BIOL",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "AUDX",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "ANSO",
+			"avgLat": 49.27,
+			"avgLon": -123.26
+		},
+		{
+			"rooms_shortname": "ANGU",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "ALRD",
+			"avgLat": 49.27,
+			"avgLon": -123.25
+		},
+		{
+			"rooms_shortname": "AERL",
+			"avgLat": 49.26,
+			"avgLon": -123.25
+		}
+	]
+}

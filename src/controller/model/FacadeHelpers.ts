@@ -4,9 +4,11 @@ import {DatabaseHelpers} from "./DatabaseHelpers";
 
 export class InsightFacadeHelpers extends DatabaseHelpers {
 	protected handleWhere(id: string, whereBody: any, res: any[], kind: InsightDatasetKind) {
-		if (Object.keys(whereBody).length === 0){
+		if (Object.keys(whereBody).length === 0) {
 			if (res.length > 5000) {
 				throw new ResultTooLargeError("Result larger then 5000");
+			} else {
+				return res;
 			}
 		}
 		if (Array.isArray(whereBody) || Object.keys(whereBody).length !== 1) {
@@ -27,6 +29,30 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 				throw new InsightError("Wrong keys in WHERE clause");
 			}
 		}
+		return res;
+	}
+
+	protected handleOptions(id: string, optionsBody: any, res: any[]) {
+		if (Object.keys(optionsBody).length === 1 && (Object.keys(optionsBody).includes("COLUMNS"))) {
+			return this.handleColumns(optionsBody["COLUMNS"], res);
+		} else if (Object.keys(optionsBody).length === 2 && (Object.keys(optionsBody).includes("COLUMNS")) &&
+			(Object.keys(optionsBody).includes("ORDER"))) {
+			res = this.handleColumns(optionsBody["COLUMNS"], res);
+			return this.handleOrder(optionsBody["ORDER"], optionsBody["COLUMNS"], res);
+		} else {
+			throw new InsightError("Wrong keys in Options clause");
+		}
+	}
+
+	protected handleTrans(id: string, transBody: any, res: any[]) {
+		if (Object.keys(transBody).length !== 2) {
+			throw new InsightError("Invalid number of arguments in TRANSFORMATIONS");
+		}
+		if (!Object.keys(transBody).includes("GROUP") || !Object.keys(transBody).includes("APPLY")) {
+			throw new InsightError("Missing GROUP or APPLY in TRANSFORMATIONS");
+		}
+		res = this.handleGroup(transBody["GROUP"], res);
+		res = this.handleApply(transBody["APPLY"], res, transBody["GROUP"]);
 		return res;
 	}
 
@@ -54,10 +80,10 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 					return res.filter((data) => data[keyContents[1]] === val);
 				} else {
 					const stringValidate: string[] = val.split("*").filter(String);
-					if (stringValidate.length !== 1){
-						if (stringValidate.length === 0 && (val.length === 1 || val.length === 2)){
+					if (stringValidate.length !== 1) {
+						if (stringValidate.length === 0 && (val.length === 1 || val.length === 2)) {
 							return res;
-						}else{
+						} else {
 							throw new InsightError("Asterisks (*) cannot be in the middle of input strings");
 						}
 					}
@@ -109,9 +135,9 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 
 	private handleMComparator(comparator: string, content: any, id: string, res: any[], kind: InsightDatasetKind) {
 		let validFields: string[] = [];
-		if (kind === InsightDatasetKind.Sections){
+		if (kind === InsightDatasetKind.Sections) {
 			validFields = ["avg", "pass", "fail", "audit", "year"];
-		} else if (kind === InsightDatasetKind.Rooms){
+		} else if (kind === InsightDatasetKind.Rooms) {
 			validFields = ["lat", "lon", "seats"];
 		}
 		if (Object.keys(content).length !== 1) {
@@ -140,23 +166,11 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 
 	}
 
-	protected handleOptions(id: string, optionsBody: any, res: any[]) {
-		if (Object.keys(optionsBody).length === 1 && (Object.keys(optionsBody).includes("COLUMNS"))) {
-			return this.handleColumns(id, optionsBody["COLUMNS"], res);
-		} else if (Object.keys(optionsBody).length === 2 && (Object.keys(optionsBody).includes("COLUMNS")) &&
-			(Object.keys(optionsBody).includes("ORDER"))) {
-			res = this.handleColumns(id, optionsBody["COLUMNS"], res);
-			return this.handleOrder(optionsBody["ORDER"], optionsBody["COLUMNS"], res);
-		} else {
-			throw new InsightError("Wrong keys in Options clause");
-		}
-	}
-
-	private handleColumns(id: string, columnsBody: any, res: any[]): InsightDataset[] {
+	private handleColumns(columnsBody: any, res: any[]): InsightDataset[] {
 		if (!Array.isArray(columnsBody) || columnsBody.length < 1) {
 			throw new InsightError("COLUMNS must be a non-empty array");
 		}
-		if (res.length === 0){
+		if (res.length === 0) {
 			return res;
 		}
 		return res.map((data) => {
@@ -180,7 +194,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			return res.sort((a, b) => {
 				if (a[orderBody] > b[orderBody]) {
 					return 1;
-				}else {
+				} else {
 					return -1;
 				}
 			});
@@ -203,7 +217,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 				}
 			}
 			return res.sort((a, b) => {
-				if (this.compare(a,b,orderBody["keys"])) {
+				if (this.compare(a, b, orderBody["keys"])) {
 					return dir;
 				} else {
 					return -dir;
@@ -214,19 +228,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		}
 	}
 
-	protected handleTrans(id: string, transBody: any, res: any[]) {
-		if (Object.keys(transBody).length !== 2) {
-			throw new InsightError("Invalid number of arguments in TRANSFORMATIONS");
-		}
-		if (!Object.keys(transBody).includes("GROUP") || !Object.keys(transBody).includes("APPLY")) {
-			throw new InsightError("Missing GROUP or APPLY in TRANSFORMATIONS");
-		}
-		res = this.handleGroup(id, transBody["GROUP"], res);
-		res = this.handleApply(id, transBody["APPLY"], res, transBody["GROUP"]);
-		return res;
-	}
-
-	private handleGroup(id: string, groupBody: any, res: any[]) {
+	private handleGroup(groupBody: any, res: any[]) {
 		if (res.length === 0) {
 			return res;
 		}
@@ -264,7 +266,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		return newRes;
 	}
 
-	private handleApply(id: string, applyBody: any, res: any[], groupColumns: any[]) {
+	private handleApply(applyBody: any, res: any[], groupColumns: any[]) {
 		if (!Array.isArray(applyBody)) {
 			throw new InsightError("Apply must be an array");
 		}
@@ -287,7 +289,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 					}
 					if (Object.keys(apply[Object.keys(apply)[0]]).length !== 1) {
 						throw new InsightError("Apply body can only have one key");
-					};
+					}
 					data[Object.keys(apply)[0]] = this.getAggregation(group, apply[Object.keys(apply)[0]]);
 				}
 			}
