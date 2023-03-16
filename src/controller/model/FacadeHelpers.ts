@@ -41,6 +41,13 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			validFields = ["fullname", "shortname", "number", "name", "address", "type", "furniture", "href"];
 		}
+		function inputStringHelper(inputString: string, keyContents: string[], fn: (searchString: string) => boolean) {
+			if (!inputString.includes("*")) {
+				return res.filter((data) => data[keyContents[1]].fn);
+			} else {
+				throw new InsightError("Asterisks (*) cannot be in the middle of input strings");
+			}
+		}
 		for (const [key, value] of Object.entries(isBody)) {
 			const keyContents: string[] = key.split("_", 2);
 			if (keyContents[0] !== id) {
@@ -51,14 +58,18 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			}
 			if ((typeof value) === "string") {
 				const val = String(value);
+				let inputString = "";
 				if (!val.includes("*")) {
 					return res.filter((data) => data[keyContents[1]] === val);
 				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) !== "*") {
-					return res.filter((data) => data[keyContents[1]].endsWith(val.replace(/\*/gi,"")));
+					inputString = val.substring(1);
+					return inputStringHelper(inputString, keyContents, (s) => s.endsWith(inputString));
 				} else if (val.charAt(0) !== "*" && val.charAt(val.length - 1) === "*") {
-					return res.filter((data) => data[keyContents[1]].startsWith(val.replace(/\*/gi,"")));
+					inputString = val.substring(0, val.length - 1);
+					return inputStringHelper(inputString, keyContents, (s) => s.startsWith(inputString));
 				} else if (val.charAt(0) === "*" && val.charAt(val.length - 1) === "*") {
-					return res.filter((data) => data[keyContents[1]].includes(val.replace(/\*/gi,"")));
+					inputString = val.substring(1, val.length - 1);
+					return inputStringHelper(inputString, keyContents, (s) => s.includes(inputString));
 				}
 			}
 		}
