@@ -215,15 +215,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		}
 	}
 
-	private compare(a: any, b: any, keys: any[]): boolean {
-		for (let key of keys) {
-			if (a[key] !== b[key]) {
-				return a[key] > b[key];
-			}
-		}
-		return false;
-	}
-
 	protected handleTrans(id: string, transBody: any, res: any[]) {
 		if (Object.keys(transBody).length !== 2) {
 			throw new InsightError("Invalid number of arguments in TRANSFORMATIONS");
