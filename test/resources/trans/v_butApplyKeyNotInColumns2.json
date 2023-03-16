@@ -1,0 +1,87 @@
+{
+	"title": "V_butApplyKeyNotInColumns2",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 189
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"sumlat"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"minSeats": {
+						"MIN": "rooms_seats"
+					}
+				},
+				{
+					"sumlat": {
+						"SUM": "rooms_lat"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "SWNG",
+			"sumlat": 98.53
+		},
+		{
+			"rooms_shortname": "SRC",
+			"sumlat": 147.8
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"sumlat": 49.26
+		},
+		{
+			"rooms_shortname": "OSBO",
+			"sumlat": 49.26
+		},
+		{
+			"rooms_shortname": "LSK",
+			"sumlat": 49.27
+		},
+		{
+			"rooms_shortname": "LSC",
+			"sumlat": 98.52
+		},
+		{
+			"rooms_shortname": "HEBB",
+			"sumlat": 49.27
+		},
+		{
+			"rooms_shortname": "CHBE",
+			"sumlat": 49.26
+		},
+		{
+			"rooms_shortname": "ANGU",
+			"sumlat": 49.26
+		}
+	]
+}

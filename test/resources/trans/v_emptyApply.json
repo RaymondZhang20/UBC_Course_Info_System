@@ -1,0 +1,52 @@
+{
+	"title": "v_emptyApply",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"LT": {
+						"rooms_seats": 15
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname"
+			],
+			"ORDER": "rooms_shortname"
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": []
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "IBLC"
+		},
+		{
+			"rooms_shortname": "MCML"
+		},
+		{
+			"rooms_shortname": "PHRM"
+		},
+		{
+			"rooms_shortname": "SOWK"
+		},
+		{
+			"rooms_shortname": "SPPH"
+		},
+		{
+			"rooms_shortname": "WOOD"
+		}
+	]
+}

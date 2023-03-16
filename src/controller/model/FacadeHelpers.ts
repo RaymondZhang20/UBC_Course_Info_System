@@ -164,7 +164,7 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 
 	private handleOrder(orderBody: any, optionsBody: any, res: any[]) {
 		if (typeof orderBody === "string") {
-			if (!optionsBody.includes(orderBody)){
+			if (!optionsBody.includes(orderBody)) {
 				throw new InsightError("ORDER key must be in COLUMNS");
 			}
 			return res.sort((a, b) => {
@@ -186,6 +186,11 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			}
 			if (!Array.isArray(orderBody["keys"])) {
 				throw new InsightError("keys must be an array");
+			}
+			for (let key of orderBody["keys"]) {
+				if (!optionsBody.includes(key)) {
+					throw new InsightError("ORDER keys must be in COLUMNS");
+				}
 			}
 			return res.sort((a, b) => {
 				if (this.compare(a,b,orderBody["keys"])) {
@@ -276,6 +281,12 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 					if (Object.keys(apply)[0].includes("_")) {
 						throw new InsightError("Apply name cannot contain underscore");
 					}
+					if (Object.keys(data).includes(Object.keys(apply)[0])) {
+						throw new InsightError("Apply name cannot be duplicated");
+					}
+					if (Object.keys(apply[Object.keys(apply)[0]]).length !== 1) {
+						throw new InsightError("Apply body can only have one key");
+					};
 					data[Object.keys(apply)[0]] = this.getAggregation(group, apply[Object.keys(apply)[0]]);
 				}
 			}

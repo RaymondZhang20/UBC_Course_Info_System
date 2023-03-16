@@ -1,0 +1,97 @@
+{
+	"title": "V_min&cnt",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_furniture": "*Tables*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 189
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname",
+				"minSeats",
+				"cntName"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_shortname"
+			],
+			"APPLY": [
+				{
+					"minSeats": {
+						"MIN": "rooms_seats"
+					}
+				},
+				{
+					"cntName": {
+						"COUNT": "rooms_name"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_shortname": "SWNG",
+			"minSeats": 190,
+			"cntName": 2
+		},
+		{
+			"rooms_shortname": "SRC",
+			"minSeats": 299,
+			"cntName": 3
+		},
+		{
+			"rooms_shortname": "PHRM",
+			"minSeats": 236,
+			"cntName": 1
+		},
+		{
+			"rooms_shortname": "OSBO",
+			"minSeats": 442,
+			"cntName": 1
+		},
+		{
+			"rooms_shortname": "LSK",
+			"minSeats": 205,
+			"cntName": 1
+		},
+		{
+			"rooms_shortname": "LSC",
+			"minSeats": 350,
+			"cntName": 2
+		},
+		{
+			"rooms_shortname": "HEBB",
+			"minSeats": 375,
+			"cntName": 1
+		},
+		{
+			"rooms_shortname": "CHBE",
+			"minSeats": 200,
+			"cntName": 1
+		},
+		{
+			"rooms_shortname": "ANGU",
+			"minSeats": 260,
+			"cntName": 1
+		}
+	]
+}
