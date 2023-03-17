@@ -50,7 +50,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 						return Promise.all(this.listIDs());
 					})
 					.catch((err) => {
-						return Promise.reject(new InsightError("error occurred in adding stage" + err.message));
+						return Promise.reject(new InsightError("error occurred in adding stage: " + err.message));
 					});
 			} else if (kind === InsightDatasetKind.Rooms) {
 				const rooms: Room[] = [];
@@ -65,7 +65,7 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 						return Promise.all(this.listIDs());
 					})
 					.catch((err) => {
-						return Promise.reject(new InsightError("error occurred in adding stage" + err.message));
+						return Promise.reject(new InsightError("error occurred in adding stage: " + err.message));
 					});
 			} else {
 				return Promise.reject(new InsightError("kind of the database is not valid"));

@@ -3,6 +3,7 @@ import {InsightError} from "../IInsightFacade";
 import {parse} from "parse5";
 import http from "http";
 import Room from "./Room";
+import Decimal from "decimal.js";
 
 export class DatabaseHelpers {
 	protected async parseSection(content: string): Promise<string[]> {
@@ -20,7 +21,7 @@ export class DatabaseHelpers {
 	}
 
 	protected async parseRoom(content: string): Promise<any[]> {
-		const buildingInfoArray: any[] = [];
+		let buildingInfoArray: any[] = [];
 		const roomInfoArray: any[] = [];
 		try {
 			const zipLoaded = await new JSZip().loadAsync(content, {base64: true});
@@ -54,7 +55,12 @@ export class DatabaseHelpers {
 				}
 			}
 			await this.getLocation(buildingInfoArray);
-			await this.addRoomInfo(buildingInfoArray, zipLoaded, roomInfoArray);
+			buildingInfoArray = buildingInfoArray.filter((info: any) => {
+				return (info["lat"] !== undefined && info["lon"] !== undefined);
+			});
+			if (buildingInfoArray.length > 0) {
+				await this.addRoomInfo(buildingInfoArray, zipLoaded, roomInfoArray);
+			}
 		} catch (e: any) {
 			return Promise.reject(new InsightError("error occurred in parsing stage: " + e.getMessage()));
 		}
@@ -86,70 +92,78 @@ export class DatabaseHelpers {
 
 	protected getLocation(buildingInfoArray: any[]) {
 		const flag: any[] = [];
-		buildingInfoArray.forEach((buildingInfo: any) => {
-			flag.push(new Promise((res, rej) => {
-				try {
-					http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team106/" +
-						buildingInfo["address"].replaceAll(" ", "%20"), (result) => {
-						this.handleData(result, buildingInfo, res);
-					});
-				} catch (err) {
-					rej(err);
+		if (buildingInfoArray.length !== 0) {
+			buildingInfoArray.forEach((buildingInfo: any) => {
+				if (buildingInfo["address"] !== undefined) {
+					flag.push(new Promise((res, rej) => {
+						try {
+							http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team106/" +
+								buildingInfo["address"].replaceAll(" ", "%20"), (result) => {
+								this.handleData(result, buildingInfo, res);
+							});
+						} catch (err) {
+							rej(new InsightError("Cannot get location"));
+						}
+					}));
 				}
-			}));
-		});
+			});
+		}
 		return Promise.all(flag);
 	}
 
 	protected addRoomInfo(buildingInfoArray: any[], zipLoaded: JSZip, roomInfoArray: any[]) {
 		const flag: any[] = [];
 		buildingInfoArray.forEach((buildingInfo: any) => {
-			if (zipLoaded.file(buildingInfo["link"])?.name === undefined) {
-				throw new InsightError("no building file");
-			}
-			flag.push(new Promise((res) => {
-				zipLoaded.file(buildingInfo["link"])?.async("string").then((buildingHtm: any) => {
-					const roomTBody: any = this.findTBody(parse(buildingHtm));
-					if (roomTBody === undefined) {
-						return res(false);
-					}
-					for (let node of roomTBody.childNodes) {
-						if (node["nodeName"] === "tr") {
-							let classValue: string;
-							const roomInfo: any = {};
-							roomInfo["fullname"] = buildingInfo["fullname"];
-							roomInfo["shortname"] = buildingInfo["shortname"];
-							roomInfo["address"] = buildingInfo["address"];
-							roomInfo["lat"] = buildingInfo["lat"];
-							roomInfo["lon"] = buildingInfo["lon"];
-							for (let subNode of node.childNodes) {
-								if (subNode["nodeName"] === "td") {
-									classValue = subNode["attrs"][0]["value"];
-									switch (classValue) {
-										case "views-field views-field-field-room-number":
-											roomInfo["href"] = subNode.childNodes[1]["attrs"][0]["value"].trim();
-											roomInfo["number"] = subNode.childNodes[1].childNodes[0]["value"].trim();
-											break;
-										case "views-field views-field-field-room-capacity":
-											roomInfo["seats"] = subNode.childNodes[0]["value"].trim();
-											break;
-										case "views-field views-field-field-room-furniture":
-											roomInfo["furniture"] = subNode.childNodes[0]["value"].trim();
-											break;
-										case "views-field views-field-field-room-type":
-											roomInfo["type"] = subNode.childNodes[0]["value"].trim();
-											break;
-									}
-								}
-							}
-							roomInfoArray.push(roomInfo);
+			if (zipLoaded.file(buildingInfo["link"])?.name !== undefined) {
+				flag.push(new Promise((res) => {
+					zipLoaded.file(buildingInfo["link"])?.async("string").then((buildingHtm: any) => {
+						const roomTBody: any = this.findTBody(parse(buildingHtm));
+						if (roomTBody === undefined) {
+							return res(false);
 						}
-					}
-					return res(true);
-				});
-			}));
+						this.addRoomInfoHelper(roomTBody, buildingInfo, roomInfoArray);
+						return res(true);
+					});
+				}));
+			}
 		});
 		return Promise.all(flag);
+	}
+
+	private addRoomInfoHelper(roomTBody: any, buildingInfo: any, roomInfoArray: any[]) {
+		for (let node of roomTBody.childNodes) {
+			if (node["nodeName"] === "tr") {
+				let classValue: string;
+				const roomInfo: any = {};
+				roomInfo["fullname"] = buildingInfo["fullname"];
+				roomInfo["shortname"] = buildingInfo["shortname"];
+				roomInfo["address"] = buildingInfo["address"];
+				roomInfo["lat"] = buildingInfo["lat"];
+				roomInfo["lon"] = buildingInfo["lon"];
+				for (let subNode of node.childNodes) {
+					if (subNode["nodeName"] === "td") {
+						classValue = subNode["attrs"][0]["value"];
+						switch (classValue) {
+							case "views-field views-field-field-room-number":
+								roomInfo["href"] = subNode.childNodes[1]["attrs"][0]["value"].trim();
+								roomInfo["number"] = subNode.childNodes[1].childNodes[0]["value"]
+									.trim();
+								break;
+							case "views-field views-field-field-room-capacity":
+								roomInfo["seats"] = subNode.childNodes[0]["value"].trim();
+								break;
+							case "views-field views-field-field-room-furniture":
+								roomInfo["furniture"] = subNode.childNodes[0]["value"].trim();
+								break;
+							case "views-field views-field-field-room-type":
+								roomInfo["type"] = subNode.childNodes[0]["value"].trim();
+								break;
+						}
+					}
+				}
+				roomInfoArray.push(roomInfo);
+			}
+		}
 	}
 
 	protected loadRooms(infoArray: any[], rooms: Room[]) {
@@ -165,8 +179,8 @@ export class DatabaseHelpers {
 	protected getAggregation(group: any[], apply: any) {
 		const key: string = apply[Object.keys(apply)[0]];
 		let acc: any[] = [];
-		let sum: number = 0;
-		let max: number = Number.MIN_VALUE;
+		let sum: Decimal = new Decimal(0);
+		let max: number = -1;
 		let min: number = Number.MAX_VALUE;
 		let type: string = typeof group[0][key];
 		for (const data of group) {
@@ -175,7 +189,7 @@ export class DatabaseHelpers {
 					if (!acc.includes(data[key])) {
 						acc.push(data[key]);
 					}
-					sum += data[key];
+					sum = Decimal.add(sum, data[key]);
 					max = Math.max(max, data[key]);
 					min = Math.min(min, data[key]);
 					break;
@@ -193,13 +207,13 @@ export class DatabaseHelpers {
 				case "COUNT":
 					return acc.length;
 				case "SUM":
-					return +sum.toFixed(2);
+					return Number(sum.toFixed(2));
 				case "MAX":
 					return max;
 				case "MIN":
 					return min;
 				case "AVG":
-					return +(sum / group.length).toFixed(2);
+					return Number((sum.toNumber() / group.length).toFixed(2));
 				default:
 					throw new InsightError("Invalid apply token (must be one of: MAX MIN AVG COUNT SUM)");
 			}
