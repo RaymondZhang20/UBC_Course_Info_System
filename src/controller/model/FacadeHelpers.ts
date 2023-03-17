@@ -5,11 +5,7 @@ import {DatabaseHelpers} from "./DatabaseHelpers";
 export class InsightFacadeHelpers extends DatabaseHelpers {
 	protected handleWhere(id: string, whereBody: any, res: any[], kind: InsightDatasetKind) {
 		if (Object.keys(whereBody).length === 0) {
-			if (res.length > 5000) {
-				throw new ResultTooLargeError("Result larger then 5000");
-			} else {
-				return res;
-			}
+			return res;
 		}
 		if (Array.isArray(whereBody) || Object.keys(whereBody).length !== 1) {
 			throw new InsightError("Wrong keys in WHERE clause");
@@ -208,8 +204,8 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			} else {
 				throw new InsightError("dir must be UP or DOWN");
 			}
-			if (!Array.isArray(orderBody["keys"])) {
-				throw new InsightError("keys must be an array");
+			if (!Array.isArray(orderBody["keys"]) || orderBody["keys"].length === 0) {
+				throw new InsightError("keys must be an non-empty array");
 			}
 			for (let key of orderBody["keys"]) {
 				if (!optionsBody.includes(key)) {
@@ -229,9 +225,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 	}
 
 	private handleGroup(groupBody: any, res: any[]) {
-		if (res.length === 0) {
-			return res;
-		}
 		if (!Array.isArray(groupBody) || groupBody.length === 0) {
 			throw new InsightError("GROUP must be an non-empty array");
 		}
@@ -270,6 +263,22 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 		if (!Array.isArray(applyBody)) {
 			throw new InsightError("Apply must be an array");
 		}
+		const keyNames: any[] = [];
+		for (const apply of applyBody) {
+			if (Object.keys(apply).length !== 1) {
+				throw new InsightError("Apply rule can only have one key");
+			}
+			if (Object.keys(apply)[0].includes("_") || Object.keys(apply)[0].length === 0) {
+				throw new InsightError("Apply name cannot contain underscore or only blank");
+			}
+			if (Object.keys(apply[Object.keys(apply)[0]]).length !== 1) {
+				throw new InsightError("Apply body can only have one key");
+			}
+			if (keyNames.includes(Object.keys(apply)[0])) {
+				throw new InsightError("Apply name cannot be duplicated");
+			}
+			keyNames.push(Object.keys(apply)[0]);
+		}
 		const newRes: any[] = [];
 		for (const group of res) {
 			const data: any = {};
@@ -278,18 +287,6 @@ export class InsightFacadeHelpers extends DatabaseHelpers {
 			}
 			if (applyBody.length > 0) {
 				for (const apply of applyBody) {
-					if (Object.keys(apply).length !== 1) {
-						throw new InsightError("Apply rule can only have one key");
-					}
-					if (Object.keys(apply)[0].includes("_")) {
-						throw new InsightError("Apply name cannot contain underscore");
-					}
-					if (Object.keys(data).includes(Object.keys(apply)[0])) {
-						throw new InsightError("Apply name cannot be duplicated");
-					}
-					if (Object.keys(apply[Object.keys(apply)[0]]).length !== 1) {
-						throw new InsightError("Apply body can only have one key");
-					}
 					data[Object.keys(apply)[0]] = this.getAggregation(group, apply[Object.keys(apply)[0]]);
 				}
 			}
