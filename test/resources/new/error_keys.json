@@ -1,0 +1,30 @@
+{
+	"title": "error_keys",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_address": "*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 300
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": "hi"
+			}
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

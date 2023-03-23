@@ -1,6 +1,7 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
+import {InsightDatasetKind, NotFoundError} from "../controller/IInsightFacade";
 
 export default class Server {
 	private readonly port: number;
@@ -86,6 +87,10 @@ export default class Server {
 		this.express.get("/echo/:msg", Server.echo);
 
 		// TODO: your other endpoints should go here
+		// PUT method
+		this.express.get("/dataset/:id/:kind", Server.put);
+		// DELETE method
+		this.express.get("/dataset/:id", Server.delete);
 
 	}
 
@@ -110,5 +115,41 @@ export default class Server {
 		} else {
 			return "Message not provided";
 		}
+	}
+
+	// PUT
+	private static put(req: Request, res: Response) {
+		try {
+			console.log(`Server::echo(..) - params: ${JSON.stringify(req.params)}`);
+			const response = Server.performPut(req.params.id, req.params.kind);
+			res.status(200).json({result: response});
+		} catch (err) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static performPut(id: string, kind: any): string {
+		// TODO: NOT IMPLEMENTED
+		return "";
+	}
+
+	// DELETE
+	private static delete(req: Request, res: Response) {
+		try {
+			console.log(`Server::echo(..) - params: ${JSON.stringify(req.params)}`);
+			const response = Server.performDelete(req.params.id);
+			res.status(200).json({result: response});
+		} catch (err) {
+			if (err === NotFoundError){
+				res.status(404).json({error: err});
+			}else{
+				res.status(400).json({error: err});
+			}
+		}
+	}
+
+	private static performDelete(id: string): string {
+		// TODO: NOT IMPLEMENTED
+		return "";
 	}
 }

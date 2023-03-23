@@ -1,0 +1,149 @@
+{
+	"title": "v_3groupkeys",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"rooms_address": "*a*"
+					}
+				},
+				{
+					"GT": {
+						"rooms_seats": 200
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_name",
+				"rooms_shortname",
+				"rooms_number"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"rooms_name"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_name",
+				"rooms_shortname",
+				"rooms_number"
+			],
+			"APPLY": [
+				{
+					"maxSeats": {
+						"MAX": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_name": "ANGU_098",
+			"rooms_shortname": "ANGU",
+			"rooms_number": "098"
+		},
+		{
+			"rooms_name": "BIOL_2000",
+			"rooms_shortname": "BIOL",
+			"rooms_number": "2000"
+		},
+		{
+			"rooms_name": "BUCH_A101",
+			"rooms_shortname": "BUCH",
+			"rooms_number": "A101"
+		},
+		{
+			"rooms_name": "CHEM_B150",
+			"rooms_shortname": "CHEM",
+			"rooms_number": "B150"
+		},
+		{
+			"rooms_name": "CHEM_B250",
+			"rooms_shortname": "CHEM",
+			"rooms_number": "B250"
+		},
+		{
+			"rooms_name": "CIRS_1250",
+			"rooms_shortname": "CIRS",
+			"rooms_number": "1250"
+		},
+		{
+			"rooms_name": "ESB_1013",
+			"rooms_shortname": "ESB",
+			"rooms_number": "1013"
+		},
+		{
+			"rooms_name": "FSC_1005",
+			"rooms_shortname": "FSC",
+			"rooms_number": "1005"
+		},
+		{
+			"rooms_name": "GEOG_100",
+			"rooms_shortname": "GEOG",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_name": "HEBB_100",
+			"rooms_shortname": "HEBB",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_name": "HENN_200",
+			"rooms_shortname": "HENN",
+			"rooms_number": "200"
+		},
+		{
+			"rooms_name": "LSC_1001",
+			"rooms_shortname": "LSC",
+			"rooms_number": "1001"
+		},
+		{
+			"rooms_name": "LSC_1002",
+			"rooms_shortname": "LSC",
+			"rooms_number": "1002"
+		},
+		{
+			"rooms_name": "LSK_200",
+			"rooms_shortname": "LSK",
+			"rooms_number": "200"
+		},
+		{
+			"rooms_name": "MATH_100",
+			"rooms_shortname": "MATH",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_name": "OSBO_A",
+			"rooms_shortname": "OSBO",
+			"rooms_number": "A"
+		},
+		{
+			"rooms_name": "PHRM_1101",
+			"rooms_shortname": "PHRM",
+			"rooms_number": "1101"
+		},
+		{
+			"rooms_name": "SCRF_100",
+			"rooms_shortname": "SCRF",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_name": "WESB_100",
+			"rooms_shortname": "WESB",
+			"rooms_number": "100"
+		},
+		{
+			"rooms_name": "WOOD_2",
+			"rooms_shortname": "WOOD",
+			"rooms_number": "2"
+		}
+	]
+}
