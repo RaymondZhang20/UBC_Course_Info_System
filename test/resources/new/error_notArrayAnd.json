@@ -1,0 +1,21 @@
+{
+	"title": "error_notArrayAnd",
+	"input": {
+		"WHERE": {
+			"AND": {}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_shortname"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"rooms_shortname"
+				]
+			}
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

@@ -1,0 +1,6 @@
+{
+	"title": "error_undefinedQ",
+	"input": {},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

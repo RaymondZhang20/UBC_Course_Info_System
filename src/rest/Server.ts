@@ -1,11 +1,14 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
+import {InsightDataset, InsightDatasetKind, InsightResult, NotFoundError} from "../controller/IInsightFacade";
+import InsightFacade from "../controller/InsightFacade";
 
 export default class Server {
 	private readonly port: number;
 	private express: Application;
 	private server: http.Server | undefined;
+	protected static facade = new InsightFacade();
 
 	constructor(port: number) {
 		console.info(`Server::<init>( ${port} )`);
@@ -86,6 +89,14 @@ export default class Server {
 		this.express.get("/echo/:msg", Server.echo);
 
 		// TODO: your other endpoints should go here
+		// PUT method
+		this.express.get("/dataset/:id/:kind", Server.put);
+		// DELETE method
+		this.express.get("/dataset/:id", Server.delete);
+		// POST method
+		this.express.get("/query", Server.post);
+		// GET method
+		this.express.get("/datasets", Server.get);
 
 	}
 
@@ -110,5 +121,73 @@ export default class Server {
 		} else {
 			return "Message not provided";
 		}
+	}
+
+	// PUT
+	private static put(req: Request, res: Response) {
+		try {
+			console.log(`Server::put(dataset/:id/:kind) - params: ${JSON.stringify(req.params)}`);
+			const response = Server.performPut(req.body, req.params.id, req.params.kind);
+			res.status(200).json({result: response});
+		} catch (err) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static performPut(input: any, id: string, kind: string): Promise<string[]> {
+		// TODO
+		const content = input.toString("base64");
+		let datasetKind = InsightDatasetKind.Rooms;
+		if (kind === "sections") {
+			datasetKind = InsightDatasetKind.Sections;
+		}else if (kind === "rooms"){
+			datasetKind = InsightDatasetKind.Rooms;
+		}
+		return this.facade.addDataset(id,datasetKind,content);
+	}
+
+	// DELETE
+	private static delete(req: Request, res: Response) {
+		try {
+			console.log(`Server::delete(dataset/:id) - params: ${JSON.stringify(req.params)}`);
+			const response = Server.performDelete(req.params.id);
+			res.status(200).json({result: response});
+		} catch (err) {
+			if (err === NotFoundError){
+				res.status(404).json({error: err});
+			}else{
+				res.status(400).json({error: err});
+			}
+		}
+	}
+
+	private static async performDelete(id: string): Promise<string> {
+		return await this.facade.removeDataset(id);
+	}
+
+	// POST
+	private static post(req: Request, res: Response) {
+		try {
+			console.log(`Server::delete(..) - params: ${JSON.stringify(req.body)}`);
+			const response = Server.performPost(req.body);
+			res.status(200).json({result: response});
+		} catch (err) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static async performPost(query: string): Promise<InsightResult[]> {
+		return await this.facade.performQuery(query);
+	}
+
+	// GET
+	private static get(req: Request, res: Response) {
+		console.log("Server::get(/datasets)");
+		const response = Server.performGet();
+		res.status(200).json({result: response});
+	}
+
+	private static async performGet(): Promise<InsightDataset[]> {
+		return await this.facade.listDatasets();
 	}
 }
