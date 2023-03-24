@@ -1,7 +1,11 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
-import {InsightDataset, InsightDatasetKind, InsightResult, NotFoundError} from "../controller/IInsightFacade";
+import {
+	InsightDatasetKind,
+	InsightError,
+	NotFoundError
+} from "../controller/IInsightFacade";
 import InsightFacade from "../controller/InsightFacade";
 
 export default class Server {
@@ -22,7 +26,7 @@ export default class Server {
 		 * by uncommenting the line below. This makes files in ./frontend/public
 		 * accessible at http://localhost:<port>/
 		 */
-		// this.express.use(express.static("./frontend/public"))
+		this.express.use(express.static("./frontend/public"));
 	}
 
 	/**
@@ -125,69 +129,51 @@ export default class Server {
 
 	// PUT
 	private static put(req: Request, res: Response) {
-		try {
-			console.log(`Server::put(dataset/:id/:kind) - params: ${JSON.stringify(req.params)}`);
-			const response = Server.performPut(req.body, req.params.id, req.params.kind);
-			res.status(200).json({result: response});
-		} catch (err) {
+		console.log(`Server::put(dataset/:id/:kind) - params: ${JSON.stringify(req.params)}`);
+		Server.performPut(req.body, req.params.id, req.params.kind).then((arr) => {
+			res.status(200).json({result: arr});
+		}).catch((err) => {
 			res.status(400).json({error: err});
-		}
+		});
 	}
 
 	private static performPut(input: any, id: string, kind: string): Promise<string[]> {
-		// TODO
-		const content = input.toString("base64");
-		let datasetKind = InsightDatasetKind.Rooms;
-		if (kind === "sections") {
-			datasetKind = InsightDatasetKind.Sections;
-		}else if (kind === "rooms"){
-			datasetKind = InsightDatasetKind.Rooms;
+		if (kind !== "sections" && kind !== "rooms") {
+			return Promise.reject(new InsightError("kind is invalid"));
 		}
-		return this.facade.addDataset(id,datasetKind,content);
+		return this.facade.addDataset(id,
+			kind === "sections" ? InsightDatasetKind.Sections : InsightDatasetKind.Rooms,input.toString("base64"));
 	}
 
 	// DELETE
 	private static delete(req: Request, res: Response) {
-		try {
-			console.log(`Server::delete(dataset/:id) - params: ${JSON.stringify(req.params)}`);
-			const response = Server.performDelete(req.params.id);
-			res.status(200).json({result: response});
-		} catch (err) {
+		console.log(`Server::delete(dataset/:id) - params: ${JSON.stringify(req.params)}`);
+		this.facade.removeDataset(req.params.id).then((str) => {
+			res.status(200).json({result: str});
+		}).catch((err) => {
 			if (err === NotFoundError){
 				res.status(404).json({error: err});
 			}else{
 				res.status(400).json({error: err});
 			}
-		}
-	}
-
-	private static async performDelete(id: string): Promise<string> {
-		return await this.facade.removeDataset(id);
+		});
 	}
 
 	// POST
 	private static post(req: Request, res: Response) {
-		try {
-			console.log(`Server::delete(..) - params: ${JSON.stringify(req.body)}`);
-			const response = Server.performPost(req.body);
-			res.status(200).json({result: response});
-		} catch (err) {
+		console.log(`Server::delete(..) - params: ${JSON.stringify(req.body)}`);
+		this.facade.performQuery(req.body).then((arr) => {
+			res.status(200).json({result: arr});
+		}).catch((err) => {
 			res.status(400).json({error: err});
-		}
-	}
-
-	private static async performPost(query: string): Promise<InsightResult[]> {
-		return await this.facade.performQuery(query);
+		});
 	}
 
 	// GET
 	private static get(req: Request, res: Response) {
 		console.log("Server::get(/datasets)");
-		const response = Server.performGet();
-		res.status(200).json({result: response});
-	}
-
-	private static async performGet(): Promise<InsightDataset[]> {
-		return await this.facade.listDatasets();
+		this.facade.listDatasets().then((arr) => {
+			res.status(200).json({result: arr});
+		});
 	}
 }
