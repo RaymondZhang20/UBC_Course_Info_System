@@ -127,16 +127,23 @@ export default class Server {
 	private static put(req: Request, res: Response) {
 		try {
 			console.log(`Server::put(dataset/:id/:kind) - params: ${JSON.stringify(req.params)}`);
-			const response = Server.performPut(req.params.id, req.params.kind);
+			const response = Server.performPut(req.body, req.params.id, req.params.kind);
 			res.status(200).json({result: response});
 		} catch (err) {
 			res.status(400).json({error: err});
 		}
 	}
 
-	private static performPut(id: string, kind: any): string {
-		// TODO: NOT IMPLEMENTED
-		return "";
+	private static performPut(input: any, id: string, kind: string): Promise<string[]> {
+		// TODO
+		const content = input.toString("base64");
+		let datasetKind = InsightDatasetKind.Rooms;
+		if (kind === "sections") {
+			datasetKind = InsightDatasetKind.Sections;
+		}else if (kind === "rooms"){
+			datasetKind = InsightDatasetKind.Rooms;
+		}
+		return this.facade.addDataset(id,datasetKind,content);
 	}
 
 	// DELETE
