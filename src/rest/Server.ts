@@ -12,7 +12,7 @@ export default class Server {
 	private readonly port: number;
 	private express: Application;
 	private server: http.Server | undefined;
-	protected static facade = new InsightFacade();
+	private static facade = new InsightFacade();
 
 	constructor(port: number) {
 		console.info(`Server::<init>( ${port} )`);
@@ -141,14 +141,14 @@ export default class Server {
 		if (kind !== "sections" && kind !== "rooms") {
 			return Promise.reject(new InsightError("kind is invalid"));
 		}
-		return this.facade.addDataset(id,
-			kind === "sections" ? InsightDatasetKind.Sections : InsightDatasetKind.Rooms,input.toString("base64"));
+		return Server.facade.addDataset(id, input.toString("base64"),
+			kind === "sections" ? InsightDatasetKind.Sections : InsightDatasetKind.Rooms);
 	}
 
 	// DELETE
 	private static delete(req: Request, res: Response) {
 		console.log(`Server::delete(dataset/:id) - params: ${JSON.stringify(req.params)}`);
-		this.facade.removeDataset(req.params.id).then((str) => {
+		Server.facade.removeDataset(req.params.id).then((str) => {
 			res.status(200).json({result: str});
 		}).catch((err) => {
 			if (err === NotFoundError){
@@ -162,7 +162,7 @@ export default class Server {
 	// POST
 	private static post(req: Request, res: Response) {
 		console.log(`Server::delete(..) - params: ${JSON.stringify(req.body)}`);
-		this.facade.performQuery(req.body).then((arr) => {
+		Server.facade.performQuery(req.body).then((arr) => {
 			res.status(200).json({result: arr});
 		}).catch((err) => {
 			res.status(400).json({error: err});
@@ -172,7 +172,7 @@ export default class Server {
 	// GET
 	private static get(req: Request, res: Response) {
 		console.log("Server::get(/datasets)");
-		this.facade.listDatasets().then((arr) => {
+		Server.facade.listDatasets().then((arr) => {
 			res.status(200).json({result: arr});
 		});
 	}
