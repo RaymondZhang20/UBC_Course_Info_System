@@ -23,7 +23,10 @@ export default class InsightFacade extends InsightFacadeHelpers implements IInsi
 	constructor() {
 		super();
 		if (fs.existsSync("./data/databases.json")) {
-			this.dataBases = JSON.parse(fs.readFileSync("./data/databases.json").toString());
+			const jsonString: string = fs.readFileSync("./data/databases.json").toString();
+			if (jsonString.length !== 0) {
+				this.dataBases = JSON.parse(jsonString);
+			}
 		} else {
 			fs.createFileSync("./data/databases.json");
 		}
