@@ -94,11 +94,11 @@ export default class Server {
 
 		// TODO: your other endpoints should go here
 		// PUT method
-		this.express.get("/dataset/:id/:kind", Server.put);
+		this.express.put("/dataset/:id/:kind", Server.put);
 		// DELETE method
-		this.express.get("/dataset/:id", Server.delete);
+		this.express.delete("/dataset/:id", Server.delete);
 		// POST method
-		this.express.get("/query", Server.post);
+		this.express.post("/query", Server.post);
 		// GET method
 		this.express.get("/datasets", Server.get);
 
