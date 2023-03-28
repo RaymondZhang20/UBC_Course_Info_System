@@ -133,7 +133,7 @@ export default class Server {
 		Server.performPut(req.body, req.params.id, req.params.kind).then((arr) => {
 			res.status(200).json({result: arr});
 		}).catch((err) => {
-			res.status(400).json({error: err});
+			res.status(400).json({error: err.message});
 		});
 	}
 
@@ -152,9 +152,9 @@ export default class Server {
 			res.status(200).json({result: str});
 		}).catch((err) => {
 			if (err instanceof NotFoundError){
-				res.status(404).json({error: err});
+				res.status(404).json({error: err.message});
 			}else{
-				res.status(400).json({error: err});
+				res.status(400).json({error: err.message});
 			}
 		});
 	}
@@ -165,7 +165,7 @@ export default class Server {
 		Server.facade.performQuery(req.body).then((arr) => {
 			res.status(200).json({result: arr});
 		}).catch((err) => {
-			res.status(400).json({error: err});
+			res.status(400).json({error: err.message});
 		});
 	}
 

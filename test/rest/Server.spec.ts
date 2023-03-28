@@ -1,8 +1,7 @@
 import Server from "../../src/rest/Server";
 import InsightFacade from "../../src/controller/InsightFacade";
-import {assert, expect, use} from "chai";
+import {expect} from "chai";
 import request, {Response} from "supertest";
-import {InsightDataset, InsightDatasetKind, InsightError} from "../../src/controller/IInsightFacade";
 import * as fs from "fs";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 
