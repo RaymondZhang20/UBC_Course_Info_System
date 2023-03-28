@@ -151,7 +151,7 @@ export default class Server {
 		Server.facade.removeDataset(req.params.id).then((str) => {
 			res.status(200).json({result: str});
 		}).catch((err) => {
-			if (err === NotFoundError){
+			if (err instanceof NotFoundError){
 				res.status(404).json({error: err});
 			}else{
 				res.status(400).json({error: err});
@@ -161,7 +161,7 @@ export default class Server {
 
 	// POST
 	private static post(req: Request, res: Response) {
-		console.log(`Server::delete(..) - params: ${JSON.stringify(req.body)}`);
+		console.log(`Server::post(query) - params: ${JSON.stringify(req.body)}`);
 		Server.facade.performQuery(req.body).then((arr) => {
 			res.status(200).json({result: arr});
 		}).catch((err) => {
