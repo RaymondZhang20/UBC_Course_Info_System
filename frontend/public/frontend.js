@@ -1,11 +1,51 @@
-
-
 document.getElementById("courses_anchor").addEventListener("click", showCourses);
+
+
 document.getElementById("rooms_anchor").addEventListener("click", showRooms);
 document.getElementById("submit_button").addEventListener("click", searchAvg);
 document.getElementById("courses_section").style.display = "none";
 
+function init(){
+	const getYearQuery = {
+		"WHERE":{
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_year"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"sections_year"
+			],
+			"APPLY": [
+			]
+		}
+	};
+	const Http = new XMLHttpRequest();
+	const url='http://localhost:4321/query';
+	Http.open("POST", url);
+	Http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	Http.send(JSON.stringify(getYearQuery));
+
+	Http.onreadystatechange = (e) => {
+		if (Http.readyState === Http.DONE){
+			let response = Http.responseText;
+			console.log(response);
+			let object = JSON.parse(response);
+			console.log(object);
+			let yearArray = [];
+			object["result"].forEach((element)=>{
+				yearArray.push(element["sections_year"])
+			})
+			console.log(yearArray);
+			return yearArray;
+		}
+	}
+}
+
 function showCourses() {
+	init()
 	// document.getElementById("courses_anchor").classList.replace("nav-link px-2 link-secondary", "nav-link px-2 dark");
 	document.getElementById("home_section").style.display = "none";
 	document.getElementById("courses_section").style.display = "block";
