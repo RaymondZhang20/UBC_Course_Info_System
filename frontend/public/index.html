@@ -49,11 +49,11 @@
 
 						<div class="dropdown text-end">
 							<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-								<img src="./frontend/img/ubc.png" alt="mdo" width="40" height="40" class="rounded-circle">
+								<img src="img/ubc.png" alt="mdo" width="40" height="40" class="rounded-circle">
 							</a>
 							<ul class="dropdown-menu text-small">
-								<li><a class="dropdown-item" href="#">Course Average by Year</a></li>
-								<li><a class="dropdown-item" href="#">Course Average by Instructor</a></li>
+								<li><a id="avgByYear_button" class="dropdown-item" href="#">Course Average by Year</a></li>
+								<li><a id="avgByInstr_button" class="dropdown-item" href="#">Course Average by Instructor</a></li>
 								<li><hr class="dropdown-divider"></li>
 								<li><a class="dropdown-item" href="#">Home</a></li>
 							</ul>
@@ -70,25 +70,25 @@
 		</section>
 
 		<section id="courses_section">
-			<div class="container text-end">
-				<div class="row g-12 align-items-center">
+			<div class="container">
+				<div class="row g-12 align-items-center text-end">
 					<div class="col">
-						<label for="dept" class="col-form-label">Department</label>
+						<div class="form-floating mb-3">
+							<input type="search" id="dept" class="form-control" placeholder="cpsc">
+							<label for="dept">Department</label>
+						</div>
 					</div>
 					<div class="col">
-						<input type="search" id="dept" class="form-control">
+						<div class="form-floating mb-3">
+							<input type="search" id="id" class="form-control" placeholder="310">
+							<label for="id">ID</label>
+						</div>
 					</div>
 					<div class="col">
-						<label for="id" class="col-form-label">ID</label>
-					</div>
-					<div class="col">
-						<input type="search" id="id" class="form-control">
-					</div>
-					<div class="col">
-						<label for="year" class="col-form-label">Year</label>
+						<label id="year_label" for="year" class="col-form-label" style="color: darkgray">Year</label>
 					</div>
 					<fieldset class="col">
-						<select id="year" class="form-select" multiple>
+						<select id="year" class="form-select" multiple disabled>
 							<option>2016</option>
 							<option>2015</option>
 							<option>2014</option>
@@ -102,15 +102,18 @@
 							<option>1900</option>
 						</select>
 					</fieldset>
-					<div class="col">
-						<label for="instr" class="col-form-label">Instructor</label>
-					</div>
 					<fieldset class="col">
-						<input type="search" id="instr" class="form-control">
+						<div class="form-floating mb-3">
+							<input disabled type="search" id="instr" class="form-control">
+							<label for="instr">Instructor</label>
+						</div>
 					</fieldset>
 					<div class="col">
-						<button id="submit_button" type="submit" class="btn btn-primary">Submit</button>
+						<button id="submit_button" type="submit" class="btn btn-primary" disabled>Submit</button>
 					</div>
+				</div>
+				<div id = courses_result class="row g-12 align-items-center text-center">
+
 				</div>
 			</div>
 		</section>
