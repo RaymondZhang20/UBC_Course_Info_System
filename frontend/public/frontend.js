@@ -52,9 +52,7 @@ function getYearPopulateDropdown(){
 		let yearArraySort;
 		if (Http1.readyState === Http1.DONE) {
 			let response = Http1.responseText;
-			console.log(response);
 			let object = JSON.parse(response);
-			console.log(object);
 			object["result"].forEach((element) => {
 				yearArray.push(element["sections_year"])
 			})
