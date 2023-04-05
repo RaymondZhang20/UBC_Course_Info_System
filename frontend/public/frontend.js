@@ -4,6 +4,7 @@ document.getElementById("submit_button").addEventListener("click", searchAvg);
 document.getElementById("avgByYear_button").addEventListener("click", avgByYear);
 document.getElementById("avgByInstr_button").addEventListener("click", avgByInstructor);
 document.getElementById("courses_section").style.display = "none";
+getYearPopulateDropdown();
 let course_state = 0;
 
 function avgByYear() {
@@ -22,6 +23,51 @@ function avgByInstructor() {
 	document.getElementById("submit_button").removeAttribute("disabled");
 }
 
+
+
+function getYearPopulateDropdown(){
+	const getYearQuery = {
+		"WHERE":{
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_year"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"sections_year"
+			],
+			"APPLY": [
+			]
+		}
+	};
+	const Http1 = new XMLHttpRequest();
+	const url1='http://localhost:4321/query';
+	Http1.open("POST", url1);
+	Http1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	Http1.send(JSON.stringify(getYearQuery));
+	let yearArray = [];
+	Http1.onreadystatechange = (e) => {
+		let yearArraySort;
+		if (Http1.readyState === Http1.DONE) {
+			let response = Http1.responseText;
+			console.log(response);
+			let object = JSON.parse(response);
+			console.log(object);
+			object["result"].forEach((element) => {
+				yearArray.push(element["sections_year"])
+			})
+			yearArraySort = yearArray.sort()
+			let select = document.getElementById("year");
+			for (let i = 0; i < yearArraySort.length; i++) {
+				let opt = yearArraySort[i];
+				select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+			}
+		}
+	}
+	// console.log(yearArray);
+}
 function showCourses() {
 	// document.getElementById("courses_anchor").classList.replace("nav-link px-2 link-secondary", "nav-link px-2 dark");
 	document.getElementById("home_section").style.display = "none";
