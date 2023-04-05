@@ -1,3 +1,5 @@
+
+
 document.getElementById("courses_anchor").addEventListener("click", showCourses);
 document.getElementById("rooms_anchor").addEventListener("click", showRooms);
 document.getElementById("submit_button").addEventListener("click", searchAvg);
@@ -68,6 +70,7 @@ function searchAvg() {
 		}
 	};
 	query["WHERE"]["AND"][0]["OR"].push(...yearQuery);
+	console.log(query)
 	const Http = new XMLHttpRequest();
 	const url='http://localhost:4321/query';
 	Http.open("POST", url);
@@ -75,8 +78,9 @@ function searchAvg() {
 	Http.send(JSON.stringify(query));
 
 	Http.onreadystatechange = (e) => {
-		let response = Http.responseText;
-		let object = JSON.parse(response);
-		console.log(object);
+		if (Http.readyState === Http.DONE){
+			let response = Http.responseText;
+			console.log(response);
+		}
 	}
 }
