@@ -146,7 +146,7 @@ function searchAvgByInstr() {
 		if (Http.readyState === Http.DONE) {
 			let response = JSON.parse(Http.response)["result"];
 			if (response.length === 0) {
-				alert("The course doesn't exist or there is no instructor match with the name");
+				alert("The course doesn't exist or there is no instructor matching this search");
 				return;
 			}
 			let list = "";
@@ -161,7 +161,7 @@ function searchAvgByInstr() {
 					"  </li>\n"
 				instructors.push(ele["sections_instructor"]);
 			}
-			alert("there are " + instructors.length + " instructors match with \'" + instr + "\'");
+			alert("There are " + instructors.length + " instructors matching with \'" + instr + "\'");
 			const result = document.createElement("ol");
 			result.setAttribute("class", "list-group");
 			result.innerHTML = list;
@@ -239,7 +239,7 @@ function searchAvgByYear() {
 				return;
 			}
 			const result = document.createElement("h2");
-			result.textContent = "The over all average of " + dept + id + " through out the specific years is: " + response[0]["overallAvg"];
+			result.textContent = "The overall average of " + dept + id + " through out the specified years is: " + response[0]["overallAvg"];
 			document.getElementById("courses_result").appendChild(result);
 		}
 	}
