@@ -12,6 +12,7 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
+import Decimal from "decimal.js";
 
 use(chaiAsPromised);
 
@@ -57,7 +58,9 @@ describe("InsightFacade", function () {
 			}
 			expect(Object.keys(query).length).to.deep.equal(2);
 			const s: unknown = 1;
-			console.log((typeof s) === "number");
+			let sum: Decimal = new Decimal(0);
+			sum.add(1);
+			console.log(sum);
 		});
 
 		it("2", function () {
@@ -110,8 +113,8 @@ describe("InsightFacade", function () {
 			facade = new InsightFacade();
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
 				return facade.performQuery(query1).then((dataset) => {
-					// console.log(dataset.length);
-					// console.log(dataset);
+					console.log(dataset.length);
+					console.log(dataset);
 					clearDisk();
 					// return facade.performQuery(query2).then((dataset2) => {
 					// 	console.log(dataset2.length);
@@ -150,11 +153,11 @@ describe("InsightFacade", function () {
 			};
 			facade = new InsightFacade();
 			return facade.addDataset("sections", sections, InsightDatasetKind.Sections).then(() => {
-				return facade.performQuery(query).then((dataset) => {
+				return facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms).then((dataset) => {
 					console.log(dataset.length);
 					// expect(dataset).to.have.length(156);
 					console.log(dataset);
-					clearDisk();
+					// clearDisk();
 				});
 			});
 		});
@@ -386,7 +389,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests (general/errors)",
 			(input) => facade.performQuery(input),
-			"./test/resources/rooms",
+			"./test/resources/trans",
 			{
 				assertOnResult: (actual, expected: any) => {
 					expect(actual).to.have.have.deep.members(expected);
